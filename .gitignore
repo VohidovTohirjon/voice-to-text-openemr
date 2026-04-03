@@ -1,4 +1,5 @@
 venv/
+.venv/
 __pycache__/
 *.pyc
 output.txt
@@ -9,3 +10,4 @@ test.tsv
 test.txt
 test.vtt
 .DS_Store
+*.pdf
