@@ -1,11 +1,12 @@
+dist/
 venv/
 __pycache__/
+asr/__pycache__/
 *.pyc
 output.txt
 test.wav
+test.txt
 test.json
 test.srt
 test.tsv
-test.txt
 test.vtt
-.DS_Store

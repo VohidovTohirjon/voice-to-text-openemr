@@ -1,9 +1,18 @@
-from fastapi import FastAPI, UploadFile, File
-import whisper
 import os
 import tempfile
+from fastapi import FastAPI, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
+import whisper
 
 app = FastAPI(title="ASR Prototype API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 model = whisper.load_model("base")
 

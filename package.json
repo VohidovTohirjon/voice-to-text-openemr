@@ -1,0 +1,15 @@
+{
+  "name": "openemr-asr-demo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CSC 436 demo project for OpenEMR voice-to-text integration.",
+  "scripts": {
+    "check": "npm run check:js && npm run check:py && npm run check:manifest",
+    "check:js": "node --check extension/content.js && node --check extension/scanner.js && node --check scripts/build-extension.mjs && node --check scripts/watch-extension.mjs",
+    "check:py": "python3 -m py_compile asr/api.py",
+    "check:manifest": "python3 -m json.tool extension/manifest.json > /dev/null",
+    "lint": "npm run check:js",
+    "build": "node scripts/build-extension.mjs",
+    "dev": "node scripts/watch-extension.mjs"
+  }
+}
