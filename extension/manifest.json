@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "OpenEMR ASR Demo Helper",
+  "version": "0.1.0",
+  "description": "Demo extension for scanning OpenEMR forms and inserting ASR transcripts with confirmation.",
+  "permissions": [
+    "activeTab"
+  ],
+  "host_permissions": [
+    "http://localhost/*",
+    "http://127.0.0.1/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://localhost/*",
+        "http://127.0.0.1/*"
+      ],
+      "all_frames": true,
+      "js": [
+        "scanner.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "OpenEMR ASR Demo Helper"
+  }
+}

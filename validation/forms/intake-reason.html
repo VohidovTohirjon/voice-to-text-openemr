@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Intake Reason Test Form</title>
+    <style>
+      body {
+        font-family: Georgia, serif;
+        margin: 40px auto;
+        max-width: 760px;
+        background: #f8fafc;
+        color: #0f172a;
+      }
+
+      .card {
+        background: white;
+        border: 1px solid #cbd5e1;
+        border-radius: 14px;
+        padding: 24px;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-top: 18px;
+      }
+
+      input,
+      textarea {
+        box-sizing: border-box;
+        width: 100%;
+        margin-top: 8px;
+        padding: 10px;
+        font: inherit;
+      }
+
+      textarea {
+        min-height: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <h1>Clinic Intake Reason Test</h1>
+      <p>This fixture uses the same `name="reason"` and `id="reason"` target as the OpenEMR MVP.</p>
+
+      <form>
+        <label for="dob">Date of Birth</label>
+        <input id="dob" name="dob" placeholder="YYYY-MM-DD">
+
+        <label for="reason">Reason for Visit</label>
+        <textarea id="reason" name="reason" aria-label="Reason for Visit"></textarea>
+
+        <label for="notes">Extra Notes</label>
+        <textarea id="notes" name="notes"></textarea>
+      </form>
+    </main>
+  </body>
+</html>

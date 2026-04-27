@@ -3,12 +3,21 @@ import tempfile
 
 import whisper
 from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from nlp.extractor import extract_entities
 from nlp.field_mapper import map_entities_to_fields
 
 app = FastAPI(title="ASR Service")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Lazy-load Whisper so startup is fast even if /extract is all that's needed
 _whisper_model = None
