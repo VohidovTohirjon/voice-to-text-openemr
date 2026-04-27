@@ -10,6 +10,7 @@ The goal is to let a clinician speak and insert the transcript into the encounte
 - `openemr/` → OpenEMR integration (modified files only)
 - `extension/` → Chrome extension source (MV3 content scripts and UI)
 - `scripts/` → Lightweight npm pipeline helpers for building/watching the extension
+- `validation/` → Week 3 validation checklist, test matrix, and local form fixtures
 - `dist/extension/` → Generated unpacked extension build output
 
 ## What’s Working
@@ -72,3 +73,23 @@ You can also load `/Users/tokhirjon/asr_test/extension` directly while developin
 5. Optionally drag the panel out of the way or collapse it between steps.
 
 6. Review the transcript preview and click `Insert into form` to place it into the detected OpenEMR textarea.
+
+## Week 3 Validation
+
+Week 3 work has started in `validation/`.
+
+Run the local validation fixtures with:
+
+```bash
+npm run serve:validation
+```
+
+Then open:
+
+```text
+http://127.0.0.1:5173/contact-reason.html
+http://127.0.0.1:5173/intake-reason.html
+http://127.0.0.1:5173/no-reason-field.html
+```
+
+Use `validation/openemr-encounter-checklist.md` for the OpenEMR encounter page and `validation/test-matrix.md` for the Week 3 testing summary.

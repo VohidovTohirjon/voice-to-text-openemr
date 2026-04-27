@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>No Reason Field Test</title>
+    <style>
+      body {
+        font-family: Georgia, serif;
+        margin: 40px auto;
+        max-width: 720px;
+      }
+
+      input,
+      textarea {
+        box-sizing: border-box;
+        display: block;
+        width: 100%;
+        margin: 8px 0 18px;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>No Reason Field Negative Test</h1>
+    <p>The extension should stay hidden on this page because there is no `textarea[name="reason"]` or `#reason` target.</p>
+
+    <form>
+      <label for="message">Message</label>
+      <textarea id="message" name="message"></textarea>
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email">
+    </form>
+  </body>
+</html>

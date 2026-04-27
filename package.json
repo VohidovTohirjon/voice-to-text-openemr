@@ -10,6 +10,7 @@
     "check:manifest": "python3 -m json.tool extension/manifest.json > /dev/null",
     "lint": "npm run check:js",
     "build": "node scripts/build-extension.mjs",
-    "dev": "node scripts/watch-extension.mjs"
+    "dev": "node scripts/watch-extension.mjs",
+    "serve:validation": "python3 -m http.server 5173 --directory validation/forms"
   }
 }

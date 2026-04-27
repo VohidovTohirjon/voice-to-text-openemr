@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contact Reason Test Form</title>
+    <style>
+      body {
+        font-family: Georgia, serif;
+        margin: 40px auto;
+        max-width: 720px;
+        color: #1f2937;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-top: 18px;
+      }
+
+      input,
+      textarea,
+      select {
+        box-sizing: border-box;
+        width: 100%;
+        margin-top: 8px;
+        padding: 10px;
+        font: inherit;
+      }
+
+      textarea {
+        min-height: 140px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Contact Reason Test Form</h1>
+    <p>This local page tests whether the extension can fill a non-OpenEMR reason textarea.</p>
+
+    <form>
+      <label for="name">Name</label>
+      <input id="name" name="name" placeholder="Patient name">
+
+      <label for="reason">Reason for Contact</label>
+      <textarea id="reason" name="reason" placeholder="Describe the reason for contact"></textarea>
+
+      <label for="urgency">Urgency</label>
+      <select id="urgency" name="urgency">
+        <option>Routine</option>
+        <option>Urgent</option>
+      </select>
+    </form>
+  </body>
+</html>
