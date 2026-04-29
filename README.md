@@ -10,6 +10,7 @@ The goal is to let a clinician speak and insert the transcript into the encounte
 - `openemr/` → OpenEMR integration (modified files only)
 - `extension/` → Chrome extension source (MV3 content scripts and UI)
 - `scripts/` → Lightweight npm pipeline helpers for building/watching the extension
+- `docs/` → User-facing setup and usage notes
 - `validation/` → Week 3 validation checklist, test matrix, and local form fixtures
 - `dist/extension/` → Generated unpacked extension build output
 
@@ -19,10 +20,11 @@ The goal is to let a clinician speak and insert the transcript into the encounte
 - Identification and modification of OpenEMR encounter form
 - Placeholder added for AI-generated text insertion
 - Chrome extension scans local pages for likely text-entry targets
-- Extension prioritizes the OpenEMR `Reason for Visit` field
-- Floating mic UI supports recording, transcript preview, confirm-before-fill, drag/move, and collapse
+- Extension prioritizes the OpenEMR `Reason for Visit` field while also supporting generic text forms
+- Floating mic UI supports recording, transcript preview, transcript analysis, confirm-before-fill, drag/move, and collapse
 - Demo transcript fallback exists when microphone or API access is not available
 - Extension stays inactive on irrelevant pages like the OpenEMR login screen
+- ASR API now supports transcript extraction and field-fill mapping via the NLP layer
 
 ## Notes
 - Whisper is used as a baseline due to easy setup and fast testing
@@ -93,3 +95,11 @@ http://127.0.0.1:5173/no-reason-field.html
 ```
 
 Use `validation/openemr-encounter-checklist.md` for the OpenEMR encounter page and `validation/test-matrix.md` for the Week 3 testing summary.
+
+## User Guide
+
+See:
+
+```text
+docs/user-guide.md
+```

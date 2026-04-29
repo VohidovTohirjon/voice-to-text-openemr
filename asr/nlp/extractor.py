@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 NLP Entity Extraction Layer
 ===========================

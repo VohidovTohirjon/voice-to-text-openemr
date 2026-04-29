@@ -10,6 +10,7 @@ This is a simple prototype for adding voice-to-text into OpenEMR using a local A
 - Tested with a clinical-style example input
 - Added a basic API (`api.py`) for future integration
 - Added a Chrome extension MVP that can call the local API and fill OpenEMR fields after confirmation
+- Added NLP/entity extraction endpoints for field suggestion and mapping
 
 ## Example
 Input (speech):  
@@ -38,3 +39,16 @@ The extension posts recorded audio to:
 ```text
 http://127.0.0.1:8000/transcribe
 ```
+
+## Current API Endpoints
+
+- `GET /` - health check
+- `POST /transcribe` - audio -> transcript
+- `POST /extract` - transcript -> entities + field mappings
+- `POST /transcribe_and_extract` - audio -> transcript -> entities + field mappings
+
+## Notes
+
+- Whisper is lazy-loaded on first transcription request
+- spaCy powers the default extractor path
+- optional Ollama support exists in the NLP layer for local LLM extraction
