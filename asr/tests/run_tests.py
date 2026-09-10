@@ -357,6 +357,30 @@ def _():
     assert "follow up" in sections["plan"]
 
 
+@test("soap: a comma-joined dictation still splits into sections")
+def _():
+    # Whisper transcribes a dictated pause as a comma far more often than as a
+    # full stop. This transcript is verbatim from a real run; before the clause
+    # split, the whole note landed in Objective and Assessment and Plan were
+    # empty - which is exactly what a viewer would see on screen.
+    text = ("Patient reports headache and fever for two days. She denies chest pain, "
+            "temperature 38 degrees, blood pressure 140 over 90, pulse 96, impression "
+            "is viral infection, plan is rest, fluids and aspirin, follow up in one week.")
+    sections = soap.render_sections(soap.structure_note(text))
+    assert "headache" in sections["subjective"], sections
+    assert "blood pressure" in sections["objective"].lower(), sections
+    assert "viral infection" in sections["assessment"], sections
+    assert "follow up" in sections["plan"].lower(), sections
+
+
+@test("soap: a comma inside a clause is not a section boundary")
+def _():
+    # Only a comma followed by a section opener splits. Ordinary list commas
+    # must leave the sentence intact.
+    text = "Plan is rest, fluids, and paracetamol as needed."
+    assert len(soap.split_sentences(text)) == 1, soap.split_sentences(text)
+
+
 @test("soap: explicit headers override scoring and are fully confident")
 def _():
     text = ("Subjective: cough for three days. Objective: temperature 37.8. "

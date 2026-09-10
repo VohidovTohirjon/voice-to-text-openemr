@@ -118,6 +118,25 @@ _ABBREVIATIONS = {
 # "37.8," intact: a decimal point has a digit after it, never a space.
 _BOUNDARY = re.compile(r"[.!?]+(?=\s|$)|\n+")
 
+# Phrases that open a new clinical section. Whisper frequently transcribes a
+# dictated pause as a comma rather than a full stop, which glues a whole note
+# into one "sentence" and leaves Assessment and Plan empty. Splitting at a comma
+# that is immediately followed by one of these is what recovers the structure.
+_SECTION_OPENERS = (
+    "impression is", "impression", "assessment is", "assessment",
+    "diagnosis is", "diagnosis",
+    "plan is", "plan", "we will", "follow up", "return in", "recheck",
+    "on examination", "on exam", "physical exam",
+    "temperature", "blood pressure", "pulse", "heart rate",
+    "respiratory rate", "oxygen saturation", "o2 sat", "weight",
+    "patient reports", "patient denies", "she denies", "he denies",
+    "she reports", "he reports", "no known",
+)
+_CLAUSE_BOUNDARY = re.compile(
+    r",\s+(?=(?:" + "|".join(re.escape(p) for p in _SECTION_OPENERS) + r")\b)",
+    re.IGNORECASE,
+)
+
 
 def split_sentences(text: str) -> List[Dict[str, Any]]:
     """
@@ -140,7 +159,14 @@ def split_sentences(text: str) -> List[Dict[str, Any]]:
     sentences: List[Dict[str, Any]] = []
     cursor = 0
 
-    for match in _BOUNDARY.finditer(text):
+    boundaries = sorted(
+        [m for m in _BOUNDARY.finditer(text)] + [m for m in _CLAUSE_BOUNDARY.finditer(text)],
+        key=lambda m: m.start(),
+    )
+
+    for match in boundaries:
+        if match.start() < cursor:
+            continue
         if match.group(0)[0] == ".":
             preceding = re.search(r"([A-Za-z]+)\.?$", text[cursor:match.start()])
             if preceding and preceding.group(1).lower() in _ABBREVIATIONS:

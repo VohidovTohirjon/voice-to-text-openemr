@@ -6,7 +6,7 @@ Ikki versiya bir faylda:
 
 | Versiya | Uzunlik | Qachon |
 |---|---|---|
-| **Asosiy** | `3:07` | Standart taqdimot |
+| **Asosiy** | `3:06` | Standart taqdimot |
 | **Kengaytirilgan** | `5:44` | Rahbar texnik chuqurlik so'rasa |
 
 > ### ⚠️ Kod ekranda ko'rsatilmaydi
@@ -84,15 +84,20 @@ Bo'lmasa — demo paytida birinchi transkripsiya 30+ soniya kutadi.
 | ☐ | Bildirishnomalar o'chirilgan, brauzer zoom 125% |
 | ☐ | Chrome'ning sariq "Developer mode" ogohlantirishi yopilgan |
 
+> **Talaffuz haqida:** butun ssenariyda qiyin tibbiy so'z yo'q. Diktada faqat
+> qisqa, keng tarqalgan inglizcha so'zlar bor. Dori nomlari — masalan
+> lisinopril, acetaminophen — hech qayerda og'zaki aytilmaydi; ular faqat
+> diagrammada yozma ko'rsatiladi. Bu ataylab shunday.
+>
 > **Muhim:** login va bemor tanlash **yozuvdan oldin** bajariladi. Videoda
 > ular ko'rinmaydi — video to'g'ridan-to'g'ri bo'sh encounter formasidan
 > boshlanadi. Bu 25 soniya tejaydi va diqqatni chalg'itmaydi.
 
 ---
 
-# ASOSIY VERSIYA — 3:07
+# ASOSIY VERSIYA — 3:06
 
-2:51 nutq + 16 s harakat pauzalari = **3:07**.
+2:50 nutq + 16 s harakat pauzalari = **3:06**.
 
 ## Kerak bo'ladigan diagrammalar
 
@@ -168,14 +173,31 @@ Bo'lmasa — demo paytida birinchi transkripsiya 30+ soniya kutadi.
 > umuman ko'rinmaydi."
 
 ### `0:52` — Dikta *(14 s)*
-> **HARAKAT** **Start mic** → aniq va sekin o'qing → **Stop**.
+> **HARAKAT** **Start mic** → quyidagini o'qing → **Stop**.
+>
+> Har qatordan keyin **yarim soniya to'xtang** — Whisper shunda gaplarni
+> to'g'ri ajratadi.
 
-> *"Patient reports headache and mild fever for two days.
-> She denies chest pain.
-> On examination temperature 38 degrees, blood pressure 148 over 92, pulse 96.
-> Impression is likely viral upper respiratory infection.
-> Plan is acetaminophen 500 milligrams, continue lisinopril daily,
-> follow up in one week."*
+> *Patient reports headache and fever for two days.*
+>
+> *She denies chest pain.*
+>
+> *Temperature thirty eight degrees.*
+>
+> *Blood pressure one forty over ninety. Pulse ninety six.*
+>
+> *Impression is viral infection.*
+>
+> *Plan is rest and fluids. Follow up in one week.*
+
+> **Nega aynan shu matn:** har bir so'z qisqa va keng tarqalgan. Qiyin dori
+> nomlari **ataylab yo'q** — kamerada qoqilib qolmaysiz, va Whisper ularni
+> baribir noto'g'ri eshitardi. Dori nomlari mavzusi diagrammada ko'rsatiladi,
+> og'zaki aytilmaydi.
+>
+> Xohlasangiz "rest and fluids" o'rniga "rest, fluids and aspirin" deyishingiz
+> mumkin — "aspirin" o'zbekchada ham xuddi shunday aytiladi, qiyinchilik yo'q.
+> Shunda dorilar maydoni ham to'ladi.
 
 ### `1:06` — Transkript *(6 s)*
 > **EKRANDA** Transkript + **ASR ishonch chizig'i**
@@ -263,7 +285,7 @@ Bo'lmasa — demo paytida birinchi transkripsiya 30+ soniya kutadi.
 ---
 
 ## SAHNA 5 · Holat va keyingi qadam
-### `2:43 → 3:07` · 56 so'z · **24 s**
+### `2:43 → 3:06` · 56 so'z · **24 s**
 
 > **EKRANDA** `6-holat.svg`
 > **HARAKAT** Yashil polosa → sariq quti → `"a seed of minifin"` yozuvida
@@ -334,14 +356,17 @@ Joylashuvi: **Sahna 4 dan keyin, Sahna 5 dan oldin.**
 ### `+43 s` · 99 so'z
 
 > **EKRANDA** `5-dori-tuzatish.svg`
-> **HARAKAT** Uchta qatorni yuqoridan pastga, keyin pastdagi ikkita
-> ustunga tushing va **88%** raqamida to'xtang.
+> **HARAKAT** Birinchi qatorning o'rta ustunini ko'rsating (nom uch bo'lakka
+> bo'lingan joyi), keyin uchala qatorni pastga qarab, oxirida **88%** raqamida
+> to'xtang.
+>
+> ⚠️ Dori nomlarini **o'qimang** — diagrammada yozilgan, ko'rsatish kifoya.
 
 > "Endi eng qiyin qismi — dori nomlari.
 >
-> Whisper umumiy model. 'Lisinopril' desam, u 'lice in april' deb yozadi —
-> uchta oddiy inglizcha so'z. Nom butunlay yo'qolgan, hech qanday satr
-> algoritmi uni tiklay olmaydi.
+> Whisper umumiy model. Ekranda ko'rib turganingizdek — birinchi qatorda bitta
+> dori nomi uchta oddiy inglizcha so'zga bo'linib ketgan. Nom butunlay
+> yo'qolgan, hech qanday satr algoritmi uni tiklay olmaydi.
 >
 > Shuning uchun biz dekoderning o'ziga aralashdik: har bir so'rovda unga klinik
 > lug'atni oldindan beramiz. Model qayta o'qitilmaydi — faqat shu so'rov uchun
