@@ -62,6 +62,28 @@ docs/                 setup, usage, architecture
 
 ## Quick start
 
+One command:
+
+```bash
+./run.sh
+```
+
+It checks the port, installs anything missing, starts the service, prints which
+analysis layers are live, warms up Whisper (so the first transcription in a demo
+is not the slow one), and builds the extension.
+
+```bash
+./run.sh status    # is it up, and what does it report
+./run.sh stop      # shut it down
+ASR_PORT=8100 ./run.sh   # another port, when 8000 is taken
+```
+
+If port 8000 is held by an unrelated project, the script says which process has
+it and stops — it will not kill something it did not start.
+
+<details>
+<summary>Manual steps, if you prefer</summary>
+
 **1. Start the service**
 
 ```bash
@@ -85,6 +107,13 @@ Chrome → `chrome://extensions` → Developer Mode → **Load unpacked** →
 `dist/extension`
 
 **3. Use it**
+
+Open a local OpenEMR encounter page. The panel appears when a fillable form is
+present, and stays hidden on the login screen.
+
+</details>
+
+**Using it**
 
 Open a local OpenEMR encounter page. The panel appears when a fillable form is
 present, and stays hidden on the login screen.
