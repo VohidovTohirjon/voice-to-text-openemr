@@ -241,6 +241,37 @@ def _():
     assert result["hallucination_risk"] == "high"
 
 
+@test("asr quality: a short repetition loop is caught")
+def _():
+    # Regression, from a real run on the OpenEMR encounter form: Whisper looped
+    # "follow up" five times - ten words. The detector only scanned 4-grams and
+    # required size*times (12) words, so it needed twelve words to fire and
+    # missed this entirely. Confidence dropped, but nothing said "hallucination".
+    text = "Follow up follow up follow up follow up follow up."
+    assert asr_quality._repeated_ngram(text) == "follow up", text
+    result = asr_quality.analyze_segments([{
+        "start": 0, "end": 6, "text": " " + text,
+        "avg_logprob": -0.62, "compression_ratio": 1.9, "no_speech_prob": 0.08,
+    }])
+    assert result["segments"][0]["hallucination_suspected"] is True
+    assert result["hallucination_risk"] == "high"
+
+
+@test("asr quality: repeated phrases in normal prose are not a loop")
+def _():
+    # A repeat count alone is not enough: this says "follow up" three times and
+    # is perfectly ordinary dictation. Coverage of the segment is what separates
+    # a decoder loop from emphasis.
+    for prose in (
+        "Follow up in one week. We will follow up on the labs and follow up on "
+        "the referral as well as review the imaging results at that visit.",
+        "Plan is acetaminophen 500 milligrams, continue lisinopril daily, "
+        "follow up in one week.",
+        "Patient reports headache and mild fever for two days. She denies chest pain.",
+    ):
+        assert asr_quality._repeated_ngram(prose) is None, prose
+
+
 @test("asr quality: fluent text over silence is flagged")
 def _():
     result = asr_quality.analyze_segments([{

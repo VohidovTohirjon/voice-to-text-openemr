@@ -62,17 +62,43 @@ def segment_confidence(avg_logprob: Optional[float]) -> float:
         return 0.0
 
 
-def _repeated_ngram(text: str, size: int = 4, times: int = 3) -> Optional[str]:
-    """Return an n-gram repeated `times`+ in the segment, if any."""
+def _repeated_ngram(text: str, min_size: int = 2, times: int = 3) -> Optional[str]:
+    """
+    Find a phrase the decoder looped on.
+
+    Sizes 2 through 5 are all scanned, shortest first, because loops are short:
+    a real one observed in this project was "follow up follow up follow up
+    follow up follow up" — ten words, five repeats of a bigram. An earlier
+    version only looked for 4-grams and required at least size*times words in
+    the segment, so it needed twelve words to fire and missed that case
+    entirely.
+
+    A repeat count alone is not enough to call something degenerate: a long
+    segment can legitimately say "follow up" three times. The repetitions must
+    also cover a large share of the segment, which is what separates a loop
+    from ordinary emphasis.
+    """
     words = re.findall(r"[A-Za-z']+", text.lower())
-    if len(words) < size * times:
+    if len(words) < min_size * times:
         return None
-    counts: Dict[str, int] = {}
-    for i in range(len(words) - size + 1):
-        gram = " ".join(words[i:i + size])
-        counts[gram] = counts.get(gram, 0) + 1
-        if counts[gram] >= times:
-            return gram
+
+    for size in range(min_size, 6):
+        if len(words) < size * times:
+            break
+
+        counts: Dict[str, int] = {}
+        for i in range(len(words) - size + 1):
+            gram = " ".join(words[i:i + size])
+            counts[gram] = counts.get(gram, 0) + 1
+
+        for gram, count in counts.items():
+            if count < times:
+                continue
+            # How much of the segment is this one phrase?
+            coverage = (count * size) / float(len(words))
+            if coverage >= 0.4:
+                return gram
+
     return None
 
 

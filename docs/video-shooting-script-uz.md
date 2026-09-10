@@ -6,8 +6,8 @@ Ikki versiya bir faylda:
 
 | Versiya | Uzunlik | Qachon |
 |---|---|---|
-| **Asosiy** | `3:10` | Standart taqdimot |
-| **Kengaytirilgan** | `5:47` | Rahbar texnik chuqurlik so'rasa |
+| **Asosiy** | `3:17` | Standart taqdimot |
+| **Kengaytirilgan** | `5:54` | Rahbar texnik chuqurlik so'rasa |
 
 > ### ⚠️ Kod ekranda ko'rsatilmaydi
 > Butun texnik tushuntirish **diagrammalar orqali** beriladi. Video davomida
@@ -90,9 +90,9 @@ Bo'lmasa — demo paytida birinchi transkripsiya 30+ soniya kutadi.
 
 ---
 
-# ASOSIY VERSIYA — 3:10
+# ASOSIY VERSIYA — 3:17
 
-2:54 nutq + 16 s harakat pauzalari = **3:10**.
+3:01 nutq + 16 s harakat pauzalari = **3:17**.
 
 ## Kerak bo'ladigan diagrammalar
 
@@ -204,7 +204,7 @@ Bo'lmasa — demo paytida birinchi transkripsiya 30+ soniya kutadi.
 ---
 
 ## SAHNA 4 · AI/ML qayerda ⭐⭐
-### `1:28 → 2:46` · 182 so'z · **78 s**
+### `1:28 → 2:53` · 197 so'z · **85 s**
 
 ### `1:28` — Umumiy ko'rinish *(16 s)*
 > **EKRANDA** `2-qatlamlar.svg`
@@ -217,6 +217,11 @@ Bo'lmasa — demo paytida birinchi transkripsiya 30+ soniya kutadi.
 > Birinchisi — **Whisper**, nutqni tanish modeli."
 
 ### `1:44` — Gallyutsinatsiya *(28 s)* — **eng kuchli lahza**
+>
+> ⚠️ **Jonli ko'rsatishga urinmang.** Gallyutsinatsiya ehtimoliy hodisa —
+> buyurtma bilan chiqarib bo'lmaydi. Jim tursangiz Whisper ko'pincha umuman
+> hech narsa qaytarmaydi. Shuning uchun bu yerda diagramma ishlatiladi.
+>
 > **EKRANDA** `3-gallyutsinatsiya.svg`
 > **HARAKAT** To'rt qatorni yuqoridan pastga. **Uchinchi qatorda to'xtang:**
 > avval yashil 80% chizig'ini, keyin qizil "TO'QILGAN" yorlig'ini.
@@ -227,15 +232,16 @@ Bo'lmasa — demo paytida birinchi transkripsiya 30+ soniya kutadi.
 > Whisper har bir segment uchun ichki statistika hisoblaydi. Ko'pchilik
 > integratsiya uni tashlab yuboradi — biz o'qiymiz.
 >
-> Whisper sukunat ustidan ba'zan ravon matn to'qiydi. Bizning sinovimizda
-> *'thank you for watching, please subscribe'* chiqdi — YouTube subtitrlaridan
-> qolgan iz.
+> Model ikki xil to'qiydi. Birinchisi — sukunat ustidan ravon matn. Bu
+> Whisper'ning ma'lum xatti-harakati: YouTube subtitrlaridan o'rgangan iborasini
+> chiqaradi. Mana bu qatorga qarang — ishonch sakson foiz, yuqori. Lekin bu
+> yerda umuman nutq yo'q edi.
 >
-> Mana bu qatorga qarang: ishonch sakson foiz — yuqori. Lekin bu yerda umuman
-> nutq yo'q edi.
+> Ikkinchisi bizning o'z sinovimizda chiqdi: Whisper 'follow up' iborasini besh
+> marta takrorlab qo'ydi. Ishonch ellik uch foizga tushdi, tizim buni tsikl deb
+> belgiladi.
 >
-> Shuning uchun biz uchta mustaqil signalni tekshiramiz. Tibbiy yozuvda
-> to'qilgan gap yo'q gapdan xavfliroq — u fakt bo'lib o'qiladi."
+> Tibbiy yozuvda to'qilgan gap yo'q gapdan xavfliroq — u fakt bo'lib o'qiladi."
 
 ### `2:12` — Klinik qatlamlar *(13 s)*
 > **EKRANDA** `2-qatlamlar.svg` ga qayting.
@@ -260,7 +266,7 @@ Bo'lmasa — demo paytida birinchi transkripsiya 30+ soniya kutadi.
 ---
 
 ## SAHNA 5 · Holat va keyingi qadam
-### `2:46 → 3:10` · 57 so'z · **24 s**
+### `2:53 → 3:17` · 57 so'z · **24 s**
 
 > **EKRANDA** `6-holat.svg`
 > **HARAKAT** Yashil polosa → sariq quti → `"a seed of minifin"` yozuvida
@@ -292,13 +298,13 @@ Bo'lmasa — demo paytida birinchi transkripsiya 30+ soniya kutadi.
 | `1:44` | `3-gallyutsinatsiya.svg` |
 | `2:12` | `2-qatlamlar.svg` *(qaytish)* |
 | `2:25` | `4-inkor-kodlash.svg` |
-| `2:46` | `6-holat.svg` |
+| `2:53` | `6-holat.svg` |
 
 Sakkizta almashuv — har biri kesish nuqtasi.
 
 ---
 
-# KENGAYTIRILGAN VERSIYA — 5:47
+# KENGAYTIRILGAN VERSIYA — 5:54
 
 Asosiy versiyaning **ustiga** to'rtta qo'shimcha sahna qo'yiladi. Rahbar
 "batafsilroq ko'rsating" desa yoki texnik auditoriya bo'lsa.
@@ -404,12 +410,12 @@ Joylashuvi: **Sahna 4 dan keyin, Sahna 5 dan oldin.**
 | 1 · Muammo | 20 s | `0:20` |
 | 2 · Arxitektura | 28 s | `0:48` |
 | 3 · Jonli demo | 40 s | `1:28` |
-| 4 · AI/ML qatlamlari | 78 s | `2:46` |
-| **4A · Ko'rsatkichlar** | **37 s** | `3:23` |
-| **4B · Dori tiklash** | **43 s** | `4:06` |
-| **4C · Maxfiylik** | **41 s** | `4:47` |
-| **4D · Ishonch** | **36 s** | `5:23` |
-| 5 · Holat va keyingi qadam | 24 s | `5:47` |
+| 4 · AI/ML qatlamlari | 85 s | `2:53` |
+| **4A · Ko'rsatkichlar** | **37 s** | `3:30` |
+| **4B · Dori tiklash** | **43 s** | `4:13` |
+| **4C · Maxfiylik** | **41 s** | `4:54` |
+| **4D · Ishonch** | **36 s** | `5:30` |
+| 5 · Holat va keyingi qadam | 24 s | `5:54` |
 
 Vaqtlar o'lchangan: har sahnaning so'zlari sanalib, o'zbek tilida ~140 so'z/daqiqa
 tezligiga bo'lingan. Taxmin emas.
@@ -483,6 +489,8 @@ qisqartirmang.**
 | Transkript sekin | Whisper qizdirilmagan — `./run.sh` ni qayta ishlating |
 | OpenEMR ochilmadi | Docker ishlayaptimi; konteyner `healthy` holatdami |
 | Tahlil bo'sh qaytdi | Encounter formasida ekaningizni tekshiring |
+| Ishonch past chiqdi (50–60%) | Odatda to'g'ri: transkriptda takrorlanish yoki noaniq joy bor. Matnni o'qib chiqing |
+| Jim turganda hech narsa chiqmadi | Normal. Whisper sukunatda ko'pincha bo'sh qaytaradi |
 
 **Nosozlikni videoda yashirmang.** Zaxira yo'lga o'tsangiz, ayting:
 *"Xizmat o'chsa ham ish jarayoni uzilmaydi"* — bu kamchilik emas, dizayn.

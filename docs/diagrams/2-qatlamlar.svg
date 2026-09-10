@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" font-family="Archivo, Helvetica Neue, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sakkiz qatlamli quvur: audio Whisper neyron modeliga, uning dekoder statistikasi ASR sifati qatlamiga; transkript esa SOAP, klinik lug'at, inkor, ICD-10 va PHI qatlamlariga tarqaladi va shifokor tasdig'i orqali OpenEMR formasiga tushadi." viewBox="0 0 900 520" width="900" height="520" font-family="Archivo, Helvetica Neue, Arial, sans-serif">
 <!-- Ranglar: accent #0E6B58 (neyron) · rule #C9D2CB (klassik) · signal #A05007 (inson) -->
 <defs>
   <marker id="b1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
