@@ -1,78 +1,121 @@
-# Rejissyor Ssenariysi — 3:00
+# Rejissyor Ssenariysi
 
 **Voice-to-Text OpenEMR** · rahbarga taqdimot
-5 sahna · 2:45 nutq + 16 s harakat pauzalari ≈ **3:00**
+
+Ikki versiya bir faylda:
+
+| Versiya | Uzunlik | Qachon |
+|---|---|---|
+| **Asosiy** | `3:10` | Standart taqdimot |
+| **Kengaytirilgan** | `5:47` | Rahbar texnik chuqurlik so'rasa |
 
 > ### ⚠️ Kod ekranda ko'rsatilmaydi
 > Butun texnik tushuntirish **diagrammalar orqali** beriladi. Video davomida
-> hech qachon muharrir, terminal yoki fayl ochilmaydi — faqat ishlayotgan
-> dastur va olti dona diagramma.
+> muharrir, terminal yoki fayl ochilmaydi — faqat ishlayotgan OpenEMR va
+> `docs/diagrams/` papkasidagi diagrammalar.
 
 ---
 
-## Kerak bo'ladigan diagrammalar
+# 0. Oldindan tekshiruv — MAJBURIY
 
-Hammasi `docs/diagrams/` papkasida, mustaqil SVG fayl. Brauzerga sudrab
-tashlab to'liq ekranda oching, yoki slaydga qo'ying.
+Yozib olishdan **oldin** bir marta to'liq o'tib chiqing. Panel OpenEMR ichida
+iframe'da ishlaydi — buni oldindan ko'rmasangiz, yozuv paytida bilib qolasiz.
 
-| Fayl | Videoda | Nima ko'rsatadi |
-|---|---|---|
-| `1-arxitektura.svg` | `0:20` | Uch qism va ishonch chegarasi |
-| `2-qatlamlar.svg` | `1:28`, `2:12` | Sakkiz qatlamli quvur |
-| `3-gallyutsinatsiya.svg` | `1:44` | Tizim to'qilgan matnni qanday ushlaydi |
-| `4-inkor-kodlash.svg` | `2:25` | Inkorni bilmaydigan tizim vs bizniki |
-| `5-dori-tuzatish.svg` | *zaxira* | Savol-javob uchun |
-| `6-holat.svg` | `2:41` | Nima ishlaydi, keyingi qadam nima |
+### 0.1 Uchta xizmat ko'tarilgan bo'lsin
 
-**Maslahat:** oltala diagrammani **oldindan alohida tablarda** oching va
-tartib bilan joylashtiring. Video davomida faqat `Cmd+1…6` bilan almashasiz —
-fayl qidirib vaqt yo'qotmaysiz.
-
----
-
-## Yozishdan oldin — 5 daqiqalik tayyorgarlik
-
-**Terminal 1 — xizmat** *(kadr tashqarisida qoladi)*:
 ```bash
-cd asr && uvicorn api:app --host 127.0.0.1 --port 8000
+# OpenEMR
+open -a Docker
+cd ~/openemr/docker/development-easy && docker compose up -d
+
+# ASR/AI xizmati
+cd ~/Documents/OpenEMR && ./run.sh
 ```
 
-> ⚠️ Port 8000 sizda `Antimonopoliya` loyihasi tomonidan band bo'lishi mumkin.
-> Avval uni to'xtating — kengaytma aynan 8000 ni kutadi.
+Tekshirish:
 
-**Terminal 2 — kengaytma** *(kadr tashqarisida qoladi)*:
-```bash
-npm run check && npm run build
+| Manzil | Kutilayotgan natija |
+|---|---|
+| `http://localhost:8300` | OpenEMR login sahifasi |
+| `http://127.0.0.1:8000` | `{"service":"OpenEMR ASR...","status":"running"}` |
+
+### 0.2 Kengaytma yuklangan bo'lsin
+
+`chrome://extensions` da **OpenEMR Voice Capture 0.2.0** ko'rinib tursin,
+tugmasi yoqilgan holatda.
+
+### 0.3 Panel encounter formasida chiqishini tasdiqlang ⭐
+
+1. `http://localhost:8300` → login (`admin`)
+2. **Patient** → **Patients** → **Ivory Gomez**
+3. **Encounters** → **New Encounter**
+4. `Reason for Visit` maydonini toping — tepasida qizil
+   **AI TRANSCRIPTION PLACEHOLDER** yozuvi turadi
+5. **O'ng pastda qora panel chiqdimi?**
+
+**Chiqsa** — tayyorsiz.
+
+**Chiqmasa** — quyidagini tekshiring:
+
+| Tekshiruv | Nima qilish |
+|---|---|
+| Manzil `https://` bilanmi? | `http://localhost:8300` ga o'ting — HTTPS'da ishlamaydi |
+| Panel status qatorida nima yozilgan? | "Service offline" bo'lsa → `./run.sh status` |
+| Konsolda xato bormi? | `Cmd+Option+J` → Console |
+
+### 0.4 Whisper qizdirilgan bo'lsin
+
+`./run.sh` buni avtomatik qiladi. Chiqishda shunday satr bo'lishi kerak:
+
+```
+Model xotirada (2.6 s): "Patient reports headache and mild fever for two days."
 ```
 
-**Ekranni tayyorlang:**
+Bo'lmasa — demo paytida birinchi transkripsiya 30+ soniya kutadi.
+
+### 0.5 Ekranni tozalang
 
 | ✓ | Nima |
 |---|---|
-| ☐ | Chrome → `chrome://extensions` → Developer Mode → `dist/extension` yuklangan |
-| ☐ | **Tab 1:** OpenEMR encounter sahifasi |
-| ☐ | **Tab 2–7:** oltala diagramma tartib bilan ochilgan |
-| ☐ | Mikrofon ruxsati **oldindan** berilgan |
-| ☐ | **Bitta sinov transkripsiyasi** qilingan — Whisper xotiraga yuklansin |
-| ☐ | Panelda yashil nuqta va `Service ready` yozuvi bor |
-| ☐ | Brauzer zoom **125%**, bildirishnomalar o'chirilgan |
-| ☐ | **Muharrir va terminal yopilgan yoki boshqa ish stolida** |
-| ☐ | Yozib olish: QuickTime yoki OBS, 1920×1080 |
+| ☐ | **Tab 1:** OpenEMR — **New Encounter formasi ochiq holatda** |
+| ☐ | **Tab 2–7:** oltala diagramma tartib bilan |
+| ☐ | Mikrofon ruxsati berilgan |
+| ☐ | Muharrir va terminal yopilgan yoki boshqa ish stolida |
+| ☐ | Bildirishnomalar o'chirilgan, brauzer zoom 125% |
+| ☐ | Chrome'ning sariq "Developer mode" ogohlantirishi yopilgan |
 
-**Muhim:** har sahnani alohida yozing. Sakkizta ekran almashuvi bor —
-ularning har biri tabiiy kesish nuqtasi.
+> **Muhim:** login va bemor tanlash **yozuvdan oldin** bajariladi. Videoda
+> ular ko'rinmaydi — video to'g'ridan-to'g'ri bo'sh encounter formasidan
+> boshlanadi. Bu 25 soniya tejaydi va diqqatni chalg'itmaydi.
 
 ---
 
-# SAHNA 1 · Muammo
-### `0:00 → 0:20` · 46 so'z · **20 s**
+# ASOSIY VERSIYA — 3:10
 
-> **EKRANDA**
-> OpenEMR encounter sahifasi, bo'sh forma. `Reason for Visit` maydoni ko'rinsin.
-> Panel yopiq yoki kadr tashqarisida.
+2:54 nutq + 16 s harakat pauzalari = **3:10**.
 
-> **HARAKAT**
-> Harakat yo'q. Sichqoncha qimirlamasin — statik kadr.
+## Kerak bo'ladigan diagrammalar
+
+`docs/diagrams/` papkasida, mustaqil SVG. Brauzerga sudrab tashlang.
+
+| Fayl | Videoda |
+|---|---|
+| `1-arxitektura.svg` | `0:20` |
+| `2-qatlamlar.svg` | `1:28`, `2:12` |
+| `3-gallyutsinatsiya.svg` | `1:44` |
+| `4-inkor-kodlash.svg` | `2:25` |
+| `6-holat.svg` | `2:41` |
+| `5-dori-tuzatish.svg` | *zaxira — savol-javob uchun* |
+
+---
+
+## SAHNA 1 · Muammo
+### `0:00 → 0:20` · 46 so'z
+
+> **EKRANDA** OpenEMR — Ivory Gomez uchun bo'sh New Encounter formasi.
+> `Reason for Visit` va qizil `AI TRANSCRIPTION PLACEHOLDER` ko'rinib tursin.
+>
+> **HARAKAT** Harakat yo'q. Statik kadr.
 
 **AYTASIZ:**
 
@@ -86,16 +129,13 @@ ularning har biri tabiiy kesish nuqtasi.
 
 ---
 
-# SAHNA 2 · Arxitektura
-### `0:20 → 0:48` · 65 so'z · **28 s**
+## SAHNA 2 · Arxitektura
+### `0:20 → 0:48` · 65 so'z
 
-> **EKRANDA**
-> **`1-arxitektura.svg`** — to'liq ekranda.
-
-> **HARAKAT**
-> Gapirayotganda sichqoncha bilan ketma-ket ko'rsating:
-> **1)** chap quti · **2)** o'ng quti · **3)** pastki quti ·
-> **4)** oxirida uzuq yashil chiziqni aylanib chiqing.
+> **EKRANDA** `1-arxitektura.svg`
+>
+> **HARAKAT** Ketma-ket ko'rsating: **1)** chap quti · **2)** o'ng quti ·
+> **3)** pastki quti · **4)** uzuq yashil chiziqni aylanib chiqing.
 
 **AYTASIZ:**
 
@@ -115,22 +155,20 @@ ularning har biri tabiiy kesish nuqtasi.
 
 ---
 
-# SAHNA 3 · Jonli demo ⭐
-### `0:48 → 1:28` · 57 so'z + ~16 s harakat · **40 s**
+## SAHNA 3 · Jonli demo ⭐
+### `0:48 → 1:28` · 57 so'z + ~16 s harakat
 
-> **EKRANDA**
-> OpenEMR encounter sahifasi. Panel o'ng pastda, yashil nuqta bilan.
+> **EKRANDA** OpenEMR — New Encounter formasi, panel o'ng pastda.
 
-Bu sahnada **kam gapiring** — harakat o'zi ko'rsatadi.
-
-### `0:48` — Panelni tanishtiring *(4 s)*
-> **HARAKAT:** sichqonchani panel status qatoriga olib boring.
+### `0:48` — Panel *(4 s)*
+> **HARAKAT** Sichqonchani panel status qatoriga olib boring
+> (yashil nuqta + `Service ready`).
 
 > "Panel faqat to'ldiriladigan forma bor sahifada chiqadi — login ekranida
 > umuman ko'rinmaydi."
 
-### `0:52` — Yozib oling *(14 s)*
-> **HARAKAT:** **Start mic** → aniq va sekin dikta qiling → **Stop**.
+### `0:52` — Dikta *(14 s)*
+> **HARAKAT** **Start mic** → aniq va sekin o'qing → **Stop**.
 
 > *"Patient reports headache and mild fever for two days.
 > She denies chest pain.
@@ -139,43 +177,38 @@ Bu sahnada **kam gapiring** — harakat o'zi ko'rsatadi.
 > Plan is acetaminophen 500 milligrams, continue lisinopril daily,
 > follow up in one week."*
 
-### `1:06` — Transkript keldi *(6 s)*
-> **EKRANDA:** transkript + ostida **ASR ishonch chizig'i**.
-> **HARAKAT:** ishonch chizig'ini sichqoncha bilan ko'rsating.
+### `1:06` — Transkript *(6 s)*
+> **EKRANDA** Transkript + **ASR ishonch chizig'i**
+> **HARAKAT** Ishonch chizig'ini ko'rsating.
 
 > "Transkript keldi. Ostida — modelning o'z ishonch darajasi."
 
 ### `1:12` — Tahlil *(4 s)*
-> **HARAKAT:** **Analyze** bosing. Natija bir soniyadan kam vaqtda chiqadi.
+> **HARAKAT** **Analyze** bosing.
 
 ### `1:16` — Eng muhim lahza *(8 s)*
-> **EKRANDA:** maydonlar ro'yxati — har birida ✓, nom, **ishonch foizi**, qiymat.
-> Tugmada: **Insert 10 fields**.
->
-> **HARAKAT:** sichqonchani `diagnosis` qatoriga olib boring — u
-> **belgilanmagan**, yonida `needs review`. Ikki soniya ushlab turing.
+> **EKRANDA** Maydonlar ro'yxati — ✓, nom, ishonch foizi, qiymat.
+> **HARAKAT** `diagnosis` qatoriga sichqonchani olib boring — u
+> **belgilanmagan**, yonida `needs review`. Ikki soniya ushlang.
 
-> "O'n bir maydon topildi. Lekin faqat o'ntasi belgilangan.
+> "Maydonlar topildi. Lekin hammasi belgilanmagan.
 > Tashxis kodi belgilanmagan — chunki tizim o'zi unga ishonchi pastligini bildirdi."
 
 ### `1:24` — To'ldirish *(4 s)*
-> **HARAKAT:** **Insert 10 fields** → tasdiqlash oynasi → **OK** →
-> sahifani sekin pastga aylantiring (SOAP, keyin ko'rsatkichlar).
+> **HARAKAT** **Insert** → tasdiqlash oynasi → **OK** →
+> `Reason for Visit` maydoniga matn tushganini ko'rsating.
 
-> "Bitta diktadan — butun forma. AI hech qachon kartaga o'zi yozmaydi:
+> "Bitta diktadan — forma to'ldi. AI hech qachon kartaga o'zi yozmaydi:
 > avval men ko'raman, keyin tasdiqlayman."
 
 ---
 
-# SAHNA 4 · AI/ML qayerda ⭐⭐
-### `1:28 → 2:41` · 170 so'z · **73 s**
-
-Videoning eng muhim bo'limi. Rahbaringiz aynan shu javobni kutadi.
-**Bu yerda kod ochilmaydi — faqat diagrammalar.**
+## SAHNA 4 · AI/ML qayerda ⭐⭐
+### `1:28 → 2:46` · 182 so'z · **78 s**
 
 ### `1:28` — Umumiy ko'rinish *(16 s)*
-> **EKRANDA** **`2-qatlamlar.svg`**
-> **HARAKAT** Avval butun diagrammani, keyin pastdagi **legendani** ko'rsating:
+> **EKRANDA** `2-qatlamlar.svg`
+> **HARAKAT** Butun diagramma, keyin pastdagi **legenda**:
 > yashil = neyron model · kulrang = klassik algoritm · sariq = inson nazorati.
 
 > "Sakkizta qatlam bor. Ikkitasi neyron tarmoq, qolgani klassik algoritm.
@@ -184,10 +217,10 @@ Videoning eng muhim bo'limi. Rahbaringiz aynan shu javobni kutadi.
 > Birinchisi — **Whisper**, nutqni tanish modeli."
 
 ### `1:44` — Gallyutsinatsiya *(28 s)* — **eng kuchli lahza**
-> **EKRANDA** **`3-gallyutsinatsiya.svg`**
-> **HARAKAT** Yuqoridan pastga to'rt qatorni ko'rsating. Uchinchi qatorda
-> **to'xtang**: avval yashil 80% chizig'ini, keyin qizil "TO'QILGAN" yorlig'ini
-> ko'rsating. Oxirida pastdagi qizil izohni.
+> **EKRANDA** `3-gallyutsinatsiya.svg`
+> **HARAKAT** To'rt qatorni yuqoridan pastga. **Uchinchi qatorda to'xtang:**
+> avval yashil 80% chizig'ini, keyin qizil "TO'QILGAN" yorlig'ini.
+> Oxirida pastdagi qizil izohni.
 
 > "Ikkinchisi eng qiziq. **Gallyutsinatsiyani aniqlash**.
 >
@@ -205,18 +238,17 @@ Videoning eng muhim bo'limi. Rahbaringiz aynan shu javobni kutadi.
 > to'qilgan gap yo'q gapdan xavfliroq — u fakt bo'lib o'qiladi."
 
 ### `2:12` — Klinik qatlamlar *(13 s)*
-> **EKRANDA** **`2-qatlamlar.svg`** ga qayting.
-> **HARAKAT** O'ngdagi beshta kulrang qutini yuqoridan pastga bir marta
-> sichqoncha bilan supurib chiqing.
+> **EKRANDA** `2-qatlamlar.svg` ga qayting.
+> **HARAKAT** O'ngdagi beshta kulrang qutini bir marta supurib chiqing.
 
 > "Qolgan beshta qatlam transkriptni klinik ma'lumotga aylantiradi: SOAP
 > bo'limlari, dori nomlarini fonetik tuzatish, ko'rsatkichlarni tekshirish,
 > inkor, ICD-10 kodlari va HIPAA identifikatorlari."
 
 ### `2:25` — Inkor → kodlash *(16 s)*
-> **EKRANDA** **`4-inkor-kodlash.svg`**
-> **HARAKAT** Yuqoridagi jumlani ko'rsating, keyin **chap ustunni** pastgacha
-> (qizil natija), so'ng **o'ng ustunni** (yashil natija).
+> **EKRANDA** `4-inkor-kodlash.svg`
+> **HARAKAT** Yuqoridagi jumla → **chap ustun** pastgacha (qizil) →
+> **o'ng ustun** (yashil).
 
 > "Eng muhim bog'lanish shu.
 >
@@ -227,14 +259,12 @@ Videoning eng muhim bo'limi. Rahbaringiz aynan shu javobni kutadi.
 
 ---
 
-# SAHNA 5 · Holat va keyingi qadam
-### `2:41 → 3:05` · 57 so'z · **24 s**
+## SAHNA 5 · Holat va keyingi qadam
+### `2:46 → 3:10` · 57 so'z · **24 s**
 
-> **EKRANDA** **`6-holat.svg`**
-
-> **HARAKAT**
-> Yashil polosani ko'rsating → sariq qutiga o'ting →
-> `"a seed of minifin"` yozuviga sichqonchani ushlab turing → o'ng qutiga.
+> **EKRANDA** `6-holat.svg`
+> **HARAKAT** Yashil polosa → sariq quti → `"a seed of minifin"` yozuvida
+> ushlab turing → o'ng quti.
 
 **AYTASIZ:**
 
@@ -255,53 +285,169 @@ Videoning eng muhim bo'limi. Rahbaringiz aynan shu javobni kutadi.
 
 | Vaqt | Nima ochiladi |
 |---|---|
-| `0:00` | OpenEMR — bo'sh forma |
+| `0:00` | OpenEMR — bo'sh New Encounter |
 | `0:20` | `1-arxitektura.svg` |
-| `0:48` | OpenEMR — panel + jonli demo |
+| `0:48` | OpenEMR — jonli demo |
 | `1:28` | `2-qatlamlar.svg` |
 | `1:44` | `3-gallyutsinatsiya.svg` |
 | `2:12` | `2-qatlamlar.svg` *(qaytish)* |
 | `2:25` | `4-inkor-kodlash.svg` |
-| `2:41` | `6-holat.svg` |
+| `2:46` | `6-holat.svg` |
 
-Sakkizta almashuv — har biri kesish nuqtasi. Sahnalarni alohida yozib,
-shu joylarda ulang.
+Sakkizta almashuv — har biri kesish nuqtasi.
 
 ---
 
-## Savol-javob — rahbar chuqurroq so'rasa
+# KENGAYTIRILGAN VERSIYA — 5:47
 
-Videodan keyin beriladigan savollarga tayyor javoblar. Kod **hali ham**
-ochilmaydi — `5-dori-tuzatish.svg` diagrammasi shu uchun tayyorlangan.
+Asosiy versiyaning **ustiga** to'rtta qo'shimcha sahna qo'yiladi. Rahbar
+"batafsilroq ko'rsating" desa yoki texnik auditoriya bo'lsa.
 
-**"Dori nomini qanday tuzatasiz?"**
-→ `5-dori-tuzatish.svg` ni oching.
-> "Uchta mustaqil o'lchov: harflar ketma-ketligi, talaffuz o'xshashligi va
-> undoshlar skeleti. Ular birlashtiriladi. Lekin butunlay buzilgan nomni
-> hech qanday o'lchov tiklay olmaydi — o'sha yerda model kerak."
+Joylashuvi: **Sahna 4 dan keyin, Sahna 5 dan oldin.**
+
+---
+
+## SAHNA 4A · Ko'rsatkichlar va fiziologik tekshiruv
+### `+37 s` · 87 so'z
+
+> **EKRANDA** OpenEMR — panel natijalari, ko'rsatkich qatorlari
+> (`bp systolic 148`, `pulse 96`, `temperature 38.0`).
+
+> "Diktadagi ko'rsatkichlar alohida ajratib olinadi va **birliklarga
+> keltiriladi**. Masalan, 'temperature 38 degrees' desam — tizim buni Selsiy
+> deb tushunadi. Agar '98.6' desam, Farengeyt deb tushunadi va o'giradi.
+> Chunki 98 gradus Selsiy — tirik odamda bo'lmaydi.
+>
+> Bundan tashqari, har bir qiymat **fiziologik diapazonga** tekshiriladi.
+> Agar transkripsiya buzilib, puls sakkiz yuz sakson bo'lib chiqsa, tizim buni
+> qabul qilmaydi — 'bu transkripsiya xatosi' deb belgilaydi.
+>
+> Bu muhim, chunki raqamlar aynan nutqni tanishda buziladi. Va buzilgan raqam
+> kartada haqiqat bo'lib qoladi."
+
+---
+
+## SAHNA 4B · Dori nomlarini tiklash
+### `+43 s` · 99 so'z
+
+> **EKRANDA** `5-dori-tuzatish.svg`
+> **HARAKAT** Chap qutidan boshlang → uchta chiziqni ketma-ket →
+> o'ng quti → pastdagi sariq izoh.
+
+> "Whisper dori nomlarini doim buzadi. Bu uning aybi emas — u umumiy model,
+> 'lisinopril' so'zini kamdan-kam eshitgan.
+>
+> Biz uchta mustaqil o'lchov bilan tiklaymiz.
+>
+> Birinchisi — **harflar ketma-ketligi**: qancha harf mos keladi.
+>
+> Ikkinchisi — **talaffuz**: ikki so'z quloqqa qanchalik bir xil eshitiladi.
+> Bu muhim, chunki xatolar aynan tovushda bo'ladi.
+>
+> Uchinchisi — **undoshlar skeleti**: unlilarni tashlab, faqat undoshlarni
+> solishtiramiz. Chunki nutqni tanishda birinchi bo'lib unlilar buziladi.
+>
+> Uchalasi birlashtiriladi. Lekin — mana bu qatorga qarang — butunlay buzilgan
+> nomni hech qanday o'lchov tiklay olmaydi. O'sha yerda model kerak."
+
+---
+
+## SAHNA 4C · Maxfiylik va HIPAA
+### `+41 s` · 95 so'z
+
+> **EKRANDA** `1-arxitektura.svg` ga qayting, uzuq yashil chiziqni ko'rsating.
+
+> "Maxfiylik haqida ikki narsa bor.
+>
+> Birinchisi — arxitektura. Audio ham, matn ham bu uzuq chiziqdan tashqariga
+> chiqmaydi. Bulut yo'q, tashqi API yo'q. Ya'ni maxfiylik shartnoma hisobiga
+> emas, tizimning tuzilishidan kelib chiqadi.
+>
+> Ikkinchisi — diktaning o'zi. Shifokor ovoz chiqarib o'ylayotganda kartaga
+> tushmasligi kerak bo'lgan narsalarni aytadi: bemorning ismi, tug'ilgan sanasi,
+> telefon raqami.
+>
+> Tizim ularni alohida topadi va belgilaydi — HIPAA ro'yxati bo'yicha. Hatto
+> to'qson yoshdan katta yosh ham identifikator hisoblanadi, va u ham
+> belgilanadi.
+>
+> Xohlasak, tizim matnning tozalangan nusxasini ham berishi mumkin."
+
+---
+
+## SAHNA 4D · Nega ishonsa bo'ladi
+### `+36 s` · 83 so'z
+
+> **EKRANDA** OpenEMR — panel, `needs review` yozuvi ko'rinadigan qator.
+
+> "Oxirgi savol: bunday tizimga qanday ishonamiz?
+>
+> Uchta javob bor.
+>
+> Birinchisi — tizim **hech qachon o'zi yozmaydi**. Har bir maydon shifokor
+> tasdig'idan o'tadi.
+>
+> Ikkinchisi — past ishonchli taklif **o'zi yoqilmaydi**. Uni belgilash uchun
+> shifokor ongli harakat qilishi kerak. Ya'ni sukut saqlash 'ha' emas, 'yo'q'
+> degani.
+>
+> Uchinchisi — qirq besh ta avtomatik test bor. Ularning har biri ishlab chiqish
+> davomida topilgan **haqiqiy xatoni** qoplaydi. Xato topilganda test yoziladi,
+> shunda u qaytib kelmaydi."
+
+---
+
+## Kengaytirilgan versiya — yakuniy xronometraj
+
+| Sahna | Vaqt | Jami |
+|---|---|---|
+| 1 · Muammo | 20 s | `0:20` |
+| 2 · Arxitektura | 28 s | `0:48` |
+| 3 · Jonli demo | 40 s | `1:28` |
+| 4 · AI/ML qatlamlari | 78 s | `2:46` |
+| **4A · Ko'rsatkichlar** | **37 s** | `3:23` |
+| **4B · Dori tiklash** | **43 s** | `4:06` |
+| **4C · Maxfiylik** | **41 s** | `4:47` |
+| **4D · Ishonch** | **36 s** | `5:23` |
+| 5 · Holat va keyingi qadam | 24 s | `5:47` |
+
+Vaqtlar o'lchangan: har sahnaning so'zlari sanalib, o'zbek tilida ~140 so'z/daqiqa
+tezligiga bo'lingan. Taxmin emas.
+
+---
+
+# Savol-javob
+
+Kod **hali ham** ochilmaydi.
+
+**"Dori nomini qanday tuzatasiz?"** → `5-dori-tuzatish.svg`
+> "Uchta mustaqil o'lchov: harflar ketma-ketligi, talaffuz va undoshlar
+> skeleti. Birlashtiriladi. Butunlay buzilgan nomni esa hech biri tiklay
+> olmaydi — o'sha yerda model kerak."
 
 **"Bu qanchalik ishonchli?"**
-> "Qirq besh ta avtomatik test bor. Har biri ishlab chiqish davomida topilgan
-> haqiqiy xatoni qoplaydi. Tahlil o'ttiz millisekundda tugaydi."
+> "Qirq besh ta avtomatik test. Har biri haqiqiy xatoni qoplaydi. Tahlil
+> o'ttiz millisekundda tugaydi."
 
 **"Bemor ma'lumoti xavfsizmi?"**
 > "Audio ham, matn ham kompyuterdan chiqmaydi. Ustiga, tizim diktada aytilgan
-> shaxsiy ma'lumotlarni — ism, tug'ilgan sana, telefon — alohida topib
-> belgilaydi. HIPAA ro'yxati bo'yicha."
+> shaxsiy ma'lumotlarni topib belgilaydi — HIPAA ro'yxati bo'yicha."
 
 **"Xato qilsa nima bo'ladi?"**
 > "Tizim hech qachon o'zi yozmaydi. Past ishonchli taklif o'zi yoqilmaydi —
-> shifokor uni ongli ravishda belgilashi kerak. Demoda ko'rdingiz: o'n bir
-> taklifdan biri belgilanmagan edi."
+> shifokor uni ongli ravishda belgilashi kerak."
+
+**"Boshqa tillar-chi?"**
+> "Whisper ko'p tilli model — o'zbek tilini ham taniydi. Lekin klinik
+> qatlamlar hozircha ingliz tili uchun sozlangan. Bu kengaytiriladigan ish."
 
 **"Qachon ishlatsak bo'ladi?"**
-> "Hozir — prototip. Ishlab chiqarishga chiqarish uchun uchta narsa kerak:
-> tibbiy ASR modeli, litsenziyalangan ICD-10 ma'lumotlar bazasi, va
-> OpenEMR'ning o'z API'si orqali yozish."
+> "Hozir — prototip. Ishlab chiqarishga uchta narsa kerak: tibbiy ASR modeli,
+> litsenziyalangan ICD-10 bazasi, va OpenEMR'ning o'z interfeysi orqali yozish."
 
 ---
 
-## Chegaralarni to'g'ri ayting
+# Chegaralarni to'g'ri ayting
 
 So'rashsa yashirmang — muhandislik yetukligi bo'lib eshitiladi:
 
@@ -310,31 +456,42 @@ So'rashsa yashirmang — muhandislik yetukligi bo'lib eshitiladi:
 - **Dorilar ro'yxati** — 118 ta qo'lda tanlangan nom, to'liq RxNorm bazasi emas
 - **Maydonlar** brauzer orqali to'ldiriladi, OpenEMR API'si orqali emas
 - **Whisper** umumiy model — tibbiy terminlarda xato qiladi
+- **Klinik qatlamlar** ingliz tili uchun sozlangan
 
 ---
 
-## Agar vaqt yetmasa
+# Agar vaqt yetmasa
 
 Qisqartirish tartibi — **yuqoridan pastga**:
 
-1. **Sahna 4, "Klinik qatlamlar"** (`2:12`) — 13 soniyani 6 ga: beshta qatlamni
-   sanamasdan "beshta klinik qatlam" deb ayting.
-2. **Sahna 2** — 28 soniyani 20 ga, uchta qismni tezroq sanang.
-3. **Sahna 1** — "Hamma model lokal ishlaydi" jumlasini qisqartiring.
+1. **Sahna 4, "Klinik qatlamlar"** (`2:12`) — 13 soniyani 6 ga
+2. **Sahna 2** — 28 soniyani 20 ga
+3. **Sahna 1** — "Hamma model lokal ishlaydi" jumlasini qisqartiring
 
 ❌ **Demoni (Sahna 3) va gallyutsinatsiya qismini (`1:44`) hech qachon
-qisqartirmang** — videoning ta'siri aynan shu ikkisida.
+qisqartirmang.**
 
 ---
 
-## Agar biror narsa ishlamasa
+# Agar biror narsa ishlamasa
 
 | Muammo | Nima qilasiz |
 |---|---|
+| Panel chiqmadi | `http://` ekanini tekshiring (HTTPS'da ishlamaydi) |
+| "Service offline" | `cd ~/Documents/OpenEMR && ./run.sh status` |
 | Mikrofon ishlamadi | **Demo text** tugmasi — to'liq tahlil baribir ishlaydi |
-| Xizmat o'chdi | Panelda "Service offline"; Demo text bilan davom eting |
-| Transkript sekin | Whisper birinchi so'rovda yuklanadi — oldindan sinov qiling |
-| Tahlil bo'sh qaytdi | Encounter sahifasida ekaningizni tekshiring |
+| Transkript sekin | Whisper qizdirilmagan — `./run.sh` ni qayta ishlating |
+| OpenEMR ochilmadi | Docker ishlayaptimi; konteyner `healthy` holatdami |
+| Tahlil bo'sh qaytdi | Encounter formasida ekaningizni tekshiring |
 
 **Nosozlikni videoda yashirmang.** Zaxira yo'lga o'tsangiz, ayting:
 *"Xizmat o'chsa ham ish jarayoni uzilmaydi"* — bu kamchilik emas, dizayn.
+
+---
+
+# Yozib olish
+
+- **Dastur:** QuickTime (File → New Screen Recording) yoki OBS Studio
+- **Rezolyutsiya:** 1920×1080
+- **Uslub:** har sahnani alohida yozing, montajda ulang
+- **Tezlik:** o'zbek tilida ~140 so'z/daqiqa
