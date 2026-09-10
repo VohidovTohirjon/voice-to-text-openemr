@@ -43,6 +43,18 @@ ENTITY_TO_FIELD_LABELS: dict[str, list[str]] = {
     "medication":      ["medication", "medications", "drug", "prescription"],
     "diagnosis":       ["diagnosis", "diagnoses", "icd"],
     "organization":    ["organization", "employer", "company", "facility"],
+    # SOAP sections, produced by nlp.soap
+    "subjective":      ["subjective", "history of present illness", "hpi"],
+    "objective":       ["objective", "physical exam", "examination", "findings"],
+    # Vital signs, produced by nlp.medical.extract_vitals
+    "blood_pressure_systolic":  ["bp systolic", "systolic", "blood pressure"],
+    "blood_pressure_diastolic": ["bp diastolic", "diastolic"],
+    "heart_rate":        ["pulse", "heart rate", "hr"],
+    "respiratory_rate":  ["respiration", "respiratory rate", "resp"],
+    "temperature":       ["temperature", "temp"],
+    "oxygen_saturation": ["oxygen saturation", "o2 sat", "spo2", "sat"],
+    "weight":            ["weight", "wt"],
+    "height":            ["height", "ht"],
 }
 
 # ---------------------------------------------------------------------------
@@ -66,6 +78,20 @@ OPENEMR_FIELD_MAP: dict[str, list[str]] = {
     "plan":            ["plan"],
     "medication":      ["medication", "medications"],
     "diagnosis":       ["diagnosis", "diagnosis_code"],
+    # form_soap columns (interface/forms/soap/table.sql). The SOAP template
+    # renders inputs named exactly after these columns.
+    "subjective":      ["subjective"],
+    "objective":       ["objective"],
+    # form_vitals columns (interface/forms/vitals/table.sql). The "_input"
+    # variants cover the vitals template's generated input ids.
+    "blood_pressure_systolic":  ["bps", "bps_input"],
+    "blood_pressure_diastolic": ["bpd", "bpd_input"],
+    "heart_rate":        ["pulse", "pulse_input"],
+    "respiratory_rate":  ["respiration", "respiration_input"],
+    "temperature":       ["temperature", "temperature_input"],
+    "oxygen_saturation": ["oxygen_saturation", "oxygen_saturation_input"],
+    "weight":            ["weight", "weight_input"],
+    "height":            ["height", "height_input"],
 }
 
 

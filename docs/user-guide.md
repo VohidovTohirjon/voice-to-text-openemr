@@ -1,104 +1,130 @@
 # User Guide
 
-## What this prototype does
+## What this does
 
-This project is a local voice-to-text prototype for OpenEMR. The Chrome extension can:
+Dictate into an OpenEMR encounter form. The extension records audio, a local
+service transcribes and analyses it, and you confirm each field before anything
+is written.
 
-- record audio in the browser
-- send audio to the local ASR API
-- analyze transcript text into structured field suggestions
-- preview the transcript before writing
-- fill detected fields after confirmation
-
-The main OpenEMR demo target is the `Reason for Visit` field, but the current extension can also test simple generic web forms that expose fillable text inputs or textareas.
+Nothing leaves the workstation.
 
 ## Setup
 
-### 1. Start the ASR API
-
-From `asr/`:
+### 1. Start the service
 
 ```bash
+cd asr
 pip install -r requirements.txt
 uvicorn api:app --host 127.0.0.1 --port 8000
 ```
 
-Optional for the NLP extractor:
+Optional, for better name detection in PHI scanning:
 
 ```bash
 python -m spacy download en_core_web_sm
 ```
 
-Optional for local LLM extraction:
+Optional, for LLM-based note structuring:
 
 ```bash
 ollama pull llama3.2:3b
 ```
 
-The extension currently uses the spaCy/rule-based path by default.
+Neither is required. The panel shows which layers are live in its status line.
 
-### 2. Build the extension
-
-From the project root:
+### 2. Build and load the extension
 
 ```bash
 npm run check
 npm run build
 ```
 
-### 3. Load the extension in Chrome
+Chrome → `chrome://extensions` → Developer Mode → **Load unpacked** →
+`dist/extension`
 
-1. Open `chrome://extensions`
-2. Turn on Developer Mode
-3. Click `Load unpacked`
-4. Select:
+## Using it
 
-```text
-/Users/tokhirjon/asr_test/dist/extension
-```
+1. Open an OpenEMR encounter page. The panel appears at the bottom right.
+   It stays hidden on the login screen and on pages with no fillable fields.
+2. **Start mic** → dictate → **Stop**.
+3. The transcript appears with an ASR confidence bar. Edit it if needed.
+4. **Analyze**.
+5. Review the field list. Each row shows:
+   - the field name as it appears on the page
+   - a confidence percentage
+   - the value that will be written
+   - how the field was matched (real `name` attribute, or inferred from a label)
+   - **needs review** when the service was not confident
+   - **will overwrite** when the field already has content
+6. Tick what you want. Anything flagged for review starts unticked.
+7. **Insert N fields** → confirm the dialog.
 
-## Basic flow
+To put the raw transcript straight into Reason for Visit and skip the analysis,
+use **Insert transcript into Reason for Visit**.
 
-1. Open the local OpenEMR encounter page or a supported test form.
-2. Wait for the floating panel to appear.
-3. Click `Start mic` and record audio, or paste/edit transcript text manually.
-4. Click `Analyze text` to generate field suggestions.
-5. Review the suggested field fills.
-6. Click `Insert into form`.
-7. Confirm the fill operation in the dialog.
+## Reading the results
 
-## Panel behavior
+**ASR confidence bar** — the geometric mean of Whisper's token probabilities.
+Below about 60% is worth re-listening to.
 
-- The panel can be dragged by its header.
-- Panel position is saved in localStorage.
-- Collapse state is also saved in localStorage.
-- If you edit the transcript manually after analysis, the extension asks you to analyze again for the latest field suggestions.
+**Hallucination warning** — Whisper sometimes invents fluent text over silence,
+or loops a phrase. When flagged, re-listen before accepting; hallucinated text
+reads as fact and carries no marker of doubt.
 
-## Permissions and edge cases
+**Medication warnings** — a mis-heard drug name and its closest formulary
+match. A *weak* match warns loudest, because that is the case most needing a
+human look. Look-alike/sound-alike pairs are called out separately.
 
-- On the OpenEMR login page, the panel stays hidden.
-- If no fillable text fields exist, the panel does not activate.
-- If the microphone is denied, you can still use demo text or paste transcript text manually.
-- If the API is unavailable, the extension falls back to a demo transcript path.
+**Abbreviation warnings** — terms on the ISMP error-prone list (QD, U, IU, MS,
+HS) are flagged rather than expanded, with the reason they are dangerous.
 
-## Validation pages
+**Vital sign warnings** — values outside plausible physiologic range, or a
+systolic below diastolic. These indicate transcription damage, not clinical
+acuity.
 
-Run local validation pages with:
+**Identifiers detected** — PHI found in the dictation. Clinicians thinking
+aloud often say names and dates of birth never meant for the note body.
+
+**Suggested diagnosis codes** — ranked ICD-10 candidates. Findings you negated
+("denies chest pain") are excluded. These are candidates for selection, not
+codes for billing; the bundled corpus is a curated demo subset.
+
+## Troubleshooting
+
+**"Service offline — demo text only"** — the service is not running, or is on a
+different port. Start it, then reload the page.
+
+**Panel does not appear** — the page has no fillable text field, or it is the
+login screen. Both are intentional.
+
+**Microphone denied** — use **Demo text**, or paste a transcript into the box.
+The full analysis path still runs.
+
+**First transcription is slow** — Whisper loads on first use. Run one warm-up
+transcription before a demo.
+
+**"needs review" on everything** — expected when the dictation is short or
+ambiguous. Confidence comes from the margin between competing interpretations,
+not from the raw score.
+
+## Validation fixtures
 
 ```bash
 npm run serve:validation
 ```
 
-Then test:
+- `validation/forms/encounter-soap-vitals.html` — SOAP + vitals with the real
+  OpenEMR field names; exercises multi-field resolution
+- `validation/forms/contact-reason.html`, `intake-reason.html` — generic forms
+- `validation/forms/no-reason-field.html` — the panel must stay hidden
 
-```text
-http://127.0.0.1:5173/contact-reason.html
-http://127.0.0.1:5173/intake-reason.html
-http://127.0.0.1:5173/no-reason-field.html
-```
+Append `?api=http://127.0.0.1:8100` to point a fixture at another port.
 
-## Current limitations
+## Limits
 
-- The project is still a prototype, not a production-ready OpenEMR plugin.
-- OpenEMR save/validation behavior is separate from DOM field filling.
-- Generic web-form support is best-effort and depends on visible labels/placeholders/name attributes.
+- Prototype, not a production OpenEMR plugin. Fields are written through the
+  DOM, so OpenEMR's own save validation still applies afterwards.
+- Whisper `base` is a general model and mis-hears drug names. Severe cases are
+  unrecoverable — in one run "acetaminophen" became "a seed of minifin".
+- The ICD-10 corpus is 91 curated codes, not a licensed release.
+- Generic web-form support depends on visible labels and `name` attributes.

@@ -1,58 +1,68 @@
 # Voice-to-Text OpenEMR Integration
 
-## Overview
-This project explores adding voice-to-text to OpenEMR using a local ASR system.
+Dictate into an OpenEMR encounter form. Speech becomes text, text becomes
+structured clinical data, and a clinician confirms every field before anything
+is written to the chart.
 
-The goal is to let a clinician speak and insert the transcript into the encounter form.
+Everything runs on the local machine — no audio, transcript, or derived text
+leaves the workstation.
 
-## Project Structure
-- `asr/` → Local speech-to-text prototype (Whisper-based)
-- `openemr/` → OpenEMR integration (modified files only)
-- `extension/` → Chrome extension source (MV3 content scripts and UI)
-- `scripts/` → Lightweight npm pipeline helpers for building/watching the extension
-- `docs/` → User-facing setup and usage notes
-- `validation/` → Week 3 validation checklist, test matrix, and local form fixtures
-- `dist/extension/` → Generated unpacked extension build output
+## What it does
 
-## What’s Working
-- Audio recording and transcription using Whisper
-- Example clinical speech converted into text
-- Identification and modification of OpenEMR encounter form
-- Placeholder added for AI-generated text insertion
-- Chrome extension scans local pages for likely text-entry targets
-- Extension prioritizes the OpenEMR `Reason for Visit` field while also supporting generic text forms
-- Floating mic UI supports recording, transcript preview, transcript analysis, confirm-before-fill, drag/move, and collapse
-- Demo transcript fallback exists when microphone or API access is not available
-- Extension stays inactive on irrelevant pages like the OpenEMR login screen
-- ASR API now supports transcript extraction and field-fill mapping via the NLP layer
+1. **Record** in the browser, from a floating panel on the encounter page.
+2. **Transcribe** with Whisper, running locally, returning per-segment
+   confidence and hallucination flags.
+3. **Analyze** the transcript into SOAP sections, vitals, medications,
+   diagnosis codes, and PHI findings.
+4. **Confirm** — the panel lists each proposed field with a confidence score.
+   Anything flagged for review starts unticked.
+5. **Fill** the confirmed fields, verifying each write.
 
-## Notes
-- Whisper is used as a baseline due to easy setup and fast testing
-- Medical-specific models (like MedASR) are planned for future evaluation
-- Only modified OpenEMR files are included (full repo is too large)
+## AI/ML layers
 
-## Status
-Working prototype with local ASR and a demo-ready Chrome extension
+| # | Layer | Technique | File |
+|---|---|---|---|
+| 1 | Speech recognition | Whisper `base`, transformer encoder–decoder | `asr/api.py` |
+| 2 | ASR quality & hallucination detection | Whisper decoder statistics | `asr/nlp/asr_quality.py` |
+| 3 | SOAP structuring | Cue-phrase scoring classifier (LLM optional) | `asr/nlp/soap.py` |
+| 4 | Medication correction | Soundex + edit distance over a formulary | `asr/nlp/medical.py` |
+| 5 | Vitals extraction | Regex + unit normalisation + range validation | `asr/nlp/medical.py` |
+| 6 | Negation detection | NegEx, sentence-scoped | `asr/nlp/medical.py` |
+| 7 | ICD-10 suggestion | Okapi BM25 information retrieval | `asr/nlp/coding.py` |
+| 8 | PHI detection | Pattern matching + NER | `asr/nlp/phi.py` |
+| 9 | Entity extraction *(optional)* | spaCy NER, or local Llama 3.2 via Ollama | `asr/nlp/extractor.py` |
 
-## Extension Pipeline
+Layers 1 and 9 are neural networks. Layer 2 reads a neural network's internal
+state. Layers 3–8 are classical algorithms — stated plainly, because "AI" that
+turns out to be a regex is worse than a regex described honestly.
 
-This repo uses a lightweight npm pipeline around the current file-based extension.
+Full technical reference: **[docs/ai-ml-architecture.md](docs/ai-ml-architecture.md)**
 
-From the project root:
+## Project structure
 
-```bash
-npm run check
-npm run build
-npm run dev
+```
+asr/                  local speech-to-text and clinical NLP service
+  api.py              FastAPI endpoints
+  nlp/                the analysis layers
+    asr_quality.py    decoder confidence, hallucination detection
+    soap.py           SOAP section structuring
+    medical.py        drugs, vitals, abbreviations, negation
+    coding.py         ICD-10 ranking (BM25)
+    phi.py            HIPAA Safe Harbor identifier detection
+    pipeline.py       orchestration; the negation -> coding edge
+    field_mapper.py   analysis output -> OpenEMR field names
+    extractor.py      spaCy / Llama entity extraction (optional)
+    data/             formulary, abbreviations, ICD-10 corpus
+  tests/run_tests.py  45 dependency-free tests
+extension/            Chrome MV3 content scripts
+openemr/              modified OpenEMR files
+validation/           test fixtures and checklists
+docs/                 setup, usage, architecture
 ```
 
-- `npm run check` validates the extension scripts, manifest, and ASR API syntax
-- `npm run build` copies the unpacked extension into `dist/extension/`
-- `npm run dev` watches `extension/` and rebuilds `dist/extension/` automatically
+## Quick start
 
-## Quick Demo Flow
-
-1. Start the ASR API:
+**1. Start the service**
 
 ```bash
 cd asr
@@ -60,27 +70,53 @@ pip install -r requirements.txt
 uvicorn api:app --host 127.0.0.1 --port 8000
 ```
 
-2. In Chrome, open `chrome://extensions`, enable Developer Mode, and load the unpacked extension from:
+The clinical pipeline is pure Python and needs no ML dependencies. Whisper is
+required only for the audio endpoints; spaCy is optional and adds NER quality.
+`GET /capabilities` reports which layers are live.
 
-```text
-/Users/tokhirjon/asr_test/dist/extension
+**2. Build and load the extension**
+
+```bash
+npm run check
+npm run build
 ```
 
-You can also load `/Users/tokhirjon/asr_test/extension` directly while developing, but `dist/extension` is the cleaner folder to show in a demo.
+Chrome → `chrome://extensions` → Developer Mode → **Load unpacked** →
+`dist/extension`
 
-3. Open local OpenEMR in the browser and navigate to a page with the `Reason for Visit` field.
+**3. Use it**
 
-4. Use the floating extension panel to record audio or click `Use demo text`.
+Open a local OpenEMR encounter page. The panel appears when a fillable form is
+present, and stays hidden on the login screen.
 
-5. Optionally drag the panel out of the way or collapse it between steps.
+Record → Stop → **Analyze** → review the ticks → **Insert**.
 
-6. Review the transcript preview and click `Insert into form` to place it into the detected OpenEMR textarea.
+No microphone? **Demo text** loads a representative transcript so the full
+analysis path still runs.
 
-## Week 3 Validation
+## API
 
-Week 3 work has started in `validation/`.
+| Method | Endpoint | Purpose |
+|---|---|---|
+| `GET` | `/` | health check |
+| `GET` | `/capabilities` | which analysis layers are available |
+| `POST` | `/transcribe` | audio → transcript + segment confidence |
+| `POST` | `/analyze` | transcript → full clinical analysis |
+| `POST` | `/transcribe_and_analyze` | audio → transcript → analysis |
+| `POST` | `/extract` | entities only *(legacy, needs spaCy)* |
+| `POST` | `/transcribe_and_extract` | audio → entities *(legacy)* |
 
-Run the local validation fixtures with:
+## Tests
+
+```bash
+npm run check          # syntax, manifest, and the Python test suite
+python3 asr/tests/run_tests.py -v
+```
+
+45 tests, no external dependencies — they run without Whisper, spaCy, or a
+network.
+
+## Validation fixtures
 
 ```bash
 npm run serve:validation
@@ -88,18 +124,37 @@ npm run serve:validation
 
 Then open:
 
-```text
-http://127.0.0.1:5173/contact-reason.html
-http://127.0.0.1:5173/intake-reason.html
-http://127.0.0.1:5173/no-reason-field.html
-```
+- `validation/forms/encounter-soap-vitals.html` — SOAP + vitals, using the real
+  OpenEMR field names. Exercises multi-field resolution.
+- `validation/forms/contact-reason.html`, `intake-reason.html` — generic forms
+- `validation/forms/no-reason-field.html` — negative case; the panel must stay
+  hidden
 
-Use `validation/openemr-encounter-checklist.md` for the OpenEMR encounter page and `validation/test-matrix.md` for the Week 3 testing summary.
+Add `?api=http://127.0.0.1:8100` to point a fixture at a service on another
+port.
 
-## User Guide
+See `validation/test-matrix.md` and `validation/openemr-encounter-checklist.md`.
 
-See:
+## Safety posture
 
-```text
-docs/user-guide.md
-```
+- Every layer produces **suggestions**. Nothing writes to the chart on its own.
+- Low-confidence suggestions start **unticked** — the operator opts in.
+- Medication corrections are never applied silently; LASA pairs are flagged.
+- ISMP error-prone abbreviations raise a warning rather than being expanded.
+- Negated findings are excluded from code suggestions.
+- The ICD-10 corpus is a 91-code curated demo subset, **not** a licensed
+  ICD-10-CM release. Replace it with the current CMS/CDC files before billing
+  use.
+
+## Status and next steps
+
+Working prototype with a complete local pipeline and a demo-ready extension.
+
+Next:
+
+- **Evaluate a medical-domain ASR model.** Whisper `base` transcribed
+  "acetaminophen" as *"a seed of minifin"* in a real run — a failure no string
+  matching can recover, and the concrete argument for a domain-adapted model.
+- Replace the curated ICD-10 subset with a licensed release, and the formulary
+  with an RxNorm extract.
+- Write back through OpenEMR's form APIs rather than the DOM.

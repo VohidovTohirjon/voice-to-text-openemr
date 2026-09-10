@@ -1,6 +1,25 @@
-openai-whisper
+# Core service — required
 fastapi
 uvicorn
 python-multipart
-spacy
-requests
+
+# Speech recognition — required for the /transcribe endpoints.
+# The text-only endpoints (/analyze, /capabilities) work without it.
+openai-whisper
+
+# ---------------------------------------------------------------------------
+# Optional
+# ---------------------------------------------------------------------------
+# The clinical pipeline (/analyze) is pure Python and needs nothing below.
+# These only add capability to specific layers, and the service reports at
+# /capabilities which layers are degraded when they are absent.
+#
+#   spacy      statistical NER. Improves PHI person/place detection and enables
+#              the legacy /extract endpoint.
+#              pip install spacy && python -m spacy download en_core_web_sm
+#
+#   requests   needed only when calling the local Ollama LLM
+#              (use_llm=true on /analyze, or the LLM entity extractor).
+#
+# spacy
+# requests

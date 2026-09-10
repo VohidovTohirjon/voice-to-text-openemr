@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "OpenEMR ASR Demo Helper",
-  "version": "0.1.0",
-  "description": "Demo extension for scanning OpenEMR forms and inserting ASR transcripts with confirmation.",
+  "name": "OpenEMR Voice Capture",
+  "version": "0.2.0",
+  "description": "Dictate into OpenEMR encounter forms. Local speech-to-text with clinical analysis; every field is confirmed before it is written.",
   "permissions": [
     "activeTab"
   ],
@@ -25,6 +25,6 @@
     }
   ],
   "action": {
-    "default_title": "OpenEMR ASR Demo Helper"
+    "default_title": "OpenEMR Voice Capture"
   }
 }

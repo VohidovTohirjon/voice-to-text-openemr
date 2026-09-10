@@ -1,0 +1,92 @@
+{
+  "_meta": {
+    "purpose": "Clinical abbreviation expansion candidates for dictated notes.",
+    "safety": "Expansions are SUGGESTIONS surfaced for clinician review, never silent rewrites. Entries marked ambiguous have more than one accepted reading; entries marked ismp_error_prone appear on the ISMP List of Error-Prone Abbreviations and should be rewritten in full rather than kept.",
+    "source": "Hand-curated demo subset. Validate against your institution's approved abbreviation list before clinical use."
+  },
+  "conditions": {
+    "HTN": {"expansion": "hypertension"},
+    "DM": {"expansion": "diabetes mellitus"},
+    "T2DM": {"expansion": "type 2 diabetes mellitus"},
+    "T1DM": {"expansion": "type 1 diabetes mellitus"},
+    "CAD": {"expansion": "coronary artery disease"},
+    "CHF": {"expansion": "congestive heart failure"},
+    "COPD": {"expansion": "chronic obstructive pulmonary disease"},
+    "CKD": {"expansion": "chronic kidney disease"},
+    "GERD": {"expansion": "gastroesophageal reflux disease"},
+    "URI": {"expansion": "upper respiratory infection"},
+    "UTI": {"expansion": "urinary tract infection"},
+    "AFIB": {"expansion": "atrial fibrillation"},
+    "MI": {"expansion": "myocardial infarction"},
+    "CVA": {"expansion": "cerebrovascular accident"},
+    "TIA": {"expansion": "transient ischemic attack"},
+    "DVT": {"expansion": "deep vein thrombosis"},
+    "PE": {"expansion": "pulmonary embolism", "ambiguous": ["pulmonary embolism", "physical examination"]},
+    "OSA": {"expansion": "obstructive sleep apnea"},
+    "BPH": {"expansion": "benign prostatic hyperplasia"},
+    "RA": {"expansion": "rheumatoid arthritis", "ambiguous": ["rheumatoid arthritis", "room air", "right atrium"]},
+    "OA": {"expansion": "osteoarthritis"},
+    "CA": {"expansion": "cancer", "ambiguous": ["cancer", "calcium"]}
+  },
+  "symptoms": {
+    "SOB": {"expansion": "shortness of breath"},
+    "DOE": {"expansion": "dyspnea on exertion"},
+    "CP": {"expansion": "chest pain"},
+    "HA": {"expansion": "headache"},
+    "LOC": {"expansion": "loss of consciousness"},
+    "N/V": {"expansion": "nausea and vomiting"},
+    "NVD": {"expansion": "nausea, vomiting, and diarrhea"},
+    "LBP": {"expansion": "low back pain"},
+    "ABD": {"expansion": "abdominal"}
+  },
+  "exam": {
+    "WNL": {"expansion": "within normal limits"},
+    "NAD": {"expansion": "no acute distress"},
+    "RRR": {"expansion": "regular rate and rhythm"},
+    "CTAB": {"expansion": "clear to auscultation bilaterally"},
+    "NKDA": {"expansion": "no known drug allergies"},
+    "ROS": {"expansion": "review of systems"},
+    "HPI": {"expansion": "history of present illness"},
+    "PMH": {"expansion": "past medical history"},
+    "FH": {"expansion": "family history"},
+    "SH": {"expansion": "social history"},
+    "BMI": {"expansion": "body mass index"},
+    "F/U": {"expansion": "follow-up"}
+  },
+  "vitals": {
+    "BP": {"expansion": "blood pressure"},
+    "HR": {"expansion": "heart rate"},
+    "RR": {"expansion": "respiratory rate"},
+    "SPO2": {"expansion": "oxygen saturation"},
+    "O2": {"expansion": "oxygen"},
+    "TEMP": {"expansion": "temperature"}
+  },
+  "routes_and_frequency": {
+    "PO": {"expansion": "by mouth"},
+    "IM": {"expansion": "intramuscular"},
+    "IV": {"expansion": "intravenous"},
+    "SL": {"expansion": "sublingual"},
+    "PRN": {"expansion": "as needed"},
+    "BID": {"expansion": "twice daily"},
+    "TID": {"expansion": "three times daily"},
+    "QID": {"expansion": "four times daily"},
+    "QHS": {"expansion": "at bedtime"},
+    "QD": {"expansion": "daily", "ismp_error_prone": "Mistaken for QID or QOD. Write \"daily\" in full."},
+    "QOD": {"expansion": "every other day", "ismp_error_prone": "Mistaken for QD or QID. Write \"every other day\" in full."},
+    "SC": {"expansion": "subcutaneous", "ismp_error_prone": "Mistaken for SL (sublingual). Write \"subcutaneous\" in full."},
+    "SQ": {"expansion": "subcutaneous", "ismp_error_prone": "Mistaken for \"5 every\". Write \"subcutaneous\" in full."},
+    "U": {"expansion": "unit", "ismp_error_prone": "Mistaken for 0, 4 or cc. Write \"unit\" in full."},
+    "IU": {"expansion": "international unit", "ismp_error_prone": "Mistaken for IV or the number 10. Write \"international unit\" in full."},
+    "MS": {"expansion": "morphine sulfate", "ismp_error_prone": "Mistaken for magnesium sulfate. Write the drug name in full.", "ambiguous": ["morphine sulfate", "magnesium sulfate", "mitral stenosis", "multiple sclerosis"]},
+    "HS": {"expansion": "at bedtime", "ismp_error_prone": "Mistaken for \"half-strength\". Write \"at bedtime\" in full."}
+  },
+  "medication_shorthand": {
+    "ASA": {"expansion": "aspirin"},
+    "HCTZ": {"expansion": "hydrochlorothiazide"},
+    "APAP": {"expansion": "acetaminophen"},
+    "NSAID": {"expansion": "nonsteroidal anti-inflammatory drug"},
+    "NTG": {"expansion": "nitroglycerin"},
+    "PPI": {"expansion": "proton pump inhibitor"},
+    "ABX": {"expansion": "antibiotics"}
+  }
+}

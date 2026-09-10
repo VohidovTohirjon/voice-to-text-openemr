@@ -1,16 +1,17 @@
 {
   "name": "openemr-asr-demo",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "CSC 436 demo project for OpenEMR voice-to-text integration.",
+  "description": "OpenEMR voice-to-text with a local clinical NLP pipeline.",
   "scripts": {
-    "check": "npm run check:js && npm run check:py && npm run check:manifest",
+    "check": "npm run check:js && npm run check:py && npm run check:manifest && npm run test:py",
     "check:js": "node --check extension/content.js && node --check extension/scanner.js && node --check scripts/build-extension.mjs && node --check scripts/watch-extension.mjs",
-    "check:py": "python3 -m py_compile asr/api.py",
+    "check:py": "python3 -m py_compile asr/api.py asr/nlp/pipeline.py asr/nlp/medical.py asr/nlp/coding.py asr/nlp/phi.py asr/nlp/soap.py asr/nlp/asr_quality.py",
     "check:manifest": "python3 -m json.tool extension/manifest.json > /dev/null",
+    "test:py": "python3 asr/tests/run_tests.py",
     "lint": "npm run check:js",
     "build": "node scripts/build-extension.mjs",
     "dev": "node scripts/watch-extension.mjs",
-    "serve:validation": "python3 -m http.server 5173 --directory validation/forms"
+    "serve:validation": "python3 -m http.server 5173"
   }
 }
