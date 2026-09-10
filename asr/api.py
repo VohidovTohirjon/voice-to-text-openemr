@@ -31,6 +31,7 @@ from pydantic import BaseModel
 
 from nlp.extractor import extract_entities
 from nlp.field_mapper import map_entities_to_fields
+from nlp.prompting import decode_options
 from nlp.pipeline import analyze as run_analysis
 from nlp.pipeline import capabilities as describe_capabilities
 
@@ -62,21 +63,29 @@ def _get_whisper_model():
     return _whisper_model
 
 
-def _transcribe_upload(file: UploadFile, audio_bytes: bytes):
+def _transcribe_upload(file: UploadFile, audio_bytes: bytes, clinical: bool = True):
     """
     Write the upload to a temp file and run Whisper over it.
 
-    Returns (transcript, segments). Segments carry the decoding statistics the
-    quality layer needs — avg_logprob, compression_ratio, no_speech_prob — which
-    is why the raw result is unpacked here rather than just its text.
+    Returns (transcript, segments, language). Segments carry the decoding
+    statistics the quality layer needs — avg_logprob, compression_ratio,
+    no_speech_prob — which is why the raw result is unpacked here rather than
+    just its text.
+
+    With clinical=True the decoder is conditioned on a clinical vocabulary and
+    pinned to English. That is not cosmetic: unconditioned, this model turns
+    "lisinopril" into "lice in april" — three ordinary English words that no
+    downstream string matching can undo. See nlp/prompting.py.
     """
     suffix = os.path.splitext(file.filename or "")[1] or ".wav"
     with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
         tmp.write(audio_bytes)
         tmp_path = tmp.name
 
+    options = decode_options() if clinical else {}
+
     try:
-        result = _get_whisper_model().transcribe(tmp_path)
+        result = _get_whisper_model().transcribe(tmp_path, **options)
     finally:
         os.remove(tmp_path)
 
@@ -92,6 +101,19 @@ def _transcribe_upload(file: UploadFile, audio_bytes: bytes):
         for seg in result.get("segments", [])
     ]
     return result.get("text", "").strip(), segments, result.get("language")
+
+
+def _decoder_settings(clinical: bool = True) -> dict:
+    """What conditioning was applied, for the response and for logs."""
+    if not clinical:
+        return {"clinical_conditioning": False}
+    options = decode_options()
+    return {
+        "clinical_conditioning": True,
+        "language": options["language"],
+        "temperature": options["temperature"],
+        "prompt_words": len(options["initial_prompt"].split()),
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -143,6 +165,7 @@ def capabilities():
         "model": WHISPER_MODEL_SIZE,
         "loaded": _whisper_model is not None,
         "note": "Loaded on first transcription request.",
+        "decoder": _decoder_settings(),
     }
     return info
 
@@ -175,6 +198,7 @@ async def transcribe_audio(file: UploadFile = File(...)):
         "language": language,
         "segments": segments,
         "quality": quality,
+        "decoder": _decoder_settings(),
     }
 
 
@@ -236,6 +260,7 @@ async def transcribe_and_analyze(
     )
     analysis["language"] = language
     analysis["segments"] = segments
+    analysis["decoder"] = _decoder_settings()
     return analysis
 
 

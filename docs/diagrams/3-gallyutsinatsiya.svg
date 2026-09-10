@@ -1,65 +1,68 @@
-<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="To'rt audio segment jadvali: har birida vaqt, tizim eshitgan matn, ishonch chizig'i va xulosa. Uchinchi segmentda ishonch 80 foiz bo'lsa ham matn to'qilgan; to'rtinchisida ibora besh marta takrorlangan." viewBox="0 0 900 512" width="900" height="512" font-family="Archivo, Helvetica Neue, Arial, sans-serif">
-<!-- Ranglar: ok #0E6B58 · ogohlantirish #A05007 · xato #B3261E -->
-<rect width="900" height="512" fill="#F6F7F4"/>
+<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Uchta mustaqil nazorat: dekoder ishonchi, takrorlanish va sukunat ehtimoli. Birortasi ishlasa segment tekshirishga belgilanadi va hech qachon jim o'tkazilmaydi." viewBox="0 0 900 428" width="900" height="428" font-family="Archivo, Helvetica Neue, Arial, sans-serif">
+<rect width="900" height="428" fill="#F6F7F4"/>
+<defs>
+  <marker id="g1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <polygon points="0,0 10,5 0,10" fill="#5C6B65"/>
+  </marker>
+</defs>
 
-<text x="30" y="40" font-size="21" font-weight="800" fill="#14201C">Whisper to&#39;qib chiqargan matnni qanday ushlaymiz</text>
-<text x="30" y="62" font-size="13" fill="#5C6B65">Bitta 16 soniyalik yozuv, to&#39;rt segmentga bo&#39;lingan</text>
+<text x="30" y="36" font-size="21" font-weight="800" fill="#14201C">Tizim qachon &#8220;ishonchim komil emas&#8221; deydi</text>
+<text x="30" y="58" font-size="13" fill="#5C6B65">Har bir segment uchta mustaqil nazoratdan o&#39;tadi &#8212; biri o&#39;tkazib yuborsa, boshqasi ushlaydi</text>
 
-<text x="42" y="92" font-family="JetBrains Mono, Menlo, monospace" font-size="10" letter-spacing="0.08em" fill="#5C6B65">VAQT</text>
-<text x="126" y="92" font-family="JetBrains Mono, Menlo, monospace" font-size="10" letter-spacing="0.08em" fill="#5C6B65">TIZIM NIMA ESHITDI</text>
-<text x="524" y="92" font-family="JetBrains Mono, Menlo, monospace" font-size="10" letter-spacing="0.08em" fill="#5C6B65">ISHONCH</text>
-<text x="690" y="92" font-family="JetBrains Mono, Menlo, monospace" font-size="10" letter-spacing="0.08em" fill="#5C6B65">XULOSA</text>
+<line x1="165" y1="78" x2="165" y2="100" stroke="#5C6B65" stroke-width="1.4" marker-end="url(#g1)"/>
+<line x1="450" y1="78" x2="450" y2="100" stroke="#5C6B65" stroke-width="1.4" marker-end="url(#g1)"/>
+<line x1="735" y1="78" x2="735" y2="100" stroke="#5C6B65" stroke-width="1.4" marker-end="url(#g1)"/>
+<line x1="165" y1="78" x2="735" y2="78" stroke="#5C6B65" stroke-width="1.4"/>
 
-<!-- ROW 1 -->
-<rect x="26" y="102" width="848" height="76" rx="8" fill="#FFFFFF" stroke="#C9D2CB" stroke-width="1.4"/>
-<text x="42" y="132" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">0:00</text>
-<text x="42" y="150" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">0:04</text>
-<text x="126" y="135" font-size="13.5" fill="#14201C">Patient reports headache and mild fever for two days.</text>
-<text x="126" y="157" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="#5C6B65">tabiiy nutq, hech qanday shubha yo&#39;q</text>
-<text x="524" y="128" font-family="JetBrains Mono, Menlo, monospace" font-size="13" font-weight="500" fill="#14201C">84%</text>
-<rect x="524" y="140" width="130" height="8" rx="4" fill="#E4E9E5"/>
-<rect x="524" y="140" width="109" height="8" rx="4" fill="#0E6B58"/>
-<rect x="690" y="128" width="100" height="24" rx="12" fill="#E1EFEB"/>
-<text x="740" y="144" text-anchor="middle" font-size="12" font-weight="700" fill="#0E6B58">Yaxshi</text>
+<!-- 1 -->
+<rect x="30" y="104" width="270" height="212" rx="9" fill="#FFFFFF" stroke="#C9D2CB" stroke-width="1.4"/>
+<rect x="30" y="104" width="6" height="212" rx="3" fill="#0E6B58"/>
+<text x="52" y="132" font-size="15" font-weight="700" fill="#14201C">1 &#183; Dekoder ishonchi</text>
+<text x="52" y="154" font-size="11.5" fill="#5C6B65">Model har bir so&#39;zni qanchalik</text>
+<text x="52" y="170" font-size="11.5" fill="#5C6B65">ishonch bilan tanladi</text>
+<text x="52" y="198" font-family="JetBrains Mono, Menlo, monospace" font-size="9.5" letter-spacing="0.08em" fill="#5C6B65">CHEGARA</text>
+<text x="52" y="216" font-family="JetBrains Mono, Menlo, monospace" font-size="12.5" fill="#14201C">37% dan past</text>
+<line x1="52" y1="234" x2="278" y2="234" stroke="#E4E9E5"/>
+<text x="52" y="256" font-family="JetBrains Mono, Menlo, monospace" font-size="9.5" letter-spacing="0.08em" fill="#5C6B65">NIMANI USHLAYDI</text>
+<text x="52" y="274" font-size="12" fill="#14201C">Noaniq talaffuz, shovqin,</text>
+<text x="52" y="290" font-size="12" fill="#14201C">yarim eshitilgan raqamlar</text>
+<text x="52" y="308" font-size="11" fill="#A05007">bizda: &#8220;140 over 90&#8221; &#8212; 26%</text>
 
-<!-- ROW 2 -->
-<rect x="26" y="186" width="848" height="76" rx="8" fill="#F9EADB" stroke="#A05007" stroke-width="1.6"/>
-<text x="42" y="216" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">0:04</text>
-<text x="42" y="234" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">0:07</text>
-<text x="126" y="219" font-size="13.5" fill="#14201C">Blood pressure was one forty over ninety.</text>
-<text x="126" y="241" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="#A05007">model o&#39;zi ishonchsizligini bildirdi &#8212; qayta eshiting</text>
-<text x="524" y="212" font-family="JetBrains Mono, Menlo, monospace" font-size="13" font-weight="500" fill="#14201C">26%</text>
-<rect x="524" y="224" width="130" height="8" rx="4" fill="#E4E9E5"/>
-<rect x="524" y="224" width="34" height="8" rx="4" fill="#B3261E"/>
-<rect x="690" y="212" width="100" height="24" rx="12" fill="#F3DFC7"/>
-<text x="740" y="228" text-anchor="middle" font-size="12" font-weight="700" fill="#A05007">Tekshiring</text>
+<!-- 2 -->
+<rect x="315" y="104" width="270" height="212" rx="9" fill="#FFFFFF" stroke="#C9D2CB" stroke-width="1.4"/>
+<rect x="315" y="104" width="6" height="212" rx="3" fill="#0E6B58"/>
+<text x="337" y="132" font-size="15" font-weight="700" fill="#14201C">2 &#183; Takrorlanish</text>
+<text x="337" y="154" font-size="11.5" fill="#5C6B65">Bir ibora necha marta qaytdi</text>
+<text x="337" y="170" font-size="11.5" fill="#5C6B65">va matnning qancha qismi</text>
+<text x="337" y="198" font-family="JetBrains Mono, Menlo, monospace" font-size="9.5" letter-spacing="0.08em" fill="#5C6B65">CHEGARA</text>
+<text x="337" y="216" font-family="JetBrains Mono, Menlo, monospace" font-size="12.5" fill="#14201C">3+ marta, 40%+ qamrov</text>
+<line x1="337" y1="234" x2="563" y2="234" stroke="#E4E9E5"/>
+<text x="337" y="256" font-family="JetBrains Mono, Menlo, monospace" font-size="9.5" letter-spacing="0.08em" fill="#5C6B65">NIMANI USHLAYDI</text>
+<text x="337" y="274" font-size="12" fill="#14201C">Model tsiklga tushib, bir</text>
+<text x="337" y="290" font-size="12" fill="#14201C">iborani qayta-qayta yozishi</text>
+<text x="337" y="308" font-size="11" fill="#A05007">bizda: &#8220;follow up&#8221; &#215; 5</text>
 
-<!-- ROW 3 -->
-<rect x="26" y="270" width="848" height="76" rx="8" fill="#FBE9E7" stroke="#B3261E" stroke-width="1.8"/>
-<text x="42" y="300" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">0:07</text>
-<text x="42" y="318" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">0:11</text>
-<text x="126" y="303" font-size="13.5" fill="#14201C">Thank you for watching, please subscribe.</text>
-<text x="126" y="325" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="#B3261E">sukunat ehtimoli 0.88 &#8212; Whisper&#39;ning hujjatlashtirilgan artefakti</text>
-<text x="524" y="296" font-family="JetBrains Mono, Menlo, monospace" font-size="13" font-weight="500" fill="#14201C">80%</text>
-<rect x="524" y="308" width="130" height="8" rx="4" fill="#E4E9E5"/>
-<rect x="524" y="308" width="104" height="8" rx="4" fill="#0E6B58"/>
-<rect x="690" y="296" width="120" height="24" rx="12" fill="#F6D6D2"/>
-<text x="750" y="312" text-anchor="middle" font-size="12" font-weight="700" fill="#B3261E">TO&#39;QILGAN</text>
+<!-- 3 -->
+<rect x="600" y="104" width="270" height="212" rx="9" fill="#FFFFFF" stroke="#C9D2CB" stroke-width="1.4"/>
+<rect x="600" y="104" width="6" height="212" rx="3" fill="#0E6B58"/>
+<text x="622" y="132" font-size="15" font-weight="700" fill="#14201C">3 &#183; Sukunat ehtimoli</text>
+<text x="622" y="154" font-size="11.5" fill="#5C6B65">Bu segmentda umuman nutq</text>
+<text x="622" y="170" font-size="11.5" fill="#5C6B65">bo&#39;lganmi</text>
+<text x="622" y="198" font-family="JetBrains Mono, Menlo, monospace" font-size="9.5" letter-spacing="0.08em" fill="#5C6B65">CHEGARA</text>
+<text x="622" y="216" font-family="JetBrains Mono, Menlo, monospace" font-size="12.5" fill="#14201C">0.6 dan yuqori</text>
+<line x1="622" y1="234" x2="848" y2="234" stroke="#E4E9E5"/>
+<text x="622" y="256" font-family="JetBrains Mono, Menlo, monospace" font-size="9.5" letter-spacing="0.08em" fill="#5C6B65">NIMANI USHLAYDI</text>
+<text x="622" y="274" font-size="12" fill="#14201C">Jimlik ustidan to&#39;qib</text>
+<text x="622" y="290" font-size="12" fill="#14201C">chiqarilgan ravon matn</text>
+<text x="622" y="308" font-size="11" fill="#5C6B65">Whisper&#39;ning ma&#39;lum artefakti</text>
 
-<!-- ROW 4 -->
-<rect x="26" y="354" width="848" height="76" rx="8" fill="#FBE9E7" stroke="#B3261E" stroke-width="1.8"/>
-<text x="42" y="384" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">0:11</text>
-<text x="42" y="402" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">0:16</text>
-<text x="126" y="387" font-size="13.5" fill="#14201C">Follow up follow up follow up follow up follow up.</text>
-<text x="126" y="409" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="#B3261E">ibora besh marta takrorlandi &#8212; bizning OpenEMR sinovimizda aynan shu chiqdi</text>
-<text x="524" y="380" font-family="JetBrains Mono, Menlo, monospace" font-size="13" font-weight="500" fill="#14201C">58%</text>
-<rect x="524" y="392" width="130" height="8" rx="4" fill="#E4E9E5"/>
-<rect x="524" y="392" width="75" height="8" rx="4" fill="#A05007"/>
-<rect x="690" y="380" width="120" height="24" rx="12" fill="#F6D6D2"/>
-<text x="750" y="396" text-anchor="middle" font-size="12" font-weight="700" fill="#B3261E">TO&#39;QILGAN</text>
+<line x1="165" y1="316" x2="165" y2="340" stroke="#B3261E" stroke-width="1.6"/>
+<line x1="450" y1="316" x2="450" y2="340" stroke="#B3261E" stroke-width="1.6"/>
+<line x1="735" y1="316" x2="735" y2="340" stroke="#B3261E" stroke-width="1.6"/>
+<line x1="165" y1="340" x2="735" y2="340" stroke="#B3261E" stroke-width="1.6"/>
+<line x1="450" y1="340" x2="450" y2="356" stroke="#B3261E" stroke-width="1.6" marker-end="url(#g1)"/>
 
-<rect x="26" y="446" width="848" height="48" rx="8" fill="#FFFFFF" stroke="#B3261E" stroke-width="1.4"/>
-<rect x="26" y="446" width="5" height="48" rx="2.5" fill="#B3261E"/>
-<text x="48" y="468" font-size="13" font-weight="700" fill="#14201C">Diqqat: uchinchi qatorda ishonch 80% &#8212; yuqori. Lekin matn to&#39;qilgan.</text>
-<text x="48" y="486" font-size="12.5" fill="#5C6B65">Faqat ishonch foiziga qarash yetarli emas &#8212; uchta mustaqil signal tekshiriladi. To&#39;rtinchi qator bizning sinovimizdan.</text>
+<rect x="30" y="360" width="840" height="52" rx="9" fill="#FBE9E7" stroke="#B3261E" stroke-width="1.8"/>
+<text x="52" y="384" font-size="14.5" font-weight="700" fill="#14201C">Birortasi ishlasa &#8212; segment qizil belgilanadi va shifokor tekshiradi</text>
+<text x="52" y="403" font-size="12.5" fill="#5C6B65">Hech qachon jim o&#39;tkazilmaydi. Tibbiy yozuvda to&#39;qilgan gap yo&#39;q gapdan xavfliroq &#8212; u fakt bo&#39;lib o&#39;qiladi.</text>
 </svg>

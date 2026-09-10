@@ -75,6 +75,24 @@ def _():
 # ---------------------------------------------------------------------------
 
 
+@test("prompting: the decoder prompt is built from the bundled formulary")
+def _():
+    from nlp import prompting
+    prompt = prompting.clinical_prompt()
+    assert "lisinopril" in prompt and "acetaminophen" in prompt
+    assert len(prompt.split()) <= prompting.MAX_PROMPT_WORDS
+    options = prompting.decode_options()
+    assert options["language"] == "en", "language must be pinned, not detected"
+    assert options["temperature"] == 0.0, "decoding must be deterministic"
+
+
+@test("prompting: caller-supplied terms take precedence in the prompt")
+def _():
+    from nlp import prompting
+    prompt = prompting.clinical_prompt(extra_terms=["insulin glargine", "warfarin"])
+    assert prompt.index("insulin glargine") < prompt.index("lisinopril")
+
+
 @test("medications: corrects a mis-heard drug name confidently")
 def _():
     results = {m["heard"]: m for m in
@@ -107,23 +125,37 @@ def _():
     assert medical.correct_medications(prose) == []
 
 
-@test("medications: rejoins a drug name the decoder split in two")
+@test("medications: rejoins a drug name the decoder split across words")
 def _():
-    for text, expected in (("Continue lisin opril 10 mg daily.", "lisinopril"),
-                           ("Start atorva statin at bedtime.", "atorvastatin"),
-                           ("Give amoxi cillin for ten days.", "amoxicillin")):
+    # Every one of these is a transcript this project's Whisper actually
+    # produced, including the two-letter fragments an earlier version could not
+    # reach because it only scanned tokens of four or more characters.
+    measured = (
+        ("Continue lisin opril 10 mg daily.", "lisinopril"),
+        ("Start atorva statin at bedtime.", "atorvastatin"),
+        ("Give amoxi cillin for ten days.", "amoxicillin"),
+        ("Continue metform in 1000 mg twice daily.", "metformin"),
+        ("Continue at torvastatin 40 mg at bedtime.", "atorvastatin"),
+        ("Continue leave othiroxin 75 micrograms daily.", "levothyroxine"),
+    )
+    for text, expected in measured:
         results = medical.correct_medications(text)
         assert results, text
         top = results[0]
         assert top["suggestions"][0]["name"] == expected, (text, top)
-        assert top["source"] == "bigram", top
+        assert top["source"].startswith("window-"), (text, top["source"])
 
 
-@test("medications: bigram pass does not fire on ordinary word pairs")
+@test("medications: joined windows do not fire on ordinary word pairs")
 def _():
+    # "walk in clinic" matched "insulin" once the window widened to include
+    # two-letter fragments, which is why a joined hypothesis has to clear a
+    # higher score than a single word.
     for prose in ("She was seen last week in the walk in clinic and felt better.",
                   "Follow up scheduled with the primary care provider next month.",
-                  "Blood pressure well controlled since the last office visit."):
+                  "Blood pressure well controlled since the last office visit.",
+                  "No known drug allergies. Patient lives alone and works as a teacher.",
+                  "On examination temperature 38 degrees, blood pressure 148 over 92."):
         assert medical.correct_medications(prose) == [], prose
 
 

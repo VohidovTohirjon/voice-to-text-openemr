@@ -6,8 +6,8 @@ Ikki versiya bir faylda:
 
 | Versiya | Uzunlik | Qachon |
 |---|---|---|
-| **Asosiy** | `3:17` | Standart taqdimot |
-| **Kengaytirilgan** | `5:54` | Rahbar texnik chuqurlik so'rasa |
+| **Asosiy** | `3:07` | Standart taqdimot |
+| **Kengaytirilgan** | `5:44` | Rahbar texnik chuqurlik so'rasa |
 
 > ### ⚠️ Kod ekranda ko'rsatilmaydi
 > Butun texnik tushuntirish **diagrammalar orqali** beriladi. Video davomida
@@ -90,9 +90,9 @@ Bo'lmasa — demo paytida birinchi transkripsiya 30+ soniya kutadi.
 
 ---
 
-# ASOSIY VERSIYA — 3:17
+# ASOSIY VERSIYA — 3:07
 
-3:01 nutq + 16 s harakat pauzalari = **3:17**.
+2:51 nutq + 16 s harakat pauzalari = **3:07**.
 
 ## Kerak bo'ladigan diagrammalar
 
@@ -204,7 +204,7 @@ Bo'lmasa — demo paytida birinchi transkripsiya 30+ soniya kutadi.
 ---
 
 ## SAHNA 4 · AI/ML qayerda ⭐⭐
-### `1:28 → 2:53` · 197 so'z · **85 s**
+### `1:28 → 2:43` · 175 so'z · **75 s**
 
 ### `1:28` — Umumiy ko'rinish *(16 s)*
 > **EKRANDA** `2-qatlamlar.svg`
@@ -216,32 +216,29 @@ Bo'lmasa — demo paytida birinchi transkripsiya 30+ soniya kutadi.
 >
 > Birinchisi — **Whisper**, nutqni tanish modeli."
 
-### `1:44` — Gallyutsinatsiya *(28 s)* — **eng kuchli lahza**
+### `1:44` — Tizim qachon ishonmaydi *(28 s)* — **eng kuchli lahza**
 >
 > ⚠️ **Jonli ko'rsatishga urinmang.** Gallyutsinatsiya ehtimoliy hodisa —
-> buyurtma bilan chiqarib bo'lmaydi. Jim tursangiz Whisper ko'pincha umuman
-> hech narsa qaytarmaydi. Shuning uchun bu yerda diagramma ishlatiladi.
+> buyurtma bilan chiqarib bo'lmaydi.
 >
 > **EKRANDA** `3-gallyutsinatsiya.svg`
-> **HARAKAT** To'rt qatorni yuqoridan pastga. **Uchinchi qatorda to'xtang:**
-> avval yashil 80% chizig'ini, keyin qizil "TO'QILGAN" yorlig'ini.
-> Oxirida pastdagi qizil izohni.
+> **HARAKAT** Uchta kartani chapdan o'ngga ketma-ket ko'rsating, keyin
+> pastdagi qizil polosaga tushing.
 
-> "Ikkinchisi eng qiziq. **Gallyutsinatsiyani aniqlash**.
+> "Ikkinchisi eng qiziq. Tizim o'zi qachon ishonmasligini biladi.
 >
-> Whisper har bir segment uchun ichki statistika hisoblaydi. Ko'pchilik
-> integratsiya uni tashlab yuboradi — biz o'qiymiz.
+> Har bir segment uchta mustaqil nazoratdan o'tadi.
 >
-> Model ikki xil to'qiydi. Birinchisi — sukunat ustidan ravon matn. Bu
-> Whisper'ning ma'lum xatti-harakati: YouTube subtitrlaridan o'rgangan iborasini
-> chiqaradi. Mana bu qatorga qarang — ishonch sakson foiz, yuqori. Lekin bu
-> yerda umuman nutq yo'q edi.
+> Birinchisi — dekoder ishonchi. Bizning sinovimizda qon bosimi aytilgan
+> segment yigirma olti foizga tushdi.
 >
-> Ikkinchisi bizning o'z sinovimizda chiqdi: Whisper 'follow up' iborasini besh
-> marta takrorlab qo'ydi. Ishonch ellik uch foizga tushdi, tizim buni tsikl deb
-> belgiladi.
+> Ikkinchisi — takrorlanish. Model ba'zan tsiklga tushadi: bizda 'follow up'
+> iborasi besh marta qaytdi.
 >
-> Tibbiy yozuvda to'qilgan gap yo'q gapdan xavfliroq — u fakt bo'lib o'qiladi."
+> Uchinchisi — sukunat ehtimoli: bu yerda umuman nutq bo'lganmi.
+>
+> Birortasi ishlasa, segment qizil belgilanadi. Hech qachon jim o'tkazilmaydi —
+> chunki tibbiy yozuvda to'qilgan gap yo'q gapdan xavfliroq."
 
 ### `2:12` — Klinik qatlamlar *(13 s)*
 > **EKRANDA** `2-qatlamlar.svg` ga qayting.
@@ -266,7 +263,7 @@ Bo'lmasa — demo paytida birinchi transkripsiya 30+ soniya kutadi.
 ---
 
 ## SAHNA 5 · Holat va keyingi qadam
-### `2:53 → 3:17` · 57 so'z · **24 s**
+### `2:43 → 3:07` · 56 so'z · **24 s**
 
 > **EKRANDA** `6-holat.svg`
 > **HARAKAT** Yashil polosa → sariq quti → `"a seed of minifin"` yozuvida
@@ -274,13 +271,13 @@ Bo'lmasa — demo paytida birinchi transkripsiya 30+ soniya kutadi.
 
 **AYTASIZ:**
 
-> "Butun quvur ishlaydi — ovozdan formagacha. Qirq besh ta test, tahlil o'ttiz
-> millisekundda.
+> "Butun quvur ishlaydi — ovozdan formagacha. Qirq to'qqiz ta test, tahlil
+> o'ttiz millisekundda.
 >
-> Yagona ochiq nuqta: Whisper umumiy model, dori nomlarini buzadi. Sinovda
-> *'acetaminophen'* *'a seed of minifin'* bo'lib chiqdi.
+> Dori nomlarini tanishni oltmish ikki foizdan sakson sakkizga ko'tardik —
+> modelni almashtirmasdan, faqat dekoderni to'g'ri sozlash bilan.
 >
-> Buni satr algoritmi tiklay olmaydi — bu yerda model kerak. Keyingi qadam
+> Qolgan o'n ikki foiz uchun modelning o'zi almashishi kerak. Keyingi qadam
 > shu: tibbiyotga moslashtirilgan ASR modeli.
 >
 > Rahmat."
@@ -298,13 +295,13 @@ Bo'lmasa — demo paytida birinchi transkripsiya 30+ soniya kutadi.
 | `1:44` | `3-gallyutsinatsiya.svg` |
 | `2:12` | `2-qatlamlar.svg` *(qaytish)* |
 | `2:25` | `4-inkor-kodlash.svg` |
-| `2:53` | `6-holat.svg` |
+| `2:43` | `6-holat.svg` |
 
 Sakkizta almashuv — har biri kesish nuqtasi.
 
 ---
 
-# KENGAYTIRILGAN VERSIYA — 5:54
+# KENGAYTIRILGAN VERSIYA — 5:44
 
 Asosiy versiyaning **ustiga** to'rtta qo'shimcha sahna qo'yiladi. Rahbar
 "batafsilroq ko'rsating" desa yoki texnik auditoriya bo'lsa.
@@ -333,30 +330,28 @@ Joylashuvi: **Sahna 4 dan keyin, Sahna 5 dan oldin.**
 
 ---
 
-## SAHNA 4B · Dori nomlarini tiklash
+## SAHNA 4B · Dori nomlari — o'lchangan natija
 ### `+43 s` · 99 so'z
 
 > **EKRANDA** `5-dori-tuzatish.svg`
-> **HARAKAT** Chap qutidan boshlang → uchta chiziqni ketma-ket →
-> o'ng quti → pastdagi sariq izoh.
+> **HARAKAT** Uchta qatorni yuqoridan pastga, keyin pastdagi ikkita
+> ustunga tushing va **88%** raqamida to'xtang.
 
-> "Whisper dori nomlarini doim buzadi. Bu uning aybi emas — u umumiy model,
-> 'lisinopril' so'zini kamdan-kam eshitgan.
+> "Endi eng qiyin qismi — dori nomlari.
 >
-> Biz uchta mustaqil o'lchov bilan tiklaymiz.
+> Whisper umumiy model. 'Lisinopril' desam, u 'lice in april' deb yozadi —
+> uchta oddiy inglizcha so'z. Nom butunlay yo'qolgan, hech qanday satr
+> algoritmi uni tiklay olmaydi.
 >
-> Birinchisi — **harflar ketma-ketligi**: qancha harf mos keladi.
+> Shuning uchun biz dekoderning o'ziga aralashdik: har bir so'rovda unga klinik
+> lug'atni oldindan beramiz. Model qayta o'qitilmaydi — faqat shu so'rov uchun
+> ehtimollar siljiydi.
 >
-> Ikkinchisi — **talaffuz**: ikki so'z quloqqa qanchalik bir xil eshitiladi.
-> Bu muhim, chunki xatolar aynan tovushda bo'ladi.
+> Undan keyin tuzatish qatlami ishlaydi: 'metform in' kabi ikkiga bo'lingan
+> nomlarni birlashtiradi.
 >
-> Uchinchisi — **undoshlar skeleti**: unlilarni tashlab, faqat undoshlarni
-> solishtiramiz. Chunki nutqni tanishda birinchi bo'lib unlilar buziladi.
->
-> Uchalasi birlashtiriladi. Lekin — mana bu qatorga qarang — butunlay buzilgan
-> nomni hech qanday o'lchov tiklay olmaydi. O'sha yerda model kerak."
-
----
+> Natija o'lchandi. Yigirma to'rt ta diktada, oltmish ikki foizdan sakson
+> sakkiz foizga ko'tarildi. Modelni umuman almashtirmasdan."
 
 ## SAHNA 4C · Maxfiylik va HIPAA
 ### `+41 s` · 95 so'z
@@ -410,12 +405,12 @@ Joylashuvi: **Sahna 4 dan keyin, Sahna 5 dan oldin.**
 | 1 · Muammo | 20 s | `0:20` |
 | 2 · Arxitektura | 28 s | `0:48` |
 | 3 · Jonli demo | 40 s | `1:28` |
-| 4 · AI/ML qatlamlari | 85 s | `2:53` |
-| **4A · Ko'rsatkichlar** | **37 s** | `3:30` |
-| **4B · Dori tiklash** | **43 s** | `4:13` |
-| **4C · Maxfiylik** | **41 s** | `4:54` |
-| **4D · Ishonch** | **36 s** | `5:30` |
-| 5 · Holat va keyingi qadam | 24 s | `5:54` |
+| 4 · AI/ML qatlamlari | 75 s | `2:43` |
+| **4A · Ko'rsatkichlar** | **37 s** | `3:20` |
+| **4B · Dori nomlari** | **43 s** | `4:03` |
+| **4C · Maxfiylik** | **41 s** | `4:44` |
+| **4D · Ishonch** | **36 s** | `5:20` |
+| 5 · Holat va keyingi qadam | 24 s | `5:44` |
 
 Vaqtlar o'lchangan: har sahnaning so'zlari sanalib, o'zbek tilida ~140 so'z/daqiqa
 tezligiga bo'lingan. Taxmin emas.
@@ -427,12 +422,13 @@ tezligiga bo'lingan. Taxmin emas.
 Kod **hali ham** ochilmaydi.
 
 **"Dori nomini qanday tuzatasiz?"** → `5-dori-tuzatish.svg`
-> "Uchta mustaqil o'lchov: harflar ketma-ketligi, talaffuz va undoshlar
-> skeleti. Birlashtiriladi. Butunlay buzilgan nomni esa hech biri tiklay
-> olmaydi — o'sha yerda model kerak."
+> "Ikki bosqichda. Birinchi — dekoderga klinik lug'atni oldindan beramiz, shunda
+> u to'g'ri nomni tanlash ehtimoli oshadi. Ikkinchi — tuzatish qatlami bo'lingan
+> nomlarni birlashtiradi va yozilish, talaffuz, undoshlar skeleti bo'yicha
+> solishtiradi. O'lchangan natija: 62% dan 88% ga."
 
 **"Bu qanchalik ishonchli?"**
-> "Qirq besh ta avtomatik test. Har biri haqiqiy xatoni qoplaydi. Tahlil
+> "Qirq to'qqiz ta avtomatik test. Har biri haqiqiy xatoni qoplaydi. Tahlil
 > o'ttiz millisekundda tugaydi."
 
 **"Bemor ma'lumoti xavfsizmi?"**
@@ -461,7 +457,8 @@ So'rashsa yashirmang — muhandislik yetukligi bo'lib eshitiladi:
   CMS/CDC nashri emas
 - **Dorilar ro'yxati** — 118 ta qo'lda tanlangan nom, to'liq RxNorm bazasi emas
 - **Maydonlar** brauzer orqali to'ldiriladi, OpenEMR API'si orqali emas
-- **Whisper** umumiy model — tibbiy terminlarda xato qiladi
+- **Whisper** umumiy model — dori nomlarining 12% i hali ham xato, ular
+  shifokorga "tekshiring" deb belgilanadi
 - **Klinik qatlamlar** ingliz tili uchun sozlangan
 
 ---

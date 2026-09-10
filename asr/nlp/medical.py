@@ -214,8 +214,12 @@ _STOPWORDS = {
 }
 
 _MIN_TOKEN_LEN = 5
-_STRONG = 0.86   # accept as a confident correction
-_WEAK = 0.72     # surface for review, do not lead with it
+_STRONG = 0.86        # accept as a confident correction
+_WEAK = 0.72          # surface for review, do not lead with it
+# Joining words invents a boundary the decoder did not produce, so a multi-word
+# hypothesis starts out weaker than a single-word one and has to clear a higher
+# bar. At 0.72 the phrase "walk in clinic" matched "insulin".
+_WEAK_WINDOW = 0.80
 
 
 def _rank_candidates(
@@ -246,29 +250,36 @@ def _rank_candidates(
     return ranked[:max_suggestions]
 
 
+# Windows of up to this many consecutive words are joined and scored. Whisper
+# splits a drug name into at most three fragments in practice ("lice in april",
+# "at torvastatin", "metform in").
+_MAX_WINDOW = 3
+_MIN_JOINED_LEN = 6
+
+
 def correct_medications(transcript: str, max_suggestions: int = 3) -> List[Dict[str, Any]]:
     """
     Detect probable medication mentions and rank formulary matches.
 
-    Two passes run over the text:
+    The decoder does not reliably keep a drug name in one piece. Measured on
+    this project, Whisper produced "metform in", "at torvastatin",
+    "leave othiroxin" and "lice in april" — the name is intact acoustically but
+    split across ordinary English words, sometimes with a two-letter fragment
+    in the middle.
 
-      unigram  each word on its own — catches the usual vowel and transposition
-               errors ("lisinapril", "metroprolol").
-      bigram   adjacent word pairs joined — catches names the decoder split in
-               two ("lisin opril"). A bigram is only kept when it beats both of
-               its constituent words, so ordinary word pairs do not compete with
-               genuine single-word matches.
+    So the scan is a sliding window over EVERY word, not over pre-filtered
+    long tokens: windows of one to three consecutive words are joined and
+    scored against the formulary. Restricting the window to tokens of four or
+    more characters, as an earlier version did, made exactly the common cases
+    unreachable — "in", "at" and "a" are the fragments the decoder produces.
 
-    Severely fragmented names ("acetaminophen" heard as "a seed of minifin")
-    are NOT recoverable this way; the surface form no longer resembles the drug.
-    That failure mode needs a domain-adapted acoustic model, not a better string
-    metric, and is the concrete argument for evaluating a medical ASR model.
+    Overlapping candidates are resolved by score, so a three-word match beats
+    the single word inside it when it is genuinely better.
 
-    Returns one record per suspicious span:
+    Returns one record per accepted span:
         heard, start, end, exact, needs_review, confident, suggestions, source
     """
     formulary = _medications()
-    # Multi-word entries ("insulin glargine") are matched on their first word.
     index: List[Tuple[str, Dict[str, Any]]] = []
     for entry in formulary:
         index.append((entry["name"].lower(), entry))
@@ -277,104 +288,87 @@ def correct_medications(transcript: str, max_suggestions: int = 3) -> List[Dict[
             index.append((head, entry))
 
     exact_names = {name for name, _ in index}
-    tokens = [(m.group(0), m.start(), m.end())
-              for m in re.finditer(r"\b[A-Za-z][A-Za-z\-]{3,}\b", transcript)]
+    words = [(m.group(0), m.start(), m.end())
+             for m in re.finditer(r"\b[A-Za-z][A-Za-z\-]*\b", transcript)]
 
-    results: List[Dict[str, Any]] = []
-    unigram_best: Dict[int, float] = {}
+    candidates: List[Dict[str, Any]] = []
 
-    for position, (token, start, end) in enumerate(tokens):
-        lowered = token.lower()
+    for i in range(len(words)):
+        for span in range(1, _MAX_WINDOW + 1):
+            if i + span > len(words):
+                break
 
-        if lowered in _STOPWORDS or len(lowered) < _MIN_TOKEN_LEN:
-            continue
+            chunk = words[i:i + span]
+            # Only join words that are adjacent in the text — never across
+            # punctuation, which would fuse two unrelated sentences.
+            gap = transcript[chunk[0][2]:chunk[-1][1]]
+            if span > 1 and re.search(r"[^\s\-]", gap):
+                break
 
-        if lowered in exact_names:
-            entry = next(e for name, e in index if name == lowered)
-            unigram_best[position] = 1.0
-            results.append({
-                "heard": token,
-                "start": start,
-                "end": end,
-                "exact": True,
-                "needs_review": False,
-                "confident": True,
-                "source": "unigram",
-                "suggestions": [{
-                    "name": entry["name"],
-                    "drug_class": entry["class"],
+            joined = "".join(w[0] for w in chunk).lower()
+            surface = transcript[chunk[0][1]:chunk[-1][2]]
+
+            if span == 1:
+                if len(joined) < _MIN_TOKEN_LEN or joined in _STOPWORDS:
+                    continue
+            else:
+                if len(joined) < _MIN_JOINED_LEN:
+                    continue
+                # A window made only of stopwords is prose, not a drug name.
+                if all(w[0].lower() in _STOPWORDS for w in chunk):
+                    continue
+
+            if joined in exact_names:
+                entry = next(e for name, e in index if name == joined)
+                candidates.append({
+                    "heard": surface,
+                    "start": chunk[0][1],
+                    "end": chunk[-1][2],
+                    "exact": span == 1,
+                    "needs_review": span > 1,
+                    "confident": True,
+                    "source": "unigram" if span == 1 else "window-%d" % span,
                     "score": 1.0,
-                    "lasa": entry.get("lasa", []),
-                }],
-            })
-            continue
+                    "suggestions": [{
+                        "name": entry["name"],
+                        "drug_class": entry["class"],
+                        "score": 1.0,
+                        "lasa": entry.get("lasa", []),
+                    }],
+                })
+                continue
 
-        ranked = _rank_candidates(lowered, index, max_suggestions)
-        if not ranked:
-            continue
-
-        unigram_best[position] = ranked[0]["score"]
-        results.append({
-            "heard": token,
-            "start": start,
-            "end": end,
-            "exact": False,
-            "needs_review": True,
-            "confident": ranked[0]["score"] >= _STRONG,
-            "source": "unigram",
-            "suggestions": ranked,
-        })
-
-    # Bigram pass: a name the decoder split across two words.
-    for position in range(len(tokens) - 1):
-        first, second = tokens[position], tokens[position + 1]
-        # Only join words that are adjacent in the text, not across punctuation.
-        between = transcript[first[2]:second[1]]
-        if between.strip():
-            continue
-
-        joined = (first[0] + second[0]).lower()
-        if len(joined) < 8:
-            continue
-        if first[0].lower() in _STOPWORDS or second[0].lower() in _STOPWORDS:
-            continue
-
-        if joined in exact_names:
-            # The decoder split a real drug name in two. Rejoining recovers it
-            # exactly, which is the strongest possible evidence.
-            entry = next(e for name, e in index if name == joined)
-            ranked = [{
-                "name": entry["name"],
-                "drug_class": entry["class"],
-                "score": 1.0,
-                "lasa": entry.get("lasa", []),
-            }]
-        else:
             ranked = _rank_candidates(joined, index, max_suggestions)
-        if not ranked:
-            continue
+            if not ranked:
+                continue
+            if span > 1 and ranked[0]["score"] < _WEAK_WINDOW:
+                continue
 
-        # Keep only if the joined form beats both words taken separately.
-        best_alone = max(unigram_best.get(position, 0.0),
-                         unigram_best.get(position + 1, 0.0))
-        if ranked[0]["score"] <= best_alone:
-            continue
+            candidates.append({
+                "heard": surface,
+                "start": chunk[0][1],
+                "end": chunk[-1][2],
+                "exact": False,
+                "needs_review": True,
+                "confident": ranked[0]["score"] >= _STRONG,
+                "source": "unigram" if span == 1 else "window-%d" % span,
+                "score": ranked[0]["score"],
+                "suggestions": ranked,
+            })
 
-        results = [r for r in results
-                   if not (r["start"] >= first[1] and r["end"] <= second[2])]
-        results.append({
-            "heard": transcript[first[1]:second[2]],
-            "start": first[1],
-            "end": second[2],
-            "exact": False,
-            "needs_review": True,
-            "confident": ranked[0]["score"] >= _STRONG,
-            "source": "bigram",
-            "suggestions": ranked,
-        })
+    # Resolve overlaps: best score wins, longer span breaks ties.
+    candidates.sort(key=lambda c: (-c["score"], -(c["end"] - c["start"]), c["start"]))
+    accepted: List[Dict[str, Any]] = []
+    for candidate in candidates:
+        clash = any(candidate["start"] < a["end"] and a["start"] < candidate["end"]
+                    for a in accepted)
+        if not clash:
+            accepted.append(candidate)
 
-    results.sort(key=lambda r: r["start"])
-    return results
+    accepted.sort(key=lambda c: c["start"])
+    for item in accepted:
+        item.pop("score", None)
+    return accepted
 
 
 # ---------------------------------------------------------------------------
