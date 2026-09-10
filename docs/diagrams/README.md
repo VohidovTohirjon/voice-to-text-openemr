@@ -33,3 +33,32 @@ Slaydda 16:9 kadrga to'liq sig'adi.
 
 Oddiy matn fayllari — istalgan muharrirda ochib matnni o'zgartirsangiz bo'ladi.
 Ranglar har faylning boshida izohda sanab o'tilgan.
+
+## Tayyor eksportlar
+
+SVG'lar yonida tayyor fayllar ham turadi — hech narsa o'girish shart emas:
+
+| Fayl | Nima uchun |
+|---|---|
+| `arxitektura-diagrammalar.pdf` | **Oltala diagramma, 6 sahifa.** Chrome'da ochiladi, rahbarga yuborsa ham bo'ladi |
+| `*.png` | Har biri alohida, 1800 px kenglikda — slaydga qo'yish uchun |
+
+**Chrome'da ochish:** faylni Chrome oynasiga sudrab tashlang, yoki ustiga o'ng
+tugma → *Open With* → *Google Chrome*.
+
+## Qayta yaratish
+
+SVG'ni tahrirlaganingizdan keyin:
+
+```bash
+cd docs/diagrams
+rsvg-convert -f pdf -o arxitektura-diagrammalar.pdf \
+  1-arxitektura.svg 2-qatlamlar.svg 3-gallyutsinatsiya.svg \
+  4-inkor-kodlash.svg 5-dori-tuzatish.svg 6-holat.svg
+for f in *.svg; do rsvg-convert -f png -z 2 -o "${f%.svg}.png" "$f"; done
+```
+
+`rsvg-convert` yo'q bo'lsa: `brew install librsvg`
+
+Shriftlar tizimnikiga tushadi (Helvetica / Menlo) — ataylab shunday, hech qanday
+shrift o'rnatish talab qilinmaydi.

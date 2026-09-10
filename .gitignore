@@ -13,3 +13,5 @@ test.tsv
 test.vtt
 .DS_Store
 *.pdf
+# Diagram exports are deliverables, not build noise.
+!docs/diagrams/*.pdf
