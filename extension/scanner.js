@@ -211,9 +211,30 @@
     return null;
   }
 
-  /** True when this page has anything worth offering the panel for. */
-  function hasFillableFields() {
-    return Boolean(getReasonTarget()) || allWritableFields().length > 0;
+  /**
+   * Field names the panel is actually for.
+   *
+   * Taken from OpenEMR's own form tables: form_encounter (reason), form_soap
+   * and form_vitals. Matching on these rather than "any writable field" is what
+   * keeps the panel off pages that merely happen to contain a text box - the
+   * demographics search on the main tab bar being the obvious one.
+   */
+  var CLINICAL_FIELD_NAMES = [
+    "reason",
+    "subjective", "objective", "assessment", "plan",
+    "bps", "bpd", "pulse", "respiration",
+    "temperature", "oxygen_saturation", "weight", "height"
+  ];
+
+  /** True when this page carries a field the panel can actually fill. */
+  function hasClinicalTarget() {
+    if (getReasonTarget()) {
+      return true;
+    }
+    return allWritableFields().some(function (field) {
+      var name = (field.name || field.id || "").toLowerCase();
+      return CLINICAL_FIELD_NAMES.indexOf(name) >= 0;
+    });
   }
 
   window.OpenEMRASRScanner = {
@@ -224,6 +245,7 @@
     resolveFieldMappings: resolveFieldMappings,
     allWritableFields: allWritableFields,
     describeField: describeField,
-    hasFillableFields: hasFillableFields
+    CLINICAL_FIELD_NAMES: CLINICAL_FIELD_NAMES,
+    hasClinicalTarget: hasClinicalTarget
   };
 })();

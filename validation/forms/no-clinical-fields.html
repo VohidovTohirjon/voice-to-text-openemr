@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Negative fixture — chrome page with a search box</title>
+<style>
+  body{font:14px -apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;padding:24px;
+       background:#f1f5f9;color:#0f172a}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-size:20px;margin:0 0 4px}
+  .note{font-size:12.5px;color:#64748b;margin:0 0 20px}
+  .bar{background:#fff;border:1px solid #cbd5e1;border-radius:10px;padding:14px 16px;
+       display:flex;gap:12px;align-items:center}
+  input{flex:1;padding:7px 9px;border:1px solid #cbd5e1;border-radius:7px;font:inherit}
+  nav a{margin-right:14px;font-weight:600;color:#334155;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Negative fixture — chrome page with a search box</h1>
+  <p class="note">
+    Mimics OpenEMR's main tab shell: this file sits under a
+    <code>/forms/</code> path, so the page-type gate passes, but the only
+    writable field is a demographics search. The panel must stay hidden.
+    Regression cover for the panel appearing on the Calendar tab.
+  </p>
+
+  <nav>
+    <a href="#">Calendar</a><a href="#">Finder</a><a href="#">Patient</a><a href="#">Reports</a>
+  </nav>
+
+  <div class="bar" style="margin-top:16px">
+    <label for="search">Search by any demographics</label>
+    <input type="text" name="search_any" id="search" placeholder="Search by any demographics">
+  </div>
+</div>
+
+<script>
+  (function () {
+    var api = new URLSearchParams(window.location.search).get("api");
+    if (api) { window.__OPENEMR_ASR_API_BASE = api; }
+  })();
+</script>
+<script src="../../extension/scanner.js"></script>
+<script src="../../extension/content.js"></script>
+</body>
+</html>

@@ -24,6 +24,8 @@ detection and redaction, and the pipeline's negation → coding edge.
 | OpenEMR encounter | Other field safety | Untick a row; that field is left untouched | Tokhirjon |
 | OpenEMR encounter | Overwrite notice | A field with content shows "will overwrite" | Tokhirjon |
 | **Style isolation** | **Panel inside OpenEMR** | **Layout intact; host `input{width:100%}` rules must not collapse the panel** | Tokhirjon |
+| **Activation** | **OpenEMR Calendar / main tab** | **Panel stays hidden — a demographics search box is not a clinical field** | Tokhirjon |
+| Activation | OpenEMR Patient demographics | Panel stays hidden | Tokhirjon |
 | Confirmation | Cancel the dialog | Nothing is written | Tokhirjon |
 | Confirmation | needs_review default | Low-confidence rows start unticked | Tokhirjon |
 | Analysis | Stale transcript | Editing after analysis shows the re-analyze notice | Tokhirjon |
@@ -36,6 +38,7 @@ detection and redaction, and the pipeline's negation → coding edge.
 | Edge case | No fields found | Panel stays hidden | Tokhirjon |
 | Fixture | encounter-soap-vitals | 11 fields resolve; 10 tick by default | Tokhirjon |
 | Fixture | no-reason-field | Panel stays hidden | Tokhirjon |
+| Fixture | no-clinical-fields | Panel stays hidden despite a `/forms/` path | Tokhirjon |
 
 ## Regressions covered by tests
 
@@ -51,6 +54,8 @@ Each of these was a real defect found during development:
 | Cue-word regex was case-sensitive, missing "Patient Maria Gonzalez" | `phi: titles are not captured as names` (same pass) |
 | Title captured as a person name ("Dr") | `phi: titles are not captured as names` |
 | A split drug name was unrecoverable | `medications: rejoins a drug name the decoder split in two` |
+| A ten-word repetition loop was missed: the detector scanned only 4-grams and needed twelve words | `asr quality: a short repetition loop is caught` |
+| Panel appeared on OpenEMR's calendar tab, because any writable field qualified and the page-type check ran second | `validation/forms/no-clinical-fields.html` *(manual)* |
 
 One defect is **not** covered by an automated test and must be checked by hand:
 the host page's `input { width: 100% }` collapsing the panel's checkbox column.

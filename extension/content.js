@@ -62,29 +62,42 @@
     return (window.location.pathname || "").indexOf("/interface/login/") >= 0;
   }
 
+  /**
+   * Clinical form pages, by path.
+   *
+   * Deliberately narrow. OpenEMR's main tab shell (/interface/main/tabs/) is a
+   * chrome page with a demographics search box, and the panel has no business
+   * there - it belongs on the encounter and its forms, which OpenEMR loads into
+   * an iframe whose own URL is one of the paths below.
+   *
+   * /patient_file/ on its own is NOT enough: it also covers demographics,
+   * documents and billing.
+   */
   function isRelevantPage() {
     var path = window.location.pathname || "";
     return (
-      path.indexOf("/encounter/") >= 0 ||
       path.indexOf("/forms/") >= 0 ||
       path.indexOf("/newpatient/") >= 0 ||
       path.indexOf("/newGroupEncounter/") >= 0 ||
-      path.indexOf("/patient_file/") >= 0
+      path.indexOf("/patient_file/encounter/") >= 0
     );
   }
 
   function boot() {
-    if (window.OpenEMRASRScanner.hasFillableFields()) {
-      initialize();
+    // Page type is checked FIRST. Checking for a fillable field first meant any
+    // page with a text box qualified, which put the panel on OpenEMR's calendar
+    // tab because of its demographics search field.
+    if (!isRelevantPage()) {
       return;
     }
-    if (!isRelevantPage()) {
+    if (window.OpenEMRASRScanner.hasClinicalTarget()) {
+      initialize();
       return;
     }
 
     var timeoutId = null;
     var observer = new MutationObserver(function () {
-      if (!window.OpenEMRASRScanner.hasFillableFields()) {
+      if (!window.OpenEMRASRScanner.hasClinicalTarget()) {
         return;
       }
       observer.disconnect();

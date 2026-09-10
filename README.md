@@ -158,6 +158,9 @@ Then open:
 - `validation/forms/contact-reason.html`, `intake-reason.html` — generic forms
 - `validation/forms/no-reason-field.html` — negative case; the panel must stay
   hidden
+- `validation/forms/no-clinical-fields.html` — negative case: a `/forms/` path
+  whose only writable field is a search box. Mimics OpenEMR's main tab shell,
+  where the panel must not appear
 
 Add `?api=http://127.0.0.1:8100` to point a fixture at a service on another
 port.
