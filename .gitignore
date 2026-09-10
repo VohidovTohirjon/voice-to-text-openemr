@@ -15,3 +15,5 @@ test.vtt
 *.pdf
 # Diagram exports are deliverables, not build noise.
 !docs/diagrams/*.pdf
+# Presentation deliverable.
+!docs/*.pptx
