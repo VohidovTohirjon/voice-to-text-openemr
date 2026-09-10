@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500" font-family="Archivo, Helvetica Neue, Arial, sans-serif">
+<!-- Ranglar: ink #14201C · muted #5C6B65 · rule #C9D2CB · surface #FFFFFF
+     ground #F6F7F4 · accent #0E6B58 · accent-soft #E1EFEB -->
+<defs>
+  <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <polygon points="0,0 10,5 0,10" fill="#14201C"/>
+  </marker>
+  <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <polygon points="0,0 10,5 0,10" fill="#0E6B58"/>
+  </marker>
+</defs>
+<rect width="900" height="500" fill="#F6F7F4"/>
+
+<text x="30" y="40" font-size="21" font-weight="800" fill="#14201C">Arxitektura</text>
+<text x="30" y="62" font-size="13" fill="#5C6B65">Uch qism, to&#39;rt qadam — hammasi bitta kompyuter ichida</text>
+
+<text x="450" y="94" text-anchor="middle" font-family="JetBrains Mono, Menlo, monospace" font-size="12" fill="#0E6B58">BITTA ISH STANTSIYASI &#8212; TARMOQQA HECH NARSA CHIQMAYDI</text>
+<rect x="26" y="108" width="848" height="368" rx="14" fill="none" stroke="#0E6B58" stroke-width="1.5" stroke-dasharray="7 6"/>
+
+<rect x="52" y="138" width="796" height="150" rx="10" fill="#EFF2EE" stroke="#C9D2CB"/>
+<text x="70" y="161" font-family="JetBrains Mono, Menlo, monospace" font-size="12" fill="#5C6B65">Chrome brauzeri</text>
+
+<rect x="72" y="174" width="296" height="100" rx="8" fill="#FFFFFF" stroke="#14201C" stroke-width="1.4"/>
+<text x="90" y="202" font-size="15" font-weight="700" fill="#14201C">OpenEMR sahifasi</text>
+<text x="90" y="225" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">encounter formasi</text>
+<text x="90" y="246" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">SOAP + ko&#39;rsatkichlar</text>
+
+<rect x="532" y="174" width="296" height="100" rx="8" fill="#FFFFFF" stroke="#0E6B58" stroke-width="1.8"/>
+<text x="550" y="202" font-size="15" font-weight="700" fill="#14201C">Kengaytma paneli</text>
+<text x="550" y="225" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">mikrofon &#183; maydon topish</text>
+<text x="550" y="246" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">tasdiqlash oynasi</text>
+
+<line x1="370" y1="252" x2="528" y2="252" stroke="#14201C" stroke-width="1.6" marker-end="url(#ar)"/>
+<text x="449" y="271" text-anchor="middle" font-family="JetBrains Mono, Menlo, monospace" font-size="11" fill="#5C6B65">1. maydonlarni topadi</text>
+
+<line x1="530" y1="210" x2="372" y2="210" stroke="#0E6B58" stroke-width="1.8" marker-end="url(#ag)"/>
+<text x="449" y="200" text-anchor="middle" font-family="JetBrains Mono, Menlo, monospace" font-size="11" fill="#0E6B58">4. tasdiqdan keyin yozadi</text>
+
+<rect x="532" y="356" width="296" height="100" rx="8" fill="#FFFFFF" stroke="#0E6B58" stroke-width="1.8"/>
+<text x="550" y="384" font-size="15" font-weight="700" fill="#14201C">Lokal tahlil xizmati</text>
+<text x="550" y="407" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">127.0.0.1:8000</text>
+<text x="550" y="428" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">8 ta AI/ML qatlami</text>
+
+<line x1="602" y1="276" x2="602" y2="352" stroke="#14201C" stroke-width="1.6" marker-end="url(#ar)"/>
+<text x="588" y="306" text-anchor="end" font-family="JetBrains Mono, Menlo, monospace" font-size="11" fill="#5C6B65">2. audio yuboriladi</text>
+
+<line x1="748" y1="352" x2="748" y2="276" stroke="#0E6B58" stroke-width="1.8" marker-end="url(#ag)"/>
+<text x="762" y="306" font-family="JetBrains Mono, Menlo, monospace" font-size="11" fill="#0E6B58">3. tahlil qaytadi</text>
+</svg>

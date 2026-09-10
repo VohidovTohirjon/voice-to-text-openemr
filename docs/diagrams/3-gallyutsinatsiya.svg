@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 512" width="900" height="512" font-family="Archivo, Helvetica Neue, Arial, sans-serif">
+<!-- Ranglar: ok #0E6B58 · ogohlantirish #A05007 · xato #B3261E -->
+<rect width="900" height="512" fill="#F6F7F4"/>
+
+<text x="30" y="40" font-size="21" font-weight="800" fill="#14201C">Whisper to&#39;qib chiqargan matnni qanday ushlaymiz</text>
+<text x="30" y="62" font-size="13" fill="#5C6B65">Bitta 16 soniyalik yozuv, to&#39;rt segmentga bo&#39;lingan</text>
+
+<text x="42" y="92" font-family="JetBrains Mono, Menlo, monospace" font-size="10" letter-spacing="0.08em" fill="#5C6B65">VAQT</text>
+<text x="126" y="92" font-family="JetBrains Mono, Menlo, monospace" font-size="10" letter-spacing="0.08em" fill="#5C6B65">TIZIM NIMA ESHITDI</text>
+<text x="524" y="92" font-family="JetBrains Mono, Menlo, monospace" font-size="10" letter-spacing="0.08em" fill="#5C6B65">ISHONCH</text>
+<text x="690" y="92" font-family="JetBrains Mono, Menlo, monospace" font-size="10" letter-spacing="0.08em" fill="#5C6B65">XULOSA</text>
+
+<!-- ROW 1 -->
+<rect x="26" y="102" width="848" height="76" rx="8" fill="#FFFFFF" stroke="#C9D2CB" stroke-width="1.4"/>
+<text x="42" y="132" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">0:00</text>
+<text x="42" y="150" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">0:04</text>
+<text x="126" y="135" font-size="13.5" fill="#14201C">Patient reports headache and mild fever for two days.</text>
+<text x="126" y="157" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="#5C6B65">tabiiy nutq, hech qanday shubha yo&#39;q</text>
+<text x="524" y="128" font-family="JetBrains Mono, Menlo, monospace" font-size="13" font-weight="500" fill="#14201C">84%</text>
+<rect x="524" y="140" width="130" height="8" rx="4" fill="#E4E9E5"/>
+<rect x="524" y="140" width="109" height="8" rx="4" fill="#0E6B58"/>
+<rect x="690" y="128" width="100" height="24" rx="12" fill="#E1EFEB"/>
+<text x="740" y="144" text-anchor="middle" font-size="12" font-weight="700" fill="#0E6B58">Yaxshi</text>
+
+<!-- ROW 2 -->
+<rect x="26" y="186" width="848" height="76" rx="8" fill="#F9EADB" stroke="#A05007" stroke-width="1.6"/>
+<text x="42" y="216" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">0:04</text>
+<text x="42" y="234" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">0:07</text>
+<text x="126" y="219" font-size="13.5" fill="#14201C">Blood pressure was one forty over ninety.</text>
+<text x="126" y="241" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="#A05007">model o&#39;zi ishonchsizligini bildirdi &#8212; qayta eshiting</text>
+<text x="524" y="212" font-family="JetBrains Mono, Menlo, monospace" font-size="13" font-weight="500" fill="#14201C">26%</text>
+<rect x="524" y="224" width="130" height="8" rx="4" fill="#E4E9E5"/>
+<rect x="524" y="224" width="34" height="8" rx="4" fill="#B3261E"/>
+<rect x="690" y="212" width="100" height="24" rx="12" fill="#F3DFC7"/>
+<text x="740" y="228" text-anchor="middle" font-size="12" font-weight="700" fill="#A05007">Tekshiring</text>
+
+<!-- ROW 3 -->
+<rect x="26" y="270" width="848" height="76" rx="8" fill="#FBE9E7" stroke="#B3261E" stroke-width="1.8"/>
+<text x="42" y="300" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">0:07</text>
+<text x="42" y="318" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">0:11</text>
+<text x="126" y="303" font-size="13.5" fill="#14201C">Thank you for watching, please subscribe.</text>
+<text x="126" y="325" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="#B3261E">bu yerda umuman nutq yo&#39;q edi &#8212; sukunat ehtimoli 0.88</text>
+<text x="524" y="296" font-family="JetBrains Mono, Menlo, monospace" font-size="13" font-weight="500" fill="#14201C">80%</text>
+<rect x="524" y="308" width="130" height="8" rx="4" fill="#E4E9E5"/>
+<rect x="524" y="308" width="104" height="8" rx="4" fill="#0E6B58"/>
+<rect x="690" y="296" width="120" height="24" rx="12" fill="#F6D6D2"/>
+<text x="750" y="312" text-anchor="middle" font-size="12" font-weight="700" fill="#B3261E">TO&#39;QILGAN</text>
+
+<!-- ROW 4 -->
+<rect x="26" y="354" width="848" height="76" rx="8" fill="#FBE9E7" stroke="#B3261E" stroke-width="1.8"/>
+<text x="42" y="384" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">0:11</text>
+<text x="42" y="402" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="#5C6B65">0:16</text>
+<text x="126" y="387" font-size="13.5" fill="#14201C">follow up follow up follow up follow up follow up</text>
+<text x="126" y="409" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="#B3261E">bir ibora uch martadan ko&#39;p takrorlandi &#8212; model tsiklga tushdi</text>
+<text x="524" y="380" font-family="JetBrains Mono, Menlo, monospace" font-size="13" font-weight="500" fill="#14201C">58%</text>
+<rect x="524" y="392" width="130" height="8" rx="4" fill="#E4E9E5"/>
+<rect x="524" y="392" width="75" height="8" rx="4" fill="#A05007"/>
+<rect x="690" y="380" width="120" height="24" rx="12" fill="#F6D6D2"/>
+<text x="750" y="396" text-anchor="middle" font-size="12" font-weight="700" fill="#B3261E">TO&#39;QILGAN</text>
+
+<rect x="26" y="446" width="848" height="48" rx="8" fill="#FFFFFF" stroke="#B3261E" stroke-width="1.4"/>
+<rect x="26" y="446" width="5" height="48" rx="2.5" fill="#B3261E"/>
+<text x="48" y="468" font-size="13" font-weight="700" fill="#14201C">Diqqat: uchinchi qatorda ishonch 80% &#8212; yuqori. Lekin matn to&#39;qilgan.</text>
+<text x="48" y="486" font-size="12.5" fill="#5C6B65">Shuning uchun faqat ishonch foiziga qarash yetarli emas. Bizda uchta mustaqil signal tekshiriladi.</text>
+</svg>

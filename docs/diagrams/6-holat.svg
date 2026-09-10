@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" width="900" height="320" font-family="Archivo, Helvetica Neue, Arial, sans-serif">
+<rect width="900" height="320" fill="#F6F7F4"/>
+<defs>
+  <marker id="eS" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <polygon points="0,0 10,5 0,10" fill="#A05007"/>
+  </marker>
+</defs>
+
+<text x="30" y="36" font-size="21" font-weight="800" fill="#14201C">Hozirgi holat va keyingi qadam</text>
+
+<text x="30" y="72" font-family="JetBrains Mono, Menlo, monospace" font-size="11" letter-spacing="0.06em" fill="#0E6B58">TO&#39;LIQ ISHLAYDI</text>
+<rect x="30" y="84" width="840" height="68" rx="8" fill="#E1EFEB" stroke="#0E6B58" stroke-width="2"/>
+<text x="52" y="112" font-size="15" font-weight="700" fill="#14201C">Ovoz &#8594; transkript &#8594; 8 qatlamli tahlil &#8594; shifokor tasdig&#39;i &#8594; forma</text>
+<text x="52" y="136" font-size="12.5" fill="#5C6B65">45 ta avtomatik test &#183; tahlil 31 millisekund &#183; qo&#39;shimcha kutubxonasiz ishlaydi</text>
+
+<text x="30" y="196" font-family="JetBrains Mono, Menlo, monospace" font-size="11" letter-spacing="0.06em" fill="#A05007">YAGONA OCHIQ NUQTA</text>
+<rect x="30" y="208" width="400" height="80" rx="8" fill="#F9EADB" stroke="#A05007" stroke-width="2" stroke-dasharray="6 5"/>
+<text x="52" y="236" font-size="14" font-weight="700" fill="#14201C">Whisper &#8212; umumiy model</text>
+<text x="52" y="258" font-size="12.5" fill="#5C6B65">Dori nomlarini buzadi. Sinovda:</text>
+<text x="52" y="278" font-family="JetBrains Mono, Menlo, monospace" font-size="12" fill="#B3261E">&#8220;acetaminophen&#8221; &#8594; &#8220;a seed of minifin&#8221;</text>
+
+<line x1="440" y1="248" x2="484" y2="248" stroke="#A05007" stroke-width="2" marker-end="url(#eS)"/>
+
+<rect x="490" y="208" width="380" height="80" rx="8" fill="#FFFFFF" stroke="#A05007" stroke-width="2"/>
+<text x="512" y="236" font-size="14" font-weight="700" fill="#14201C">Keyingi qadam: tibbiy ASR modeli</text>
+<text x="512" y="258" font-size="12.5" fill="#5C6B65">Bunday buzilishni satr algoritmi tiklay olmaydi &#8212;</text>
+<text x="512" y="277" font-size="12.5" fill="#5C6B65">bu yerda modelning o&#39;zi almashishi kerak.</text>
+</svg>

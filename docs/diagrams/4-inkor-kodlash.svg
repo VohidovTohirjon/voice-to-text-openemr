@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" width="900" height="420" font-family="Archivo, Helvetica Neue, Arial, sans-serif">
+<rect width="900" height="420" fill="#F6F7F4"/>
+<defs>
+  <marker id="cR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <polygon points="0,0 10,5 0,10" fill="#B3261E"/>
+  </marker>
+  <marker id="cG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <polygon points="0,0 10,5 0,10" fill="#0E6B58"/>
+  </marker>
+</defs>
+
+<text x="30" y="36" font-size="21" font-weight="800" fill="#14201C">&#8220;Yo&#39;q&#8221; degan so&#39;zni tushunish</text>
+<text x="30" y="58" font-size="13" fill="#5C6B65">Bitta jumla, ikki xil natija</text>
+
+<rect x="270" y="80" width="360" height="58" rx="8" fill="#FFFFFF" stroke="#14201C" stroke-width="1.8"/>
+<text x="450" y="106" text-anchor="middle" font-size="15" font-weight="700" fill="#14201C">&#8220;She denies chest pain&#8221;</text>
+<text x="450" y="126" text-anchor="middle" font-size="12" fill="#5C6B65">Bemor ko&#39;krak og&#39;rig&#39;ini inkor qilyapti</text>
+
+<path d="M420,138 C370,158 300,160 232,182" fill="none" stroke="#B3261E" stroke-width="1.8" marker-end="url(#cR)"/>
+<path d="M480,138 C530,158 600,160 668,182" fill="none" stroke="#0E6B58" stroke-width="1.8" marker-end="url(#cG)"/>
+
+<text x="30" y="176" font-family="JetBrains Mono, Menlo, monospace" font-size="11" letter-spacing="0.06em" fill="#B3261E">INKORNI BILMAYDIGAN TIZIM</text>
+<text x="470" y="176" font-family="JetBrains Mono, Menlo, monospace" font-size="11" letter-spacing="0.06em" fill="#0E6B58">BIZNING TIZIM</text>
+
+<rect x="30" y="188" width="400" height="50" rx="8" fill="#FFFFFF" stroke="#C9D2CB" stroke-width="1.4"/>
+<text x="48" y="210" font-size="13" fill="#14201C">Matnda &#8220;chest pain&#8221; iborasi bor</text>
+<text x="48" y="228" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="#5C6B65">so&#39;zlarni ko&#39;radi, ma&#39;nosini emas</text>
+
+<rect x="470" y="188" width="400" height="50" rx="8" fill="#FFFFFF" stroke="#C9D2CB" stroke-width="1.4"/>
+<text x="488" y="210" font-size="13" fill="#14201C">&#8220;denies&#8221; so&#39;zi topildi &#8594; INKOR</text>
+<text x="488" y="228" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="#5C6B65">gap doirasida tekshiriladi</text>
+
+<line x1="230" y1="240" x2="230" y2="258" stroke="#B3261E" stroke-width="1.6" marker-end="url(#cR)"/>
+<line x1="670" y1="240" x2="670" y2="258" stroke="#0E6B58" stroke-width="1.6" marker-end="url(#cG)"/>
+
+<rect x="30" y="262" width="400" height="50" rx="8" fill="#FFFFFF" stroke="#C9D2CB" stroke-width="1.4"/>
+<text x="48" y="284" font-size="13" fill="#14201C">Kod izlaydi &#8594; R07.9 Chest pain</text>
+<text x="48" y="302" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="#5C6B65">tashxis sifatida taklif qiladi</text>
+
+<rect x="470" y="262" width="400" height="50" rx="8" fill="#FFFFFF" stroke="#C9D2CB" stroke-width="1.4"/>
+<text x="488" y="284" font-size="13" fill="#14201C">Kod izlashdan <tspan font-weight="700">oldin</tspan> olib tashlanadi</text>
+<text x="488" y="302" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="#5C6B65">inkor qilingan topilma kodlanmaydi</text>
+
+<line x1="230" y1="314" x2="230" y2="332" stroke="#B3261E" stroke-width="1.6" marker-end="url(#cR)"/>
+<line x1="670" y1="314" x2="670" y2="332" stroke="#0E6B58" stroke-width="1.6" marker-end="url(#cG)"/>
+
+<rect x="30" y="336" width="400" height="60" rx="8" fill="#FBE9E7" stroke="#B3261E" stroke-width="1.8"/>
+<text x="48" y="362" font-size="14" font-weight="700" fill="#B3261E">Noto&#39;g&#39;ri tashxis kodi</text>
+<text x="48" y="382" font-size="12.5" fill="#14201C">Bemorda ko&#39;krak og&#39;rig&#39;i yo&#39;q edi</text>
+
+<rect x="470" y="336" width="400" height="60" rx="8" fill="#E1EFEB" stroke="#0E6B58" stroke-width="1.8"/>
+<text x="488" y="362" font-size="14" font-weight="700" fill="#0E6B58">R07.9 taklif qilinmaydi</text>
+<text x="488" y="382" font-size="12.5" fill="#14201C">Karta haqiqatga mos qoladi</text>
+</svg>

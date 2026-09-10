@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" font-family="Archivo, Helvetica Neue, Arial, sans-serif">
+<!-- Ranglar: accent #0E6B58 (neyron) · rule #C9D2CB (klassik) · signal #A05007 (inson) -->
+<defs>
+  <marker id="b1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <polygon points="0,0 10,5 0,10" fill="#14201C"/>
+  </marker>
+  <marker id="b2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <polygon points="0,0 10,5 0,10" fill="#0E6B58"/>
+  </marker>
+  <marker id="b3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <polygon points="0,0 10,5 0,10" fill="#A05007"/>
+  </marker>
+</defs>
+<rect width="900" height="520" fill="#F6F7F4"/>
+
+<text x="30" y="40" font-size="21" font-weight="800" fill="#14201C">Sakkiz qatlam</text>
+<text x="30" y="62" font-size="13" fill="#5C6B65">Ikkitasi neyron tarmoq, beshtasi klassik algoritm, oxirida inson</text>
+
+<rect x="24" y="252" width="120" height="64" rx="8" fill="#FFFFFF" stroke="#C9D2CB" stroke-width="1.4"/>
+<text x="42" y="280" font-size="13.5" font-weight="700" fill="#14201C">Audio</text>
+<text x="42" y="300" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="#5C6B65">brauzerdan</text>
+<line x1="148" y1="284" x2="190" y2="284" stroke="#14201C" stroke-width="1.6" marker-end="url(#b1)"/>
+
+<rect x="194" y="212" width="170" height="70" rx="8" fill="#E1EFEB" stroke="#0E6B58" stroke-width="2"/>
+<rect x="194" y="212" width="6" height="70" rx="3" fill="#0E6B58"/>
+<text x="212" y="238" font-size="13.5" font-weight="700" fill="#14201C">1 &#183; Whisper</text>
+<text x="212" y="260" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="#5C6B65">nutq &#8594; matn</text>
+
+<rect x="194" y="320" width="170" height="70" rx="8" fill="#E1EFEB" stroke="#0E6B58" stroke-width="2"/>
+<rect x="194" y="320" width="6" height="70" rx="3" fill="#0E6B58"/>
+<text x="212" y="346" font-size="13.5" font-weight="700" fill="#14201C">2 &#183; ASR sifati</text>
+<text x="212" y="368" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="#5C6B65">gallyutsinatsiya</text>
+
+<line x1="279" y1="284" x2="279" y2="316" stroke="#0E6B58" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#b2)"/>
+<text x="290" y="306" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="#0E6B58">ichki statistika</text>
+
+<line x1="368" y1="247" x2="394" y2="247" stroke="#14201C" stroke-width="1.6"/>
+<line x1="394" y1="132" x2="394" y2="420" stroke="#14201C" stroke-width="1.6"/>
+<text x="402" y="122" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="#5C6B65">transkript</text>
+
+<rect x="444" y="106" width="212" height="52" rx="8" fill="#FFFFFF" stroke="#C9D2CB" stroke-width="1.4"/>
+<text x="460" y="127" font-size="12.5" font-weight="700" fill="#14201C">3 &#183; SOAP tuzilma</text>
+<text x="460" y="146" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="#5C6B65">S / O / A / P ga ajratish</text>
+
+<rect x="444" y="172" width="212" height="52" rx="8" fill="#FFFFFF" stroke="#C9D2CB" stroke-width="1.4"/>
+<text x="460" y="193" font-size="12.5" font-weight="700" fill="#14201C">4 &#183; Klinik lug&#39;at</text>
+<text x="460" y="212" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="#5C6B65">dorilar &#183; ko&#39;rsatkichlar</text>
+
+<rect x="444" y="238" width="212" height="52" rx="8" fill="#FFFFFF" stroke="#C9D2CB" stroke-width="1.4"/>
+<text x="460" y="259" font-size="12.5" font-weight="700" fill="#14201C">5 &#183; Inkor</text>
+<text x="460" y="278" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="#5C6B65">&#8220;yo&#39;q&#8221; ni tushunish</text>
+
+<rect x="444" y="304" width="212" height="52" rx="8" fill="#FFFFFF" stroke="#C9D2CB" stroke-width="1.4"/>
+<text x="460" y="325" font-size="12.5" font-weight="700" fill="#14201C">6 &#183; ICD-10 kodlash</text>
+<text x="460" y="344" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="#5C6B65">tashxis kodlari</text>
+
+<rect x="444" y="370" width="212" height="52" rx="8" fill="#FFFFFF" stroke="#C9D2CB" stroke-width="1.4"/>
+<text x="460" y="391" font-size="12.5" font-weight="700" fill="#14201C">7 &#183; PHI aniqlash</text>
+<text x="460" y="410" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="#5C6B65">shaxsiy ma&#39;lumotlar</text>
+
+<line x1="394" y1="132" x2="440" y2="132" stroke="#14201C" stroke-width="1.4" marker-end="url(#b1)"/>
+<line x1="394" y1="198" x2="440" y2="198" stroke="#14201C" stroke-width="1.4" marker-end="url(#b1)"/>
+<line x1="394" y1="264" x2="440" y2="264" stroke="#14201C" stroke-width="1.4" marker-end="url(#b1)"/>
+<line x1="394" y1="330" x2="440" y2="330" stroke="#14201C" stroke-width="1.4" marker-end="url(#b1)"/>
+<line x1="394" y1="396" x2="440" y2="396" stroke="#14201C" stroke-width="1.4" marker-end="url(#b1)"/>
+
+<line x1="660" y1="132" x2="680" y2="132" stroke="#14201C" stroke-width="1.4"/>
+<line x1="660" y1="198" x2="680" y2="198" stroke="#14201C" stroke-width="1.4"/>
+<line x1="660" y1="264" x2="680" y2="264" stroke="#14201C" stroke-width="1.4"/>
+<line x1="660" y1="330" x2="680" y2="330" stroke="#14201C" stroke-width="1.4"/>
+<line x1="660" y1="396" x2="680" y2="396" stroke="#14201C" stroke-width="1.4"/>
+<line x1="680" y1="132" x2="680" y2="396" stroke="#14201C" stroke-width="1.6"/>
+<line x1="680" y1="240" x2="706" y2="240" stroke="#A05007" stroke-width="2" marker-end="url(#b3)"/>
+
+<rect x="710" y="202" width="166" height="76" rx="8" fill="#F9EADB" stroke="#A05007" stroke-width="2"/>
+<text x="726" y="230" font-size="13" font-weight="700" fill="#14201C">Shifokor tasdig&#39;i</text>
+<text x="726" y="250" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="#5C6B65">past ishonch =</text>
+<text x="726" y="266" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="#5C6B65">belgilanmagan</text>
+
+<line x1="793" y1="282" x2="793" y2="336" stroke="#A05007" stroke-width="2" marker-end="url(#b3)"/>
+
+<rect x="710" y="340" width="166" height="66" rx="8" fill="#FFFFFF" stroke="#14201C" stroke-width="1.4"/>
+<text x="726" y="366" font-size="13" font-weight="700" fill="#14201C">OpenEMR formasi</text>
+<text x="726" y="386" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="#5C6B65">to&#39;ldiriladi</text>
+
+<rect x="30" y="452" width="22" height="10" rx="2" fill="#0E6B58"/>
+<text x="60" y="462" font-family="JetBrains Mono, Menlo, monospace" font-size="11" fill="#5C6B65">neyron model</text>
+<rect x="200" y="452" width="22" height="10" rx="2" fill="#C9D2CB"/>
+<text x="230" y="462" font-family="JetBrains Mono, Menlo, monospace" font-size="11" fill="#5C6B65">klassik algoritm</text>
+<rect x="390" y="452" width="22" height="10" rx="2" fill="#A05007"/>
+<text x="420" y="462" font-family="JetBrains Mono, Menlo, monospace" font-size="11" fill="#5C6B65">inson nazorati</text>
+</svg>

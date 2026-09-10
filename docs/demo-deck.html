@@ -1,0 +1,890 @@
+<title>OpenEMR Ovoz Demosi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+
+<style>
+:root{
+  --ground:#F6F7F4;
+  --surface:#FFFFFF;
+  --surface-2:#EFF2EE;
+  --ink:#131E19;
+  --ink-soft:#41514A;
+  --muted:#6E7D76;
+  --rule:#D9E0DA;
+  --rule-strong:#BFCAC2;
+  --accent:#0E6B58;
+  --accent-soft:#E1EFEB;
+  --signal:#A05007;
+  --signal-soft:#F9EADB;
+  --danger:#B3261E;
+  --danger-soft:#FBE9E7;
+  --shadow:0 1px 2px rgba(19,30,25,.05);
+
+  --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Newsreader","Iowan Old Style",Georgia,serif;
+  --f-mono:"JetBrains Mono","SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0C1210;
+    --surface:#141C19;
+    --surface-2:#1A2420;
+    --ink:#E6ECE8;
+    --ink-soft:#B3C1BA;
+    --muted:#82938B;
+    --rule:#25332C;
+    --rule-strong:#37483F;
+    --accent:#4CC7A8;
+    --accent-soft:#123029;
+    --signal:#E79B50;
+    --signal-soft:#33230F;
+    --danger:#F2867A;
+    --danger-soft:#3A1A17;
+    --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0C1210;
+  --surface:#141C19;
+  --surface-2:#1A2420;
+  --ink:#E6ECE8;
+  --ink-soft:#B3C1BA;
+  --muted:#82938B;
+  --rule:#25332C;
+  --rule-strong:#37483F;
+  --accent:#4CC7A8;
+  --accent-soft:#123029;
+  --signal:#E79B50;
+  --signal-soft:#33230F;
+  --danger:#F2867A;
+  --danger-soft:#3A1A17;
+  --shadow:0 1px 2px rgba(0,0,0,.4);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:18px;
+  line-height:1.62;
+  margin:0;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px 100px}
+
+/* ---------- masthead ---------- */
+.masthead{padding:52px 0 30px;border-bottom:2px solid var(--ink)}
+.kicker{
+  font-family:var(--f-mono);font-size:11.5px;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--accent);
+  margin:0 0 14px;
+}
+h1{
+  font-family:var(--f-display);font-weight:800;font-size:clamp(34px,5.2vw,54px);
+  line-height:1.04;letter-spacing:-.022em;margin:0 0 16px;text-wrap:balance;
+}
+.standfirst{
+  font-size:20px;color:var(--ink-soft);margin:0;max-width:60ch;
+}
+.masthead-meta{
+  display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:26px;
+  font-family:var(--f-mono);font-size:12.5px;color:var(--muted);
+}
+.masthead-meta b{color:var(--ink);font-weight:500}
+
+/* ---------- presenter toggle ---------- */
+.deckbar{
+  position:sticky;top:0;z-index:50;background:var(--ground);
+  border-bottom:1px solid var(--rule);
+  margin-bottom:8px;
+}
+.deckbar-inner{
+  max-width:1080px;margin:0 auto;padding:11px 28px;
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+}
+.deckbar-note{
+  font-family:var(--f-mono);font-size:12px;color:var(--muted);margin:0;
+}
+.switch{
+  display:inline-flex;align-items:center;gap:9px;cursor:pointer;
+  font-family:var(--f-display);font-size:13.5px;font-weight:600;
+  color:var(--ink);border:1px solid var(--rule-strong);
+  background:var(--surface);border-radius:999px;padding:6px 14px 6px 10px;
+}
+.switch:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.switch input{position:absolute;opacity:0;width:1px;height:1px}
+.dot{
+  width:30px;height:17px;border-radius:999px;background:var(--rule-strong);
+  position:relative;transition:background .16s ease;flex:none;
+}
+.dot::after{
+  content:"";position:absolute;top:2.5px;left:2.5px;width:12px;height:12px;
+  border-radius:999px;background:var(--surface);transition:transform .16s ease;
+}
+.switch input:checked + .dot{background:var(--accent)}
+.switch input:checked + .dot::after{transform:translateX(13px)}
+@media (prefers-reduced-motion:reduce){
+  .dot,.dot::after{transition:none}
+}
+body.presenting .presenter-hide{display:none}
+body.presenting .beat{padding-bottom:40px}
+
+/* ---------- beats ---------- */
+.beat{
+  display:grid;grid-template-columns:104px 1fr;gap:0 30px;
+  padding:44px 0 44px;border-bottom:1px solid var(--rule);
+}
+.rail{position:relative}
+.tc{
+  font-family:var(--f-mono);font-size:19px;font-weight:500;
+  color:var(--accent);letter-spacing:-.02em;
+  position:sticky;top:64px;display:block;
+}
+.tc small{display:block;font-size:11.5px;color:var(--muted);margin-top:5px;letter-spacing:0}
+h2{
+  font-family:var(--f-display);font-weight:700;font-size:29px;
+  letter-spacing:-.018em;line-height:1.16;margin:-4px 0 8px;text-wrap:balance;
+}
+.beat-lead{color:var(--ink-soft);margin:0 0 24px;max-width:62ch}
+
+/* ---------- script block ---------- */
+.script{
+  border-left:3px solid var(--accent);
+  background:var(--accent-soft);
+  padding:18px 22px;border-radius:0 8px 8px 0;margin:0 0 22px;
+}
+.script p{margin:0 0 12px}
+.script p:last-child{margin:0}
+.script-tag{
+  display:block;font-family:var(--f-mono);font-size:10.5px;font-weight:500;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;
+}
+.script em{font-style:italic;color:var(--ink-soft)}
+
+/* ---------- actions (demo steps) ---------- */
+.actions{list-style:none;margin:0 0 24px;padding:0;counter-reset:step}
+.actions li{
+  counter-increment:step;position:relative;padding:9px 0 9px 44px;
+  border-bottom:1px dotted var(--rule);
+}
+.actions li:last-child{border-bottom:0}
+.actions li::before{
+  content:counter(step);position:absolute;left:0;top:11px;
+  width:26px;height:26px;border-radius:999px;background:var(--ink);color:var(--ground);
+  font-family:var(--f-mono);font-size:12.5px;font-weight:500;
+  display:grid;place-items:center;
+}
+
+/* ---------- figures ---------- */
+figure{margin:0 0 26px}
+.figframe{
+  background:var(--surface);border:1px solid var(--rule);border-radius:10px;
+  padding:20px 18px;overflow-x:auto;box-shadow:var(--shadow);
+}
+.figframe svg{display:block;width:100%;min-width:600px;height:auto}
+figcaption{
+  font-size:15px;color:var(--muted);margin-top:11px;font-style:italic;max-width:64ch;
+}
+.legend{
+  display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:14px;
+  font-family:var(--f-mono);font-size:11.5px;color:var(--muted);
+}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.chip{width:22px;height:10px;border-radius:2px;flex:none}
+
+/* ---------- AI layer list ---------- */
+.layers{display:flex;flex-direction:column;gap:14px;margin:0 0 24px}
+.layer{
+  background:var(--surface);border:1px solid var(--rule);
+  border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:16px 20px;
+}
+.layer.ruleb{border-left-color:var(--rule-strong)}
+.layer-head{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px;margin-bottom:7px;
+}
+.layer-name{font-family:var(--f-display);font-weight:700;font-size:18px;letter-spacing:-.01em}
+.layer-kind{
+  font-family:var(--f-mono);font-size:10.5px;font-weight:500;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--accent);
+  border:1px solid var(--accent);border-radius:3px;padding:1px 6px;
+}
+.layer.ruleb .layer-kind{color:var(--muted);border-color:var(--rule-strong)}
+.layer p{margin:0 0 9px;font-size:17px}
+.layer p:last-child{margin:0}
+.ref{
+  font-family:var(--f-mono);font-size:12.5px;color:var(--muted);
+  display:inline-block;background:var(--surface-2);
+  border-radius:3px;padding:1px 7px;
+}
+
+/* ---------- callout ---------- */
+.callout{
+  background:var(--signal-soft);border:1px solid var(--signal);
+  border-radius:8px;padding:17px 21px;margin:0 0 24px;
+}
+.callout-title{
+  font-family:var(--f-display);font-weight:700;font-size:15px;
+  color:var(--signal);margin:0 0 9px;letter-spacing:.005em;
+}
+.callout ul{margin:0;padding-left:20px}
+.callout li{margin-bottom:7px;font-size:16.5px}
+.callout li:last-child{margin-bottom:0}
+.callout p{margin:10px 0 0;font-size:16.5px}
+
+/* ---------- code ---------- */
+pre{
+  font-family:var(--f-mono);font-size:13.5px;line-height:1.62;
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:8px;
+  padding:14px 16px;overflow-x:auto;margin:0 0 14px;color:var(--ink);
+}
+code{font-family:var(--f-mono);font-size:.87em;
+  background:var(--surface-2);border-radius:3px;padding:1px 5px}
+pre code{background:none;padding:0;font-size:1em}
+
+/* ---------- table ---------- */
+.tablewrap{overflow-x:auto;margin:0 0 24px;border:1px solid var(--rule);border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:520px;background:var(--surface)}
+th,td{text-align:left;padding:10px 16px;border-bottom:1px solid var(--rule);font-size:16px}
+th{
+  font-family:var(--f-display);font-size:12px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--muted);background:var(--surface-2);
+}
+tr:last-child td{border-bottom:0}
+td.mono{font-family:var(--f-mono);font-size:13px;white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* ---------- appendix ---------- */
+.appendix{padding-top:46px}
+.appendix h2{font-size:24px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:26px}
+h3{
+  font-family:var(--f-display);font-weight:700;font-size:16px;
+  letter-spacing:.005em;margin:0 0 10px;
+}
+.appendix ul{margin:0;padding-left:20px}
+.appendix li{margin-bottom:8px;font-size:16.5px}
+
+@media (max-width:760px){
+  body{font-size:17px}
+  .wrap{padding:0 18px 70px}
+  .deckbar-inner{padding:10px 18px}
+  .beat{grid-template-columns:1fr;gap:0}
+  .rail{margin-bottom:14px}
+  .tc{position:static;font-size:16px}
+  .tc small{display:inline;margin-left:10px}
+  h2{font-size:24px}
+  .figframe{padding:14px 12px}
+}
+</style>
+
+<div class="deckbar">
+  <div class="deckbar-inner">
+    <label class="switch">
+      <input type="checkbox" id="present">
+      <span class="dot" aria-hidden="true"></span>
+      <span>Ko&#39;rsatish rejimi</span>
+    </label>
+    <p class="deckbar-note">Yoqilsa — gapiriladigan matn yashiriladi, faqat diagrammalar qoladi. Ekranni yozib olishda shuni yoqing.</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="kicker">Demo brifingi &middot; 3 daqiqa</p>
+    <h1>OpenEMR uchun ovozdan matnga o&#39;tkazish</h1>
+    <p class="standfirst">Shifokor gapiradi &mdash; tizim nutqni matnga aylantirib, encounter formasining <em>Reason for Visit</em> maydoniga tasdiqdan keyin joylaydi. Hammasi bitta kompyuterda, tashqi bulutsiz.</p>
+    <div class="callout" style="margin-top:26px">
+      <p class="callout-title">Kod ekranda ko&#39;rsatilmaydi</p>
+      <p>Butun texnik tushuntirish diagrammalar orqali beriladi. Video davomida
+      muharrir, terminal yoki fayl ochilmaydi &mdash; faqat ishlayotgan dastur va
+      olti dona diagramma. Diagrammalar mustaqil fayl sifatida
+      <code>docs/diagrams/</code> papkasida turadi va slaydga ham qo&#39;yiladi.</p>
+    </div>
+    <div class="masthead-meta">
+      <span>Xronometraj <b>3:00</b></span>
+      <span>Beshta bo&#39;lim</span>
+      <span>Uchta diagramma</span>
+      <span>AI/ML qatlamlari <b>3</b></span>
+    </div>
+  </header>
+
+  <!-- ============ BEAT 1 ============ -->
+  <section class="beat">
+    <div class="rail"><span class="tc">0:00<small>22 soniya</small></span></div>
+    <div>
+      <h2>Muammo va yechim</h2>
+      <p class="beat-lead">Ekranda: OpenEMR encounter formasi, <code>Reason for Visit</code> maydoni ko&#39;rinib tursin.</p>
+
+      <div class="script presenter-hide">
+        <span class="script-tag">Gapiriladigan matn &middot; ~50 so&#39;z</span>
+        <p>&ldquo;Shifokor ish vaqtining katta qismini bemor bilan emas, klaviatura bilan o&#39;tkazadi. Biz OpenEMR&#39;ga ovozdan matnga o&#39;tkazish qatlamini qo&#39;shdik: shifokor gapiradi, tizim yozadi.</p>
+        <p>Bitta shart bor &mdash; bemor ma&#39;lumoti kompyuterdan chiqmasligi kerak. Shuning uchun barcha modellar lokal ishlaydi, hech qanday tashqi API yo&#39;q.&rdquo;</p>
+      </div>
+
+      <div class="callout">
+        <p class="callout-title">Rahbar uchun asosiy nuqta</p>
+        <p>Bozordagi ko&#39;pchilik yechim audioni bulutga yuboradi. Bu yerda Whisper ham, NLP modeli ham ish stantsiyasining o&#39;zida ishlaydi &mdash; ya&#39;ni maxfiylik arxitekturaning o&#39;zidan kelib chiqadi, qo&#39;shimcha shartnoma yoki sozlama hisobiga emas.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BEAT 2 ============ -->
+  <section class="beat">
+    <div class="rail"><span class="tc">0:22<small>28 soniya</small></span></div>
+    <div>
+      <h2>Arxitektura</h2>
+      <p class="beat-lead">Ekranda: quyidagi diagramma. Aytayotganda sichqoncha bilan qismlarni ko&#39;rsatib boring.</p>
+
+      <figure>
+        <div class="figframe">
+          <svg viewBox="0 0 900 500" font-family="Archivo, Helvetica Neue, Arial, sans-serif">
+<defs>
+  <marker id="dk-1-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <polygon points="0,0 10,5 0,10" fill="currentColor"/>
+  </marker>
+  <marker id="dk-1-ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <polygon points="0,0 10,5 0,10" fill="var(--accent)"/>
+  </marker>
+</defs>
+<text x="450" y="94" text-anchor="middle" font-family="JetBrains Mono, Menlo, monospace" font-size="12" fill="var(--accent)">BITTA ISH STANTSIYASI &#8212; TARMOQQA HECH NARSA CHIQMAYDI</text>
+<rect x="26" y="108" width="848" height="368" rx="14" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="7 6"/>
+<rect x="52" y="138" width="796" height="150" rx="10" fill="var(--surface-2)" stroke="var(--rule-strong)"/>
+<text x="70" y="161" font-family="JetBrains Mono, Menlo, monospace" font-size="12" fill="var(--muted)">Chrome brauzeri</text>
+<rect x="72" y="174" width="296" height="100" rx="8" fill="var(--surface)" stroke="currentColor" stroke-width="1.4"/>
+<text x="90" y="202" font-size="15" font-weight="700" fill="currentColor">OpenEMR sahifasi</text>
+<text x="90" y="225" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="var(--muted)">encounter formasi</text>
+<text x="90" y="246" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="var(--muted)">SOAP + ko&#39;rsatkichlar</text>
+<rect x="532" y="174" width="296" height="100" rx="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.8"/>
+<text x="550" y="202" font-size="15" font-weight="700" fill="currentColor">Kengaytma paneli</text>
+<text x="550" y="225" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="var(--muted)">mikrofon &#183; maydon topish</text>
+<text x="550" y="246" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="var(--muted)">tasdiqlash oynasi</text>
+<line x1="370" y1="252" x2="528" y2="252" stroke="currentColor" stroke-width="1.6" marker-end="url(#dk-1-ar)"/>
+<text x="449" y="271" text-anchor="middle" font-family="JetBrains Mono, Menlo, monospace" font-size="11" fill="var(--muted)">1. maydonlarni topadi</text>
+<line x1="530" y1="210" x2="372" y2="210" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#dk-1-ag)"/>
+<text x="449" y="200" text-anchor="middle" font-family="JetBrains Mono, Menlo, monospace" font-size="11" fill="var(--accent)">4. tasdiqdan keyin yozadi</text>
+<rect x="532" y="356" width="296" height="100" rx="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.8"/>
+<text x="550" y="384" font-size="15" font-weight="700" fill="currentColor">Lokal tahlil xizmati</text>
+<text x="550" y="407" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="var(--muted)">127.0.0.1:8000</text>
+<text x="550" y="428" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="var(--muted)">8 ta AI/ML qatlami</text>
+<line x1="602" y1="276" x2="602" y2="352" stroke="currentColor" stroke-width="1.6" marker-end="url(#dk-1-ar)"/>
+<text x="588" y="306" text-anchor="end" font-family="JetBrains Mono, Menlo, monospace" font-size="11" fill="var(--muted)">2. audio yuboriladi</text>
+<line x1="748" y1="352" x2="748" y2="276" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#dk-1-ag)"/>
+<text x="762" y="306" font-family="JetBrains Mono, Menlo, monospace" font-size="11" fill="var(--accent)">3. tahlil qaytadi</text>
+</svg>
+        </div>
+        <figcaption>Uchta qism va ular orasidagi to&#39;rtta qadam. Uzuq chiziq &mdash; ishonch chegarasi: audio ham, matn ham bu chiziqdan tashqariga chiqmaydi.</figcaption>
+      </figure>
+
+      <div class="script presenter-hide">
+        <span class="script-tag">Gapiriladigan matn &middot; ~63 so&#39;z</span>
+        <p>&ldquo;Tizim uch qismdan iborat. Chapda &mdash; OpenEMR&#39;ning o&#39;z encounter formasi. O&#39;ngda &mdash; biz yozgan Chrome kengaytmasi: u sahifani skanerlab kerakli maydonni topadi va mikrofondan audio yozib oladi. Pastda &mdash; lokal FastAPI xizmati, sakkiz mingchi portda, ichida AI modellari.</p>
+        <p>Audio kengaytmadan xizmatga boradi, matn qaytadi, va kengaytma uni formaga yozadi. E&#39;tibor bering &mdash; uzuq chiziqdan tashqariga hech narsa chiqmaydi.&rdquo;</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BEAT 3 ============ -->
+  <section class="beat">
+    <div class="rail"><span class="tc">0:50<small>42 soniya</small></span></div>
+    <div>
+      <h2>Jonli demo</h2>
+      <p class="beat-lead">Ekranda: encounter formasi va suzuvchi panel. Kam gapiring &mdash; harakat o&#39;zi ko&#39;rsatadi.</p>
+
+      <ol class="actions">
+        <li><b>Start mic</b> &rarr; dikta qiling:<br>
+          <em>&ldquo;Patient reports headache and mild fever for two days. She denies chest pain.
+          On examination temperature 38 degrees, blood pressure 148 over 92, pulse 96.
+          Impression is likely viral upper respiratory infection.
+          Plan is acetaminophen 500 milligrams, continue lisinopril daily, follow up in one week.&rdquo;</em></li>
+        <li><b>Stop</b> &rarr; transkript va <b>ASR ishonch chizig&#39;i</b> paydo bo&#39;ladi.</li>
+        <li><b>Analyze</b> &rarr; bir soniyadan kam vaqtda tahlil tayyor.</li>
+        <li>Ro&#39;yxatni ko&#39;rsating: <b>11 ta maydon topildi, 10 tasi belgilangan</b>.
+          <code>diagnosis</code> belgilanmagan &mdash; chunki tizim unga ishonchi past.</li>
+        <li><b>Insert 10 fields</b> &rarr; tasdiqlash oynasi &rarr; <b>OK</b>.</li>
+        <li>Forma to&#39;ldi: Subjective, Objective, Assessment, Plan, BP, puls, harorat &mdash;
+          bitta diktadan.</li>
+      </ol>
+
+      <div class="script presenter-hide">
+        <span class="script-tag">Gapiriladigan matn &middot; ~68 so&#39;z, harakat orasida</span>
+        <p>&ldquo;Bir marta gapiraman &mdash; va tizim butun encounter formasini to&#39;ldiradi: SOAP bo&#39;limlari, ko&#39;rsatkichlar, dorilar.</p>
+        <p>Har bir maydon yonida ishonch foizi bor. E&#39;tibor bering &mdash; o&#39;n bir maydon topildi, lekin faqat o&#39;ntasi belgilangan. Tashxis kodi belgilanmagan, chunki tizim o&#39;zi unga ishonchi pastligini bildirdi.</p>
+        <p>Bu asosiy tamoyil: past ishonchli taklif <b>o&#39;zi yoqilmaydi</b> &mdash; shifokor uni ongli ravishda belgilashi kerak. AI hech qachon kartaga o&#39;zi yozmaydi.&rdquo;</p>
+      </div>
+
+      <div class="callout">
+        <p class="callout-title">Ko&#39;rsatishga arzigulik ikkita detal</p>
+        <ul>
+          <li>Har bir qatorda <code>matched on name-attribute</code> yozuvi bor &mdash; ya&#39;ni maydon
+            OpenEMR&#39;ning haqiqiy <code>name</code> atributi bo&#39;yicha topilgan, yorliq matnidan taxmin qilinmagan.</li>
+          <li>Agar maydonda allaqachon matn bo&#39;lsa, <code>will overwrite</code> ogohlantirishi chiqadi.</li>
+        </ul>
+        <p><b>Zaxira reja:</b> mikrofon yoki xizmat ishlamasa &mdash; <b>Demo text</b> tugmasi bor,
+        to&#39;liq tahlil yo&#39;li baribir ishlaydi.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BEAT 4 ============ -->
+  <section class="beat">
+    <div class="rail"><span class="tc">1:32<small>68 soniya</small></span></div>
+    <div>
+      <h2>AI/ML qatlamlari</h2>
+      <p class="beat-lead">Videoning eng muhim bo&#39;limi. Ekranda: diagramma, keyin jadval.</p>
+
+      <figure>
+        <div class="figframe">
+          <svg viewBox="0 0 900 520" font-family="Archivo, Helvetica Neue, Arial, sans-serif">
+<defs>
+  <marker id="dk-2-b1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <polygon points="0,0 10,5 0,10" fill="currentColor"/>
+  </marker>
+  <marker id="dk-2-b2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <polygon points="0,0 10,5 0,10" fill="var(--accent)"/>
+  </marker>
+  <marker id="dk-2-b3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <polygon points="0,0 10,5 0,10" fill="var(--signal)"/>
+  </marker>
+</defs>
+<rect x="24" y="252" width="120" height="64" rx="8" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.4"/>
+<text x="42" y="280" font-size="13.5" font-weight="700" fill="currentColor">Audio</text>
+<text x="42" y="300" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="var(--muted)">brauzerdan</text>
+<line x1="148" y1="284" x2="190" y2="284" stroke="currentColor" stroke-width="1.6" marker-end="url(#dk-2-b1)"/>
+<rect x="194" y="212" width="170" height="70" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+<rect x="194" y="212" width="6" height="70" rx="3" fill="var(--accent)"/>
+<text x="212" y="238" font-size="13.5" font-weight="700" fill="currentColor">1 &#183; Whisper</text>
+<text x="212" y="260" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="var(--muted)">nutq &#8594; matn</text>
+<rect x="194" y="320" width="170" height="70" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+<rect x="194" y="320" width="6" height="70" rx="3" fill="var(--accent)"/>
+<text x="212" y="346" font-size="13.5" font-weight="700" fill="currentColor">2 &#183; ASR sifati</text>
+<text x="212" y="368" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="var(--muted)">gallyutsinatsiya</text>
+<line x1="279" y1="284" x2="279" y2="316" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#dk-2-b2)"/>
+<text x="290" y="306" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="var(--accent)">ichki statistika</text>
+<line x1="368" y1="247" x2="394" y2="247" stroke="currentColor" stroke-width="1.6"/>
+<line x1="394" y1="132" x2="394" y2="420" stroke="currentColor" stroke-width="1.6"/>
+<text x="402" y="122" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="var(--muted)">transkript</text>
+<rect x="444" y="106" width="212" height="52" rx="8" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.4"/>
+<text x="460" y="127" font-size="12.5" font-weight="700" fill="currentColor">3 &#183; SOAP tuzilma</text>
+<text x="460" y="146" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="var(--muted)">S / O / A / P ga ajratish</text>
+<rect x="444" y="172" width="212" height="52" rx="8" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.4"/>
+<text x="460" y="193" font-size="12.5" font-weight="700" fill="currentColor">4 &#183; Klinik lug&#39;at</text>
+<text x="460" y="212" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="var(--muted)">dorilar &#183; ko&#39;rsatkichlar</text>
+<rect x="444" y="238" width="212" height="52" rx="8" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.4"/>
+<text x="460" y="259" font-size="12.5" font-weight="700" fill="currentColor">5 &#183; Inkor</text>
+<text x="460" y="278" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="var(--muted)">&#8220;yo&#39;q&#8221; ni tushunish</text>
+<rect x="444" y="304" width="212" height="52" rx="8" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.4"/>
+<text x="460" y="325" font-size="12.5" font-weight="700" fill="currentColor">6 &#183; ICD-10 kodlash</text>
+<text x="460" y="344" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="var(--muted)">tashxis kodlari</text>
+<rect x="444" y="370" width="212" height="52" rx="8" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.4"/>
+<text x="460" y="391" font-size="12.5" font-weight="700" fill="currentColor">7 &#183; PHI aniqlash</text>
+<text x="460" y="410" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="var(--muted)">shaxsiy ma&#39;lumotlar</text>
+<line x1="394" y1="132" x2="440" y2="132" stroke="currentColor" stroke-width="1.4" marker-end="url(#dk-2-b1)"/>
+<line x1="394" y1="198" x2="440" y2="198" stroke="currentColor" stroke-width="1.4" marker-end="url(#dk-2-b1)"/>
+<line x1="394" y1="264" x2="440" y2="264" stroke="currentColor" stroke-width="1.4" marker-end="url(#dk-2-b1)"/>
+<line x1="394" y1="330" x2="440" y2="330" stroke="currentColor" stroke-width="1.4" marker-end="url(#dk-2-b1)"/>
+<line x1="394" y1="396" x2="440" y2="396" stroke="currentColor" stroke-width="1.4" marker-end="url(#dk-2-b1)"/>
+<line x1="660" y1="132" x2="680" y2="132" stroke="currentColor" stroke-width="1.4"/>
+<line x1="660" y1="198" x2="680" y2="198" stroke="currentColor" stroke-width="1.4"/>
+<line x1="660" y1="264" x2="680" y2="264" stroke="currentColor" stroke-width="1.4"/>
+<line x1="660" y1="330" x2="680" y2="330" stroke="currentColor" stroke-width="1.4"/>
+<line x1="660" y1="396" x2="680" y2="396" stroke="currentColor" stroke-width="1.4"/>
+<line x1="680" y1="132" x2="680" y2="396" stroke="currentColor" stroke-width="1.6"/>
+<line x1="680" y1="240" x2="706" y2="240" stroke="var(--signal)" stroke-width="2" marker-end="url(#dk-2-b3)"/>
+<rect x="710" y="202" width="166" height="76" rx="8" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="2"/>
+<text x="726" y="230" font-size="13" font-weight="700" fill="currentColor">Shifokor tasdig&#39;i</text>
+<text x="726" y="250" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="var(--muted)">past ishonch =</text>
+<text x="726" y="266" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="var(--muted)">belgilanmagan</text>
+<line x1="793" y1="282" x2="793" y2="336" stroke="var(--signal)" stroke-width="2" marker-end="url(#dk-2-b3)"/>
+<rect x="710" y="340" width="166" height="66" rx="8" fill="var(--surface)" stroke="currentColor" stroke-width="1.4"/>
+<text x="726" y="366" font-size="13" font-weight="700" fill="currentColor">OpenEMR formasi</text>
+<text x="726" y="386" font-family="JetBrains Mono, Menlo, monospace" font-size="10" fill="var(--muted)">to&#39;ldiriladi</text>
+<rect x="30" y="452" width="22" height="10" rx="2" fill="var(--accent)"/>
+<text x="60" y="462" font-family="JetBrains Mono, Menlo, monospace" font-size="11" fill="var(--muted)">neyron model</text>
+<rect x="200" y="452" width="22" height="10" rx="2" fill="var(--rule-strong)"/>
+<text x="230" y="462" font-family="JetBrains Mono, Menlo, monospace" font-size="11" fill="var(--muted)">klassik algoritm</text>
+<rect x="390" y="452" width="22" height="10" rx="2" fill="var(--signal)"/>
+<text x="420" y="462" font-family="JetBrains Mono, Menlo, monospace" font-size="11" fill="var(--muted)">inson nazorati</text>
+</svg>
+        </div>
+        <div class="legend">
+          <span><i class="chip" style="background:var(--accent)"></i> neyron model / uning ichki signali</span>
+          <span><i class="chip" style="background:var(--rule-strong)"></i> klassik algoritm</span>
+          <span><i class="chip" style="background:var(--signal)"></i> inson nazorati</span>
+        </div>
+        <figcaption>Ikkita qatlam neyron tarmoq, beshtasi klassik algoritm. Bu farqni ochiq aytish &mdash; ishonch uyg&#39;otadigan eng kuchli narsa.</figcaption>
+      </figure>
+
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>#</th><th>Qatlam</th><th>Texnika</th><th>Turi</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">1</td><td>Nutqni tanish</td><td>Whisper base &mdash; transformer</td><td>neyron model</td></tr>
+            <tr><td class="mono">2</td><td>ASR sifati</td><td>Dekoder statistikasi</td><td>statistik</td></tr>
+            <tr><td class="mono">3</td><td>SOAP tuzilma</td><td>Ishora-ibora klassifikatori</td><td>klassik</td></tr>
+            <tr><td class="mono">4</td><td>Dori tuzatish</td><td>Soundex + tahrir masofasi</td><td>klassik</td></tr>
+            <tr><td class="mono">5</td><td>Inkor</td><td>NegEx (Chapman, 2001)</td><td>klassik</td></tr>
+            <tr><td class="mono">6</td><td>ICD-10 kodlash</td><td>Okapi BM25</td><td>klassik</td></tr>
+            <tr><td class="mono">7</td><td>PHI aniqlash</td><td>Shablon + NER</td><td>aralash</td></tr>
+            <tr><td class="mono">8</td><td>Entity ajratish</td><td>spaCy NER / Llama 3.2</td><td>neyron, ixtiyoriy</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <figure>
+        <div class="figframe">
+<svg viewBox="0 0 900 512" font-family="Archivo, Helvetica Neue, Arial, sans-serif">
+<text x="42" y="92" font-family="JetBrains Mono, Menlo, monospace" font-size="10" letter-spacing="0.08em" fill="var(--muted)">VAQT</text>
+<text x="126" y="92" font-family="JetBrains Mono, Menlo, monospace" font-size="10" letter-spacing="0.08em" fill="var(--muted)">TIZIM NIMA ESHITDI</text>
+<text x="524" y="92" font-family="JetBrains Mono, Menlo, monospace" font-size="10" letter-spacing="0.08em" fill="var(--muted)">ISHONCH</text>
+<text x="690" y="92" font-family="JetBrains Mono, Menlo, monospace" font-size="10" letter-spacing="0.08em" fill="var(--muted)">XULOSA</text>
+<rect x="26" y="102" width="848" height="76" rx="8" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.4"/>
+<text x="42" y="132" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="var(--muted)">0:00</text>
+<text x="42" y="150" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="var(--muted)">0:04</text>
+<text x="126" y="135" font-size="13.5" fill="currentColor">Patient reports headache and mild fever for two days.</text>
+<text x="126" y="157" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="var(--muted)">tabiiy nutq, hech qanday shubha yo&#39;q</text>
+<text x="524" y="128" font-family="JetBrains Mono, Menlo, monospace" font-size="13" font-weight="500" fill="currentColor">84%</text>
+<rect x="524" y="140" width="130" height="8" rx="4" fill="var(--rule)"/>
+<rect x="524" y="140" width="109" height="8" rx="4" fill="var(--accent)"/>
+<rect x="690" y="128" width="100" height="24" rx="12" fill="var(--accent-soft)"/>
+<text x="740" y="144" text-anchor="middle" font-size="12" font-weight="700" fill="var(--accent)">Yaxshi</text>
+<rect x="26" y="186" width="848" height="76" rx="8" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="1.6"/>
+<text x="42" y="216" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="var(--muted)">0:04</text>
+<text x="42" y="234" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="var(--muted)">0:07</text>
+<text x="126" y="219" font-size="13.5" fill="currentColor">Blood pressure was one forty over ninety.</text>
+<text x="126" y="241" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="var(--signal)">model o&#39;zi ishonchsizligini bildirdi &#8212; qayta eshiting</text>
+<text x="524" y="212" font-family="JetBrains Mono, Menlo, monospace" font-size="13" font-weight="500" fill="currentColor">26%</text>
+<rect x="524" y="224" width="130" height="8" rx="4" fill="var(--rule)"/>
+<rect x="524" y="224" width="34" height="8" rx="4" fill="var(--danger)"/>
+<rect x="690" y="212" width="100" height="24" rx="12" fill="var(--signal-soft)"/>
+<text x="740" y="228" text-anchor="middle" font-size="12" font-weight="700" fill="var(--signal)">Tekshiring</text>
+<rect x="26" y="270" width="848" height="76" rx="8" fill="var(--danger-soft)" stroke="var(--danger)" stroke-width="1.8"/>
+<text x="42" y="300" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="var(--muted)">0:07</text>
+<text x="42" y="318" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="var(--muted)">0:11</text>
+<text x="126" y="303" font-size="13.5" fill="currentColor">Thank you for watching, please subscribe.</text>
+<text x="126" y="325" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="var(--danger)">bu yerda umuman nutq yo&#39;q edi &#8212; sukunat ehtimoli 0.88</text>
+<text x="524" y="296" font-family="JetBrains Mono, Menlo, monospace" font-size="13" font-weight="500" fill="currentColor">80%</text>
+<rect x="524" y="308" width="130" height="8" rx="4" fill="var(--rule)"/>
+<rect x="524" y="308" width="104" height="8" rx="4" fill="var(--accent)"/>
+<rect x="690" y="296" width="120" height="24" rx="12" fill="var(--danger-soft)"/>
+<text x="750" y="312" text-anchor="middle" font-size="12" font-weight="700" fill="var(--danger)">TO&#39;QILGAN</text>
+<rect x="26" y="354" width="848" height="76" rx="8" fill="var(--danger-soft)" stroke="var(--danger)" stroke-width="1.8"/>
+<text x="42" y="384" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="var(--muted)">0:11</text>
+<text x="42" y="402" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="var(--muted)">0:16</text>
+<text x="126" y="387" font-size="13.5" fill="currentColor">follow up follow up follow up follow up follow up</text>
+<text x="126" y="409" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="var(--danger)">bir ibora uch martadan ko&#39;p takrorlandi &#8212; model tsiklga tushdi</text>
+<text x="524" y="380" font-family="JetBrains Mono, Menlo, monospace" font-size="13" font-weight="500" fill="currentColor">58%</text>
+<rect x="524" y="392" width="130" height="8" rx="4" fill="var(--rule)"/>
+<rect x="524" y="392" width="75" height="8" rx="4" fill="var(--signal)"/>
+<rect x="690" y="380" width="120" height="24" rx="12" fill="var(--danger-soft)"/>
+<text x="750" y="396" text-anchor="middle" font-size="12" font-weight="700" fill="var(--danger)">TO&#39;QILGAN</text>
+<rect x="26" y="446" width="848" height="48" rx="8" fill="var(--surface)" stroke="var(--danger)" stroke-width="1.4"/>
+<rect x="26" y="446" width="5" height="48" rx="2.5" fill="var(--danger)"/>
+<text x="48" y="468" font-size="13" font-weight="700" fill="currentColor">Diqqat: uchinchi qatorda ishonch 80% &#8212; yuqori. Lekin matn to&#39;qilgan.</text>
+<text x="48" y="486" font-size="12.5" fill="var(--muted)">Shuning uchun faqat ishonch foiziga qarash yetarli emas. Bizda uchta mustaqil signal tekshiriladi.</text>
+</svg>
+        </div>
+        <figcaption>Bitta 16 soniyalik yozuv. Uchinchi qatorda ishonch 80% &mdash; yuqori, lekin matn to&#39;qilgan. Aynan shuning uchun faqat ishonch foiziga qarash yetarli emas.</figcaption>
+      </figure>
+
+      <div class="layers">
+        <div class="layer">
+          <div class="layer-head">
+            <span class="layer-name">Gallyutsinatsiyani ushlash</span>
+            <span class="layer-kind">Eng kuchli argument</span>
+          </div>
+          <p>Whisper har bir segment uchun ichki statistika hisoblaydi &mdash; <code>avg_logprob</code>,
+          <code>compression_ratio</code>, <code>no_speech_prob</code> &mdash; va aksariyat integratsiyalar
+          ularni tashlab yuboradi. Biz o&#39;qiymiz. Sukunat ustidan Whisper ba&#39;zan ravon matn to&#39;qiydi:
+          haqiqiy sinovda <em>&ldquo;Thank you for watching, please subscribe&rdquo;</em> chiqdi. Yuqori ishonchli,
+          lekin <code>no_speech_prob</code> 0.88 &mdash; shundan biz uni ushlaymiz.</p>
+          <p>Tibbiy yozuvda to&#39;qib chiqarilgan gap yo&#39;q gapdan xavfliroq: u fakt bo&#39;lib o&#39;qiladi.</p>
+        </div>
+
+        <div class="layer">
+          <div class="layer-head">
+            <span class="layer-name">Inkor &rarr; kodlash bog&#39;lanishi</span>
+            <span class="layer-kind">Klinik jihatdan hal qiluvchi</span>
+          </div>
+          <p>&ldquo;Denies chest pain&rdquo; ichida &ldquo;chest pain&rdquo; iborasi bor. Assertion statusni bilmaydigan
+          koder bemorga <b>R07.9</b> kodini taklif qiladi &mdash; holbuki bemorda bu yo&#39;q. Shuning uchun
+          NegEx natijasi kodlashdan <em>oldin</em> ishlaydi va inkor qilingan topilmalar olib tashlanadi.</p>
+        </div>
+
+        <div class="layer ruleb">
+          <div class="layer-head">
+            <span class="layer-name">Nega BM25, embedding emas</span>
+            <span class="layer-kind">Ongli tanlov</span>
+          </div>
+          <p>Tashxis matni qisqa, lug&#39;at esa yopiq va o&#39;ta spetsifik (&ldquo;epigastric&rdquo;, &ldquo;cerumen&rdquo;).
+          IDF vaznli leksik reyting aynan shunday masalada umumiy embedding modelidan ustun turadi,
+          model yuklashni talab qilmaydi, mikrosoniyalarda javob beradi &mdash; va eng muhimi,
+          <b>tushuntirib berish mumkin</b>: har bir taklif qaysi so&#39;zlar mos kelganini ko&#39;rsatadi.</p>
+        </div>
+      </div>
+
+      <figure>
+        <div class="figframe">
+<svg viewBox="0 0 900 420" font-family="Archivo, Helvetica Neue, Arial, sans-serif">
+<defs>
+  <marker id="dk-4-cR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <polygon points="0,0 10,5 0,10" fill="var(--danger)"/>
+  </marker>
+  <marker id="dk-4-cG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <polygon points="0,0 10,5 0,10" fill="var(--accent)"/>
+  </marker>
+</defs>
+<rect x="270" y="80" width="360" height="58" rx="8" fill="var(--surface)" stroke="currentColor" stroke-width="1.8"/>
+<text x="450" y="106" text-anchor="middle" font-size="15" font-weight="700" fill="currentColor">&#8220;She denies chest pain&#8221;</text>
+<text x="450" y="126" text-anchor="middle" font-size="12" fill="var(--muted)">Bemor ko&#39;krak og&#39;rig&#39;ini inkor qilyapti</text>
+<path d="M420,138 C370,158 300,160 232,182" fill="none" stroke="var(--danger)" stroke-width="1.8" marker-end="url(#dk-4-cR)"/>
+<path d="M480,138 C530,158 600,160 668,182" fill="none" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#dk-4-cG)"/>
+<text x="30" y="176" font-family="JetBrains Mono, Menlo, monospace" font-size="11" letter-spacing="0.06em" fill="var(--danger)">INKORNI BILMAYDIGAN TIZIM</text>
+<text x="470" y="176" font-family="JetBrains Mono, Menlo, monospace" font-size="11" letter-spacing="0.06em" fill="var(--accent)">BIZNING TIZIM</text>
+<rect x="30" y="188" width="400" height="50" rx="8" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.4"/>
+<text x="48" y="210" font-size="13" fill="currentColor">Matnda &#8220;chest pain&#8221; iborasi bor</text>
+<text x="48" y="228" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="var(--muted)">so&#39;zlarni ko&#39;radi, ma&#39;nosini emas</text>
+<rect x="470" y="188" width="400" height="50" rx="8" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.4"/>
+<text x="488" y="210" font-size="13" fill="currentColor">&#8220;denies&#8221; so&#39;zi topildi &#8594; INKOR</text>
+<text x="488" y="228" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="var(--muted)">gap doirasida tekshiriladi</text>
+<line x1="230" y1="240" x2="230" y2="258" stroke="var(--danger)" stroke-width="1.6" marker-end="url(#dk-4-cR)"/>
+<line x1="670" y1="240" x2="670" y2="258" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#dk-4-cG)"/>
+<rect x="30" y="262" width="400" height="50" rx="8" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.4"/>
+<text x="48" y="284" font-size="13" fill="currentColor">Kod izlaydi &#8594; R07.9 Chest pain</text>
+<text x="48" y="302" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="var(--muted)">tashxis sifatida taklif qiladi</text>
+<rect x="470" y="262" width="400" height="50" rx="8" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.4"/>
+<text x="488" y="284" font-size="13" fill="currentColor">Kod izlashdan <tspan font-weight="700">oldin</tspan> olib tashlanadi</text>
+<text x="488" y="302" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="var(--muted)">inkor qilingan topilma kodlanmaydi</text>
+<line x1="230" y1="314" x2="230" y2="332" stroke="var(--danger)" stroke-width="1.6" marker-end="url(#dk-4-cR)"/>
+<line x1="670" y1="314" x2="670" y2="332" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#dk-4-cG)"/>
+<rect x="30" y="336" width="400" height="60" rx="8" fill="var(--danger-soft)" stroke="var(--danger)" stroke-width="1.8"/>
+<text x="48" y="362" font-size="14" font-weight="700" fill="var(--danger)">Noto&#39;g&#39;ri tashxis kodi</text>
+<text x="48" y="382" font-size="12.5" fill="currentColor">Bemorda ko&#39;krak og&#39;rig&#39;i yo&#39;q edi</text>
+<rect x="470" y="336" width="400" height="60" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/>
+<text x="488" y="362" font-size="14" font-weight="700" fill="var(--accent)">R07.9 taklif qilinmaydi</text>
+<text x="488" y="382" font-size="12.5" fill="currentColor">Karta haqiqatga mos qoladi</text>
+</svg>
+        </div>
+        <figcaption>Bitta jumla, ikki xil natija. Chapda &mdash; inkorni tushunmaydigan tizim bemorga yo&#39;q kasallik kodini yozadi. O&#39;ngda &mdash; bizning yo&#39;l.</figcaption>
+      </figure>
+
+      <div class="script presenter-hide">
+        <span class="script-tag">Gapiriladigan matn &middot; ~150 so&#39;z</span>
+        <p>&ldquo;Endi eng muhimi &mdash; AI qayerda. Sakkizta qatlam bor, va ulardan ikkitasi neyron tarmoq, qolgani klassik algoritm. Buni ochiq aytaman, chunki regex bo&#39;lgan narsani AI deb atash &mdash; halol emas.</p>
+        <p>Birinchisi &mdash; <b>Whisper</b>, nutqni tanish modeli, kompyuterda ishlaydi.</p>
+        <p>Ikkinchisi eng qiziq: <b>gallyutsinatsiyani aniqlash</b>. Whisper har segment uchun ichki statistika hisoblaydi, ko&#39;pchilik uni tashlab yuboradi &mdash; biz o&#39;qiymiz. Sukunat ustidan Whisper ba&#39;zan matn to&#39;qiydi. Haqiqiy sinovda &ldquo;thank you for watching, please subscribe&rdquo; chiqdi. Tizim buni ushladi.</p>
+        <p>Keyingi qatlamlar transkriptni klinik ma&#39;lumotga aylantiradi: SOAP bo&#39;limlari, dori nomlarini fonetik tuzatish, ko&#39;rsatkichlarni tekshirish, inkorni aniqlash, ICD-10 kodlarini taklif qilish, va HIPAA identifikatorlarini topish.</p>
+        <p>Eng muhim bog&#39;lanish shu: agar shifokor &ldquo;ko&#39;krak og&#39;rig&#39;i yo&#39;q&rdquo; desa, tizim buni tushunadi va o&#39;sha kodni taklif qilmaydi.&rdquo;</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BEAT 5 ============ -->
+  <section class="beat">
+    <div class="rail"><span class="tc">2:40<small>20 soniya</small></span></div>
+    <div>
+      <h2>Holat va keyingi qadam</h2>
+      <p class="beat-lead">Ekranda: quyidagi diagramma.</p>
+
+      <figure>
+        <div class="figframe">
+          <svg viewBox="0 0 900 320" font-family="Archivo, Helvetica Neue, Arial, sans-serif">
+<defs>
+  <marker id="dk-6-eS" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <polygon points="0,0 10,5 0,10" fill="var(--signal)"/>
+  </marker>
+</defs>
+<text x="30" y="72" font-family="JetBrains Mono, Menlo, monospace" font-size="11" letter-spacing="0.06em" fill="var(--accent)">TO&#39;LIQ ISHLAYDI</text>
+<rect x="30" y="84" width="840" height="68" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+<text x="52" y="112" font-size="15" font-weight="700" fill="currentColor">Ovoz &#8594; transkript &#8594; 8 qatlamli tahlil &#8594; shifokor tasdig&#39;i &#8594; forma</text>
+<text x="52" y="136" font-size="12.5" fill="var(--muted)">45 ta avtomatik test &#183; tahlil 31 millisekund &#183; qo&#39;shimcha kutubxonasiz ishlaydi</text>
+<text x="30" y="196" font-family="JetBrains Mono, Menlo, monospace" font-size="11" letter-spacing="0.06em" fill="var(--signal)">YAGONA OCHIQ NUQTA</text>
+<rect x="30" y="208" width="400" height="80" rx="8" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="2" stroke-dasharray="6 5"/>
+<text x="52" y="236" font-size="14" font-weight="700" fill="currentColor">Whisper &#8212; umumiy model</text>
+<text x="52" y="258" font-size="12.5" fill="var(--muted)">Dori nomlarini buzadi. Sinovda:</text>
+<text x="52" y="278" font-family="JetBrains Mono, Menlo, monospace" font-size="12" fill="var(--danger)">&#8220;acetaminophen&#8221; &#8594; &#8220;a seed of minifin&#8221;</text>
+<line x1="440" y1="248" x2="484" y2="248" stroke="var(--signal)" stroke-width="2" marker-end="url(#dk-6-eS)"/>
+<rect x="490" y="208" width="380" height="80" rx="8" fill="var(--surface)" stroke="var(--signal)" stroke-width="2"/>
+<text x="512" y="236" font-size="14" font-weight="700" fill="currentColor">Keyingi qadam: tibbiy ASR modeli</text>
+<text x="512" y="258" font-size="12.5" fill="var(--muted)">Bunday buzilishni satr algoritmi tiklay olmaydi &#8212;</text>
+<text x="512" y="277" font-size="12.5" fill="var(--muted)">bu yerda modelning o&#39;zi almashishi kerak.</text>
+</svg>
+        </div>
+        <figcaption>Quvur to&#39;liq ishlaydi. Qolgan yagona muammo o&#39;lchangan va aniq: umumiy akustik model. Bu &mdash; taxmin emas, dalil bilan asoslangan keyingi qadam.</figcaption>
+      </figure>
+
+      <div class="script presenter-hide">
+        <span class="script-tag">Gapiriladigan matn &middot; ~48 so&#39;z</span>
+        <p>&ldquo;Hozirgi holat: butun quvur ishlaydi &mdash; ovozdan formagacha, qirq besh ta test bilan qoplangan, tahlil o&#39;ttiz millisekundda.</p>
+        <p>Yagona ochiq nuqta: Whisper umumiy model bo&#39;lgani uchun dori nomlarini buzadi. Sinovda &ldquo;acetaminophen&rdquo; &ldquo;a seed of minifin&rdquo; bo&#39;lib chiqdi &mdash; buni hech qanday satr algoritmi tiklay olmaydi. Shuning uchun keyingi qadam &mdash; tibbiyotga moslashtirilgan model. Rahmat.&rdquo;</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ APPENDIX ============ -->
+  <section class="appendix">
+    <h2>Yozib olishdan oldin</h2>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Vaqt</th><th>Ekranda nima ochiladi</th><th>Fayl</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="mono">0:00</td><td>OpenEMR &mdash; bo&#39;sh forma</td><td class="mono">&mdash;</td></tr>
+          <tr><td class="mono">0:20</td><td>Arxitektura</td><td class="mono">1-arxitektura.svg</td></tr>
+          <tr><td class="mono">0:48</td><td>OpenEMR &mdash; jonli demo</td><td class="mono">&mdash;</td></tr>
+          <tr><td class="mono">1:28</td><td>Sakkiz qatlam</td><td class="mono">2-qatlamlar.svg</td></tr>
+          <tr><td class="mono">1:44</td><td>Gallyutsinatsiya</td><td class="mono">3-gallyutsinatsiya.svg</td></tr>
+          <tr><td class="mono">2:12</td><td>Sakkiz qatlam <em>(qaytish)</em></td><td class="mono">2-qatlamlar.svg</td></tr>
+          <tr><td class="mono">2:25</td><td>Inkor &rarr; kodlash</td><td class="mono">4-inkor-kodlash.svg</td></tr>
+          <tr><td class="mono">2:41</td><td>Holat va keyingi qadam</td><td class="mono">6-holat.svg</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid2">
+      <div>
+        <h3>Ishga tushirish</h3>
+        <pre><code>cd asr
+pip install -r requirements.txt
+python -m spacy download en_core_web_sm
+uvicorn api:app --host 127.0.0.1 --port 8000</code></pre>
+        <pre><code>npm run check &amp;&amp; npm run build</code></pre>
+        <p style="font-size:16.5px;color:var(--ink-soft);margin:0">Chrome &rarr; <code>chrome://extensions</code> &rarr; Developer Mode &rarr; <b>Load unpacked</b> &rarr; <code>dist/extension</code></p>
+      </div>
+
+      <div>
+        <h3>Tekshiruv ro&#39;yxati</h3>
+        <ul>
+          <li>Mikrofon ruxsatini <b>oldindan</b> bering &mdash; video davomida dialog chiqmasin.</li>
+          <li>Whisper birinchi so&#39;rovda sekin yuklanadi &mdash; yozishdan oldin <b>bitta sinov transkripsiyasi</b> qiling, model xotirada qolsin.</li>
+          <li>Brauzer zoom 110&ndash;125%, kod shrifti kamida 16pt.</li>
+          <li>Bu sahifada <b>Ko&#39;rsatish rejimi</b>ni yoqing &mdash; matn yashirinadi.</li>
+          <li>Bildirishnomalarni o&#39;chiring, ortiqcha tab&#39;larni yoping.</li>
+          <li>Har bo&#39;limni alohida yozib, keyin birlashtiring.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 style="margin-top:40px">Chegaralarni to&#39;g&#39;ri ayting</h2>
+    <div class="callout">
+      <p class="callout-title">Bularni yashirmang &mdash; aksincha, ayting</p>
+      <ul>
+        <li><b>ICD-10 korpusi 91 ta koddan iborat namunaviy to&#39;plam</b>, litsenziyalangan CMS/CDC nashri emas. Hisob-kitob uchun almashtirilishi shart.</li>
+        <li><b>Formulyar 118 ta qo&#39;lda tanlangan dori</b>, RxNorm eksporti emas.</li>
+        <li><b>spaCy o&#39;rnatilmagan bo&#39;lsa</b>, PHI ismlarni aniqlash zaifroq ishlaydi &mdash; xizmat buni <code>/capabilities</code> da ochiq bildiradi va panelda &ldquo;1 layer degraded&rdquo; deb ko&#39;rsatadi.</li>
+        <li><b>Maydonlar DOM orqali yoziladi</b>, OpenEMR&#39;ning o&#39;z API&#39;si orqali emas. Saqlash validatsiyasi baribir alohida ishlaydi.</li>
+      </ul>
+      <p>Har bir chegara kodda hujjatlashtirilgan va <code>/capabilities</code> orqali ochiq e&#39;lon qilinadi.
+      Rahbarga bu kamchilik emas &mdash; muhandislik yetukligi bo&#39;lib eshitiladi.</p>
+    </div>
+
+    <h2 style="margin-top:40px">Savol-javob &mdash; rahbar chuqurroq so&#39;rasa</h2>
+    <p style="max-width:62ch;color:var(--ink-soft);margin:0 0 24px">
+      Videodan keyingi savollarga tayyor javoblar. Bu yerda ham kod ochilmaydi &mdash;
+      quyidagi diagramma aynan shu uchun tayyorlangan.
+    </p>
+
+    <div class="layers">
+      <div class="layer">
+        <div class="layer-head">
+          <span class="layer-name">&ldquo;Dori nomini qanday tuzatasiz?&rdquo;</span>
+          <span class="layer-kind">5-diagrammani oching</span>
+        </div>
+        <p>&ldquo;Uchta mustaqil o&#39;lchov: harflar ketma-ketligi, talaffuz o&#39;xshashligi va
+        undoshlar skeleti. Ular birlashtiriladi. Lekin butunlay buzilgan nomni hech
+        qanday o&#39;lchov tiklay olmaydi &mdash; o&#39;sha yerda model kerak.&rdquo;</p>
+      </div>
+
+      <div class="layer ruleb">
+        <div class="layer-head">
+          <span class="layer-name">&ldquo;Bu qanchalik ishonchli?&rdquo;</span>
+        </div>
+        <p>&ldquo;Qirq besh ta avtomatik test bor. Har biri ishlab chiqish davomida topilgan
+        haqiqiy xatoni qoplaydi. Tahlil o&#39;ttiz millisekundda tugaydi.&rdquo;</p>
+      </div>
+
+      <div class="layer ruleb">
+        <div class="layer-head">
+          <span class="layer-name">&ldquo;Bemor ma&#39;lumoti xavfsizmi?&rdquo;</span>
+        </div>
+        <p>&ldquo;Audio ham, matn ham kompyuterdan chiqmaydi. Ustiga, tizim diktada aytilgan
+        shaxsiy ma&#39;lumotlarni &mdash; ism, tug&#39;ilgan sana, telefon &mdash; alohida topib
+        belgilaydi. HIPAA ro&#39;yxati bo&#39;yicha.&rdquo;</p>
+      </div>
+
+      <div class="layer ruleb">
+        <div class="layer-head">
+          <span class="layer-name">&ldquo;Xato qilsa nima bo&#39;ladi?&rdquo;</span>
+        </div>
+        <p>&ldquo;Tizim hech qachon o&#39;zi yozmaydi. Past ishonchli taklif o&#39;zi yoqilmaydi &mdash;
+        shifokor uni ongli ravishda belgilashi kerak. Demoda ko&#39;rdingiz: o&#39;n bir
+        taklifdan biri belgilanmagan edi.&rdquo;</p>
+      </div>
+
+      <div class="layer ruleb">
+        <div class="layer-head">
+          <span class="layer-name">&ldquo;Qachon ishlatsak bo&#39;ladi?&rdquo;</span>
+        </div>
+        <p>&ldquo;Hozir &mdash; prototip. Ishlab chiqarishga chiqarish uchun uchta narsa kerak:
+        tibbiy ASR modeli, litsenziyalangan ICD-10 ma&#39;lumotlar bazasi, va OpenEMR&#39;ning
+        o&#39;z interfeysi orqali yozish.&rdquo;</p>
+      </div>
+    </div>
+
+    <figure>
+      <div class="figframe">
+<svg viewBox="0 0 900 400" font-family="Archivo, Helvetica Neue, Arial, sans-serif">
+<defs>
+  <marker id="dk-5-dA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <polygon points="0,0 10,5 0,10" fill="currentColor"/>
+  </marker>
+</defs>
+<rect x="30" y="160" width="190" height="80" rx="8" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="1.8"/>
+<text x="125" y="192" text-anchor="middle" font-family="JetBrains Mono, Menlo, monospace" font-size="16" font-weight="500" fill="currentColor">lisinapril</text>
+<text x="125" y="215" text-anchor="middle" font-size="11.5" fill="var(--muted)">tizim shunday eshitdi</text>
+<line x1="228" y1="200" x2="258" y2="200" stroke="currentColor" stroke-width="1.6" marker-end="url(#dk-5-dA)"/>
+<text x="270" y="112" font-size="13" font-weight="700" fill="currentColor">Yozilish o&#39;xshashligi</text>
+<text x="270" y="130" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="var(--muted)">harflar ketma-ketligi qanchalik mos</text>
+<rect x="270" y="138" width="240" height="10" rx="5" fill="var(--rule)"/>
+<rect x="270" y="138" width="228" height="10" rx="5" fill="var(--accent)"/>
+<text x="524" y="147" font-family="JetBrains Mono, Menlo, monospace" font-size="12.5" fill="currentColor">95%</text>
+<text x="586" y="147" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="var(--muted)">&#215; 55</text>
+<text x="270" y="188" font-size="13" font-weight="700" fill="currentColor">Talaffuz o&#39;xshashligi</text>
+<text x="270" y="206" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="var(--muted)">quloqqa qanchalik bir xil eshitiladi</text>
+<rect x="270" y="214" width="240" height="10" rx="5" fill="var(--rule)"/>
+<rect x="270" y="214" width="180" height="10" rx="5" fill="var(--accent)"/>
+<text x="524" y="223" font-family="JetBrains Mono, Menlo, monospace" font-size="12.5" fill="currentColor">75%</text>
+<text x="586" y="223" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="var(--muted)">&#215; 20</text>
+<text x="270" y="264" font-size="13" font-weight="700" fill="currentColor">Undoshlar skeleti</text>
+<text x="270" y="282" font-family="JetBrains Mono, Menlo, monospace" font-size="10.5" fill="var(--muted)">unlilar tashlanadi &#8212; xatolar aynan unlida</text>
+<rect x="270" y="290" width="240" height="10" rx="5" fill="var(--rule)"/>
+<rect x="270" y="290" width="221" height="10" rx="5" fill="var(--accent)"/>
+<text x="524" y="299" font-family="JetBrains Mono, Menlo, monospace" font-size="12.5" fill="currentColor">92%</text>
+<text x="586" y="299" font-family="JetBrains Mono, Menlo, monospace" font-size="11.5" fill="var(--muted)">&#215; 25</text>
+<line x1="640" y1="200" x2="670" y2="200" stroke="currentColor" stroke-width="1.6" marker-end="url(#dk-5-dA)"/>
+<rect x="680" y="160" width="190" height="80" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+<text x="775" y="192" text-anchor="middle" font-family="JetBrains Mono, Menlo, monospace" font-size="16" font-weight="500" fill="currentColor">lisinopril</text>
+<text x="775" y="215" text-anchor="middle" font-size="11.5" fill="var(--accent)">94% moslik</text>
+<rect x="30" y="330" width="840" height="52" rx="8" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.4"/>
+<rect x="30" y="330" width="5" height="52" rx="2.5" fill="var(--signal)"/>
+<text x="52" y="352" font-size="13" font-weight="700" fill="currentColor">Chegara: butunlay buzilgan nomni hech qanday o&#39;lchov tiklay olmaydi.</text>
+<text x="52" y="370" font-size="12.5" fill="var(--muted)">Haqiqiy sinovda &#8220;acetaminophen&#8221; &#8594; &#8220;a seed of minifin&#8221; bo&#39;ldi. Bu yerda tibbiy model kerak.</text>
+</svg>
+      </div>
+      <figcaption>Zaxira diagramma &mdash; videoda ishlatilmaydi, faqat savol berilsa ochiladi.</figcaption>
+    </figure>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  var box = document.getElementById("present");
+  function sync() { document.body.classList.toggle("presenting", box.checked); }
+  box.addEventListener("change", sync);
+  sync();
+})();
+</script>
