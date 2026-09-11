@@ -342,8 +342,10 @@ qoplaydi. Nomlarini o'qib chiqsangiz, qanday muammolar bo'lganini ko'rasiz.
 ## 8. Rahbar so'rashi mumkin bo'lgan savollar
 
 **"Bu yerda qanaqa AI bor?"**
-Whisper nutqni tanish uchun, spaCy ismlarni topish uchun. Qolgani oddiy
-algoritm. Sakkiz qatlamdan ikkitasi model.
+Asosiysi Whisper, nutqni matnga aylantiradi. Qolgan tahlil qatlamlari oddiy
+algoritm, shuning uchun tez ishlaydi va natijani tushuntirib berish mumkin.
+Ismlarni aniqroq topish uchun spaCy modelini ham ulash imkoni bor, lekin bu
+demoda u o'rnatilmagan, ismlarni shablon usuli topadi.
 
 **"Nega GPT ishlatmadingiz?"**
 Tashxis kodiga sinab ko'rdim. Matn qisqa, lug'at yopiq, shunda oddiy qidiruv
