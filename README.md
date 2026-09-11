@@ -38,6 +38,9 @@ turns out to be a regex is worse than a regex described honestly.
 
 Full technical reference: **[docs/ai-ml-architecture.md](docs/ai-ml-architecture.md)**
 
+Learning the codebase: **[docs/kod-qollanma.md](docs/kod-qollanma.md)** (Uzbek) walks
+each layer with a runnable command per section.
+
 ## Project structure
 
 ```
