@@ -122,8 +122,12 @@ fi
 
 # -------------------------------------------------------------- 4. qatlamlar
 step "Qaysi qatlamlar tirik"
-CAPS="$(curl -s "http://127.0.0.1:$PORT/capabilities")"
-printf '%s' "$CAPS" | python3 -c '
+# --retry: xizmat endigina ko'tarilgan bo'lsa birinchi so'rov o'tmasligi mumkin.
+CAPS="$(curl -sf --retry 3 --retry-delay 1 "http://127.0.0.1:$PORT/capabilities")"
+if [[ -z "$CAPS" ]]; then
+  y "  /capabilities javob bermadi — o'tkazib yuborildi. Log: $LOG"
+else
+  printf '%s' "$CAPS" | python3 -c '
 import json, sys
 d = json.load(sys.stdin)
 for k, v in d["layers"].items():
@@ -131,7 +135,8 @@ for k, v in d["layers"].items():
     print("  [%s] %-20s %s" % (mark, k, v["kind"]))
 w = d["whisper"]
 print("  [ \033[32mok\033[0m ] %-20s model %s" % ("whisper", w["model"]))
-'                 
+'
+fi
 
 # ---------------------------------------------------------- 5. Whisper qizdirish
 step "Whisper qizdirilyapti (birinchi so'rov sekin — demoda kutmaslik uchun)"
