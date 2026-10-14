@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MedVoice</title>
+<meta name="description" content="OpenEMR ichida ishlaydigan ovozli tibbiy yozuv. Shifokor gapiradi, forma to'ladi. Ma'lumot kompyuterdan chiqmaydi.">
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  --bg:#f6f8fb; --card:#ffffff; --ink:#0f1b2d; --muted:#53627a; --line:#dde4ee;
+  --brand:#1d4ed8; --brand-ink:#ffffff; --accent:#0d9488; --warn:#b45309;
+  --shadow:0 1px 2px rgba(15,27,45,.06),0 8px 24px rgba(15,27,45,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b1220; --card:#111a2c; --ink:#e8eef9; --muted:#9db0cc; --line:#223049;
+    --brand:#5b8cff; --brand-ink:#08111f; --accent:#2dd4bf; --warn:#fbbf24;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b1220; --card:#111a2c; --ink:#e8eef9; --muted:#9db0cc; --line:#223049;
+  --brand:#5b8cff; --brand-ink:#08111f; --accent:#2dd4bf; --warn:#fbbf24;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{font-weight:800;letter-spacing:-.02em;font-size:18px;text-decoration:none}
+.logo span{color:var(--brand)}
+nav a{margin-left:18px;font-size:14px;color:var(--muted);text-decoration:none}
+nav a:hover{color:var(--ink)}
+@media(max-width:640px){nav{display:none}}
+
+.hero{padding:72px 0 40px}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(34px,6vw,58px);line-height:1.08;letter-spacing:-.03em;margin:12px 0 16px;max-width:16ch}
+.lead{font-size:clamp(17px,2.2vw,20px);color:var(--muted);max-width:56ch;margin:0 0 28px}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:12px;font-weight:700;
+  text-decoration:none;border:1px solid var(--line);background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+.btn.primary{background:var(--brand);color:var(--brand-ink);border-color:transparent}
+.btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+section{padding:48px 0}
+section h2{font-size:clamp(26px,4vw,36px);letter-spacing:-.02em;margin:0 0 8px}
+section .sub{color:var(--muted);margin:0 0 28px;max-width:60ch}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:820px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stats.three{grid-template-columns:repeat(3,1fr)}
+@media(max-width:820px){.stats.three{grid-template-columns:1fr}}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 18px;box-shadow:var(--shadow)}
+.stat b{display:block;font-size:clamp(34px,5vw,46px);line-height:1;letter-spacing:-.03em;color:var(--brand)}
+.stat span{display:block;margin-top:8px;font-weight:600}
+.stat small{display:block;margin-top:4px;color:var(--muted);font-size:13px}
+
+.shots{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+@media(max-width:820px){.shots{grid-template-columns:1fr}}
+figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+figure img{display:block;width:100%;height:auto;background:#fff}
+figure.dark img{background:#0b1220}
+figcaption{padding:14px 18px 18px}
+figcaption b{display:block;margin-bottom:2px}
+figcaption span{color:var(--muted);font-size:15px}
+
+.shot-wrap{display:flex;justify-content:center;background:#0b1220;padding:18px}
+.shot-wrap img{max-width:420px;border-radius:10px}
+
+.diag{display:grid;gap:18px}
+.diag.two{grid-template-columns:1fr 1fr}
+@media(max-width:820px){.diag.two{grid-template-columns:1fr}}
+.diag figure a{display:block;background:#fff}
+
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.cards{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
+.card h3{margin:0 0 8px;font-size:19px;letter-spacing:-.01em}
+.card p{margin:0;color:var(--muted)}
+.card .tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--warn);margin-bottom:10px}
+.closing{margin-top:18px;font-weight:700}
+
+footer{padding:40px 0 64px;color:var(--muted);font-size:14px;border-top:1px solid var(--line);margin-top:24px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top">Med<span>Voice</span></a>
+    <nav>
+      <a href="#natija">Natija</a>
+      <a href="#ishlash">Qanday ishlaydi</a>
+      <a href="#tanlov">Nega shunday</a>
+      <a href="#ishonch">Ishonchlilik</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">OpenEMR uchun ovozli yozuv</div>
+    <h1>Shifokor gapiradi, forma o'zi to'ladi.</h1>
+    <p class="lead">Ovoz ham, matn ham kompyuterning o'zida qoladi. Shifokor bir marta gapiradi, tizim shikoyat, ko'rsatkichlar va tashxis kodini ajratib beradi.</p>
+    <div class="btns">
+      <a class="btn primary" href="MedVoice-taqdimot.pptx" download>Taqdimotni yuklash</a>
+      <a class="btn" href="MedVoice-diagrammalar.pdf" target="_blank" rel="noopener">Diagrammalar (PDF)</a>
+    </div>
+  </div>
+</div>
+
+<section id="natija">
+  <div class="wrap">
+    <h2>Natija</h2>
+    <p class="sub">Bitta dikta, tayyor klinik ma'lumot. Raqamlar haqiqiy demodan olingan.</p>
+    <div class="stats">
+      <div class="stat"><b>10</b><span>qiymat ajratildi</span><small>bitta diktadan</small></div>
+      <div class="stat"><b>96 ms</b><span>tahlil vaqti</span><small>kompyuterning o'zida</small></div>
+      <div class="stat"><b>88%</b><span>dori nomlari to'g'ri</span><small>avval 62% edi</small></div>
+      <div class="stat"><b>0</b><span>bulutga yuborildi</span><small>hammasi qurilmada</small></div>
+    </div>
+
+    <div class="shots">
+      <figure class="dark">
+        <div class="shot-wrap"><img src="assets/ekran-transkript.png" alt="Ovozli yozuv paneli: shifokor diktasi matnga aylangan, ishonch darajasi 72 foiz" loading="lazy"></div>
+        <figcaption><b>Shifokor gapiradi</b><span>Matn shu zahoti chiqadi, ishonch darajasi ko'rinib turadi.</span></figcaption>
+      </figure>
+      <figure class="dark">
+        <div class="shot-wrap"><img src="assets/ekran-natija.png" alt="Tahlil natijasi: 40 mmHg qiymati ishonchsiz deb belgilangan, tashxis kodlari ro'yxati" loading="lazy"></div>
+        <figcaption><b>Tizim xatoni o'zi topdi</b><span>Qon bosimi "1, 40" deb yozilgan. 40 mmHg odamda bo'lmaydi, shuning uchun tizim buni xato deb belgiladi.</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section id="ishlash">
+  <div class="wrap">
+    <h2>Qanday ishlaydi</h2>
+    <p class="sub">Uch qism, bitta kompyuter. Tarmoqqa hech narsa chiqmaydi.</p>
+    <div class="diag">
+      <figure>
+        <a href="assets/1-arxitektura.png" target="_blank" rel="noopener"><img src="assets/1-arxitektura.png" alt="Tizim arxitekturasi: OpenEMR sahifasi, kengaytma paneli va lokal tahlil xizmati bitta kompyuter ichida" loading="lazy"></a>
+        <figcaption><b>Umumiy tuzilma</b><span>OpenEMR sahifasi, ovoz paneli va tahlil xizmati. Ishonch chegarasi kompyuterning o'zi.</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/2-qatlamlar.png" target="_blank" rel="noopener"><img src="assets/2-qatlamlar.png" alt="Sakkiz qatlamli quvur: ovoz Whisper modeliga, matn qolgan qatlamlarga boradi" loading="lazy"></a>
+        <figcaption><b>Sakkiz qatlam</b><span>Ovoz Whisper modeliga boradi. Matn esa SOAP, dori lug'ati, inkor, tashxis kodi va maxfiylik qatlamlaridan o'tadi. Oxirgi so'z shifokorniki.</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section id="qiyin">
+  <div class="wrap">
+    <h2>Ishonchni qanday ta'minladim</h2>
+    <p class="sub">Tibbiyotda jim o'tgan xato eng xavfli xato. Shuning uchun tizim shubhali joyni yashirmaydi, belgilab ko'rsatadi.</p>
+    <div class="diag two">
+      <figure>
+        <a href="assets/3-gallyutsinatsiya.png" target="_blank" rel="noopener"><img src="assets/3-gallyutsinatsiya.png" alt="Uchta mustaqil nazorat: dekoder ishonchi, takrorlanish va sukunat ehtimoli" loading="lazy"></a>
+        <figcaption><b>Bo'lmagan gapni ushlash</b><span>Whisper ba'zan eshitilmagan gapni to'qiydi. Uch mustaqil tekshiruvdan biri ishlasa, o'sha joy shifokorga ko'rsatiladi.</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/4-inkor-kodlash.png" target="_blank" rel="noopener"><img src="assets/4-inkor-kodlash.png" alt="Inkorni bilmaydigan tizim bemorga yo'q kasallik kodini taklif qiladi, bizning tizim esa olib tashlaydi" loading="lazy"></a>
+        <figcaption><b>Inkorni tushunish</b><span>"Ko'krak og'rig'i yo'q" desa, tizim shu tashxis kodini taklif qilmaydi.</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/5-dori-tuzatish.png" target="_blank" rel="noopener"><img src="assets/5-dori-tuzatish.png" alt="Noto'g'ri eshitilgan dori nomi tiklanadi, sozlamasiz 62 foiz, sozlama bilan 88 foiz" loading="lazy"></a>
+        <figcaption><b>Dori nomlari</b><span>Noto'g'ri eshitilgan nom ro'yxatdan topilib tiklanadi. Aniqlik 62% dan 88% gacha oshdi.</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/6-holat.png" target="_blank" rel="noopener"><img src="assets/6-holat.png" alt="Hozirgi holat va keyingi qadam" loading="lazy"></a>
+        <figcaption><b>Hozirgi holat</b><span>Butun yo'l ishlaydi. Keyingi qadam: tibbiy ovoz uchun alohida model bilan taqqoslash.</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section id="tanlov">
+  <div class="wrap">
+    <h2>Nega shunday qurdim</h2>
+    <p class="sub">Har bir joyda boshqa yo'l ham bor edi. Men tezlik, maxfiylik va tushuntirib bera olishni tanladim.</p>
+    <div class="cards">
+      <div class="card"><div class="tag">Bu ham bor edi</div><h3>Bulut o'rniga lokal</h3><p>Bulutli xizmatlar biroz aniqroq tanirdi, lekin bemor ovozi tashqariga chiqardi.</p></div>
+      <div class="card"><div class="tag">Bu ham bor edi</div><h3>Qayta o'qitish o'rniga sozlash</h3><p>O'qitish oylab vaqt va katta ma'lumot talab qilardi. Sozlash bilan 62 dan 88 foizga chiqdim.</p></div>
+      <div class="card"><div class="tag">Bu ham bor edi</div><h3>Til modeli o'rniga oddiy usul</h3><p>Tashxis kodiga til modeli qo'yish mumkin edi. Oddiy usul tezroq ishladi va qaysi so'z sabab bo'lganini ko'rsatadi.</p></div>
+    </div>
+    <p class="closing">Har bir tanlovda tezlik va tushuntirib bera olish muhimroq bo'ldi.</p>
+  </div>
+</section>
+
+<section id="ishonch">
+  <div class="wrap">
+    <h2>Ishonchlilik</h2>
+    <p class="sub">Ovozdan formagacha bo'lgan butun yo'l tayyor va sinovdan o'tgan.</p>
+    <div class="stats three">
+      <div class="stat"><b>51</b><span>avtomatik test</span><small>Bir marta tuzatilgan xato qaytib kelmaydi</small></div>
+      <div class="stat"><b>100%</b><span>shifokor nazorati</span><small>Past ishonchli taklif o'zi yoqilmaydi</small></div>
+      <div class="stat"><b>0</b><span>ma'lumot sizishi</span><small>Audio ham, matn ham qurilmada qoladi</small></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><b>MedVoice</b> &middot; Tohirjon Vohidov</span>
+    <span>CSC436</span>
+  </div>
+</footer>
+
+</body>
+</html>
