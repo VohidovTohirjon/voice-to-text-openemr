@@ -88,6 +88,9 @@ figcaption span{color:var(--muted);font-size:15px}
 .card .tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
   color:var(--warn);margin-bottom:10px}
 .closing{margin-top:18px;font-weight:700}
+.card .tag.step{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;
+  background:var(--brand);color:var(--brand-ink);letter-spacing:0;font-size:14px;margin-bottom:12px}
+.fine{margin:16px 0 0;color:var(--muted);font-size:14px;max-width:70ch}
 
 footer{padding:40px 0 64px;color:var(--muted);font-size:14px;border-top:1px solid var(--line);margin-top:24px}
 footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
@@ -99,6 +102,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
   <div class="wrap">
     <a class="logo" href="#top">Med<span>Voice</span></a>
     <nav>
+      <a href="#sinab">Demo</a>
       <a href="#natija">Natija</a>
       <a href="#ishlash">Qanday ishlaydi</a>
       <a href="#tanlov">Nega shunday</a>
@@ -113,13 +117,30 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
   <div class="wrap">
     <div class="eyebrow">OpenEMR uchun ovozli yozuv</div>
     <h1>Shifokor gapiradi, forma o'zi to'ladi.</h1>
-    <p class="lead">Ovoz ham, matn ham kompyuterning o'zida qoladi. Shifokor bir marta gapiradi, tizim shikoyat, ko'rsatkichlar va tashxis kodini ajratib beradi.</p>
+    <p class="lead">Shifokor bir marta gapiradi, tizim shikoyat, ko'rsatkichlar va tashxis kodini ajratib beradi. Klinikada o'rnatilganda ovoz ham, matn ham kompyuterning o'zida qoladi.</p>
     <div class="btns">
-      <a class="btn primary" href="MedVoice-taqdimot.pptx" download>Taqdimotni yuklash</a>
+      <a class="btn primary" href="/demo/">Jonli demoni ochish</a>
+      <a class="btn" href="MedVoice-taqdimot.pptx" download>Taqdimotni yuklash</a>
       <a class="btn" href="MedVoice-diagrammalar.pdf" target="_blank" rel="noopener">Diagrammalar (PDF)</a>
     </div>
   </div>
 </div>
+
+<section id="sinab">
+  <div class="wrap">
+    <h2>Hozir sinab ko'ring</h2>
+    <p class="sub">Hech narsa o'rnatish shart emas. Telefonda ham, istalgan kompyuterda ham ochiladi.</p>
+    <div class="cards">
+      <div class="card"><div class="tag step">1</div><h3>Oching</h3><p>Pastdagi tugmani bosing. Encounter formasi ochiladi, ovoz paneli pastda turadi.</p></div>
+      <div class="card"><div class="tag step">2</div><h3>Gapiring</h3><p>Mikrofon tugmasini bosib gapiring. Yoki tayyor matn tugmasini bosing.</p></div>
+      <div class="card"><div class="tag step">3</div><h3>To'ldiring</h3><p>Tizim qiymatlarni topadi. Siz tekshirasiz va tasdiqlaysiz, forma to'ladi. Xohlasangiz bekor qilasiz.</p></div>
+    </div>
+    <div class="btns" style="margin-top:20px">
+      <a class="btn primary" href="/demo/">Jonli demoni ochish</a>
+    </div>
+    <p class="fine">Onlayn demoda ovoz matnga o'girish uchun Cloudflare'dagi Whisper modeliga yuboriladi va saqlanmaydi. Tahlilning o'zi brauzeringizda ishlaydi. Klinikada o'rnatilganda ovoz ham, matn ham kompyuterdan chiqmaydi.</p>
+  </div>
+</section>
 
 <section id="natija">
   <div class="wrap">
@@ -129,7 +150,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
       <div class="stat"><b>10</b><span>qiymat ajratildi</span><small>bitta diktadan</small></div>
       <div class="stat"><b>96 ms</b><span>tahlil vaqti</span><small>kompyuterning o'zida</small></div>
       <div class="stat"><b>88%</b><span>dori nomlari to'g'ri</span><small>avval 62% edi</small></div>
-      <div class="stat"><b>0</b><span>bulutga yuborildi</span><small>hammasi qurilmada</small></div>
+      <div class="stat"><b>0</b><span>bulutga yuborildi</span><small>lokal variantda</small></div>
     </div>
 
     <div class="shots">
@@ -207,7 +228,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
     <div class="stats three">
       <div class="stat"><b>51</b><span>avtomatik test</span><small>Bir marta tuzatilgan xato qaytib kelmaydi</small></div>
       <div class="stat"><b>100%</b><span>shifokor nazorati</span><small>Past ishonchli taklif o'zi yoqilmaydi</small></div>
-      <div class="stat"><b>0</b><span>ma'lumot sizishi</span><small>Audio ham, matn ham qurilmada qoladi</small></div>
+      <div class="stat"><b>0</b><span>ma'lumot sizishi</span><small>Lokal variantda audio ham, matn ham qurilmada qoladi</small></div>
     </div>
   </div>
 </section>

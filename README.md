@@ -126,6 +126,32 @@ Record → Stop → **Analyze** → review the ticks → **Insert**.
 No microphone? **Demo text** loads a representative transcript so the full
 analysis path still runs.
 
+## Hosted demo (no extension needed)
+
+The same panel also runs as a plain web page, so it opens on a phone or any
+other computer without installing anything.
+
+| Part | Where it runs |
+|---|---|
+| Panel (`extension/content.js`, `scanner.js`) | the same files the extension injects, loaded as page scripts |
+| Clinical analysis | the `asr/nlp` Python package, inside the browser through Pyodide (`web/engine-worker.js`) |
+| Speech to text | Whisper large-v3-turbo on Cloudflare Workers AI (`functions/api/asr.js`) |
+
+Output of the in-browser engine is identical to the local service: the same
+transcript gives the same JSON, field for field.
+
+The one difference from the local setup is privacy. Here the recording is sent
+to Cloudflare to be transcribed (and is not stored by this project); the text
+analysis stays in the browser. The local service keeps everything on the machine.
+
+```bash
+npm run site:dev      # build, then serve at http://127.0.0.1:8799 (uses your Cloudflare login)
+npm run site:deploy   # checks, build, publish to https://medvoice.pages.dev
+```
+
+`scripts/build-site.sh` only lets an allowlist of files into `dist/site` and
+fails the build on anything else.
+
 ## API
 
 | Method | Endpoint | Purpose |

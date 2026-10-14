@@ -5,13 +5,16 @@
   "description": "OpenEMR voice-to-text with a local clinical NLP pipeline.",
   "scripts": {
     "check": "npm run check:js && npm run check:py && npm run check:manifest && npm run test:py",
-    "check:js": "node --check extension/content.js && node --check extension/scanner.js && node --check scripts/build-extension.mjs && node --check scripts/watch-extension.mjs",
+    "check:js": "node --check extension/content.js && node --check extension/scanner.js && node --check scripts/build-extension.mjs && node --check scripts/watch-extension.mjs && node --check web/engine.js && node --check web/engine-worker.js && node --check web/demo.js",
     "check:py": "python3 -m py_compile asr/api.py asr/nlp/pipeline.py asr/nlp/medical.py asr/nlp/coding.py asr/nlp/phi.py asr/nlp/soap.py asr/nlp/asr_quality.py",
     "check:manifest": "python3 -m json.tool extension/manifest.json > /dev/null",
     "test:py": "python3 asr/tests/run_tests.py",
     "lint": "npm run check:js",
     "build": "node scripts/build-extension.mjs",
     "dev": "node scripts/watch-extension.mjs",
-    "serve:validation": "python3 -m http.server 5173"
+    "serve:validation": "python3 -m http.server 5173",
+    "build:site": "bash scripts/build-site.sh",
+    "site:dev": "npm run build:site && npx wrangler pages dev --port 8799",
+    "site:deploy": "npm run check && npm run build:site && npx wrangler pages deploy --project-name medvoice --branch main --commit-dirty=true"
   }
 }

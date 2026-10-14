@@ -17,3 +17,6 @@ test.vtt
 !docs/diagrams/*.pdf
 # Presentation deliverable.
 !docs/*.pptx
+
+# Cloudflare local state
+.wrangler/

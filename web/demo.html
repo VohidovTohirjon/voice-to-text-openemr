@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MedVoice Demo</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+  :root{--ink:#0f172a;--muted:#64748b;--line:#d6dee9;--bg:#eef2f7;--card:#fff;--brand:#1e40af}
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    padding-bottom:140px}
+  .bar{background:var(--brand);color:#fff}
+  .bar .in{max-width:860px;margin:0 auto;padding:12px 16px;display:flex;gap:12px;
+    align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .bar b{font-size:15px;letter-spacing:-.01em}
+  .bar b span{opacity:.75;font-weight:500}
+  .bar a,.bar button{color:#fff;font:inherit;font-size:13px;text-decoration:none;background:rgba(255,255,255,.14);
+    border:0;border-radius:8px;padding:7px 12px;cursor:pointer}
+  .bar a:hover,.bar button:hover{background:rgba(255,255,255,.26)}
+  .bar .acts{display:flex;gap:8px}
+  .wrap{max-width:860px;margin:0 auto;padding:16px}
+  .patient{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;
+    display:flex;flex-wrap:wrap;gap:6px 22px;font-size:13px;margin-bottom:12px}
+  .patient b{font-size:15px}
+  .patient span{color:var(--muted)}
+  .how{background:#e8f0ff;border:1px solid #c7d8fb;border-radius:12px;padding:12px 16px;margin-bottom:16px;
+    font-size:13.5px}
+  .how ol{margin:6px 0 0;padding-left:20px}
+  .how li{margin:2px 0}
+  fieldset{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:0 0 14px;padding:14px 16px 16px;min-width:0}
+  legend{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#475569;padding:0 6px}
+  label{display:block;font-size:13px;font-weight:600;margin:12px 0 4px;color:#334155}
+  fieldset > label:first-of-type{margin-top:4px}
+  input,textarea{width:100%;padding:9px 11px;border:1px solid #c5cfdd;border-radius:9px;font:inherit;
+    font-size:16px;background:#fff;color:var(--ink);transition:border-color .15s,box-shadow .15s}
+  input:focus,textarea:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.18)}
+  textarea{min-height:72px;resize:vertical}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0 14px}
+  .grid label{margin-top:8px}
+  .foot{color:var(--muted);font-size:12.5px;text-align:center;margin-top:18px}
+  @media (min-width:641px){input,textarea{font-size:14px}}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="in">
+    <b>OpenEMR <span>· Encounter form (demo)</span></b>
+    <div class="acts">
+      <button type="button" id="clear">Clear form</button>
+      <a href="/">Overview</a>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="patient">
+    <div><b>Demo Patient</b> <span>(fictional)</span></div>
+    <span>DOB 1980-01-01</span>
+    <span>Encounter: Office visit</span>
+  </div>
+
+  <div class="how">
+    <b>Try it</b>
+    <ol>
+      <li>Tap <b>Start mic</b> and speak, or tap <b>Demo text</b> in the panel.</li>
+      <li>Tap <b>Analyze</b>. The panel finds the values and the matching fields.</li>
+      <li>Tap <b>Review</b>, check the changes, then <b>Insert</b>. <b>Undo</b> brings the old values back.</li>
+    </ol>
+  </div>
+
+  <form id="encounter">
+    <fieldset>
+      <legend>Reason for Visit</legend>
+      <label for="reason">Reason for Visit</label>
+      <textarea name="reason" id="reason" rows="3"></textarea>
+    </fieldset>
+
+    <fieldset>
+      <legend>SOAP</legend>
+      <label for="subjective">Subjective</label>
+      <textarea name="subjective" id="subjective"></textarea>
+      <label for="objective">Objective</label>
+      <textarea name="objective" id="objective"></textarea>
+      <label for="assessment">Assessment</label>
+      <textarea name="assessment" id="assessment"></textarea>
+      <label for="plan">Plan</label>
+      <textarea name="plan" id="plan"></textarea>
+    </fieldset>
+
+    <fieldset>
+      <legend>Vitals</legend>
+      <div class="grid">
+        <div><label for="bps">BP Systolic</label><input type="text" name="bps" id="bps" inputmode="numeric"></div>
+        <div><label for="bpd">BP Diastolic</label><input type="text" name="bpd" id="bpd" inputmode="numeric"></div>
+        <div><label for="pulse">Pulse</label><input type="text" name="pulse" id="pulse" inputmode="numeric"></div>
+        <div><label for="respiration">Respiration</label><input type="text" name="respiration" id="respiration" inputmode="numeric"></div>
+        <div><label for="temperature">Temperature</label><input type="text" name="temperature" id="temperature" inputmode="decimal"></div>
+        <div><label for="oxygen_saturation">Oxygen Saturation</label><input type="text" name="oxygen_saturation" id="oxygen_saturation" inputmode="numeric"></div>
+        <div><label for="weight">Weight</label><input type="text" name="weight" id="weight" inputmode="decimal"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Coding</legend>
+      <label for="diagnosis">Diagnosis</label>
+      <input type="text" name="diagnosis" id="diagnosis">
+      <label for="medication">Medications</label>
+      <input type="text" name="medication" id="medication">
+    </fieldset>
+  </form>
+
+  <p class="foot">This is a demo form with a fictional patient. Nothing you enter here is saved.</p>
+</div>
+
+<script src="/demo.js"></script>
+<script src="/engine.js"></script>
+<script src="/scanner.js"></script>
+<script src="/content.js"></script>
+</body>
+</html>
