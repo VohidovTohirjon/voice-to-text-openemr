@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>MedVoice Demo</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="robots" content="noindex, nofollow">
 <style>
   :root{--ink:#0f172a;--muted:#64748b;--line:#d6dee9;--bg:#eef2f7;--card:#fff;--brand:#1e40af}
@@ -29,7 +30,10 @@
   .how{background:#e8f0ff;border:1px solid #c7d8fb;border-radius:12px;padding:12px 16px;margin-bottom:16px;
     font-size:13.5px}
   .how ol{margin:6px 0 0;padding-left:20px}
-  .how li{margin:2px 0}
+  .how li{margin:4px 0}
+  .how q{display:block;margin:6px 0;padding:8px 10px;background:#fff;border:1px solid #c7d8fb;border-radius:8px;
+    font-style:italic;color:#1e293b;quotes:none}
+  .how .note{margin:8px 0 0;font-size:12.5px;color:var(--muted)}
   fieldset{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:0 0 14px;padding:14px 16px 16px;min-width:0}
   legend{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#475569;padding:0 6px}
   label{display:block;font-size:13px;font-weight:600;margin:12px 0 4px;color:#334155}
@@ -63,13 +67,16 @@
     <span>Encounter: Office visit</span>
   </div>
 
-  <div class="how">
-    <b>Try it</b>
+  <div class="how" lang="uz">
+    <b>Sinab ko'rish</b>
     <ol>
-      <li>Tap <b>Start mic</b> and speak, or tap <b>Demo text</b> in the panel.</li>
-      <li>Tap <b>Analyze</b>. The panel finds the values and the matching fields.</li>
-      <li>Tap <b>Review</b>, check the changes, then <b>Insert</b>. <b>Undo</b> brings the old values back.</li>
+      <li>Panelda <b>Start mic</b> ni bosing va <b>inglizcha</b> gapiring. Masalan:
+        <q lang="en">Patient has headache and mild fever for two days. Blood pressure 140 over 90, pulse 88. Follow up in one week.</q>
+        Mikrofon ishlamasa, <b>Demo text</b> ni bosing.</li>
+      <li><b>Analyze</b> ni bosing. Panel qiymatlarni va mos maydonlarni topadi.</li>
+      <li><b>Review</b> ni bosing, o'zgarishlarni tekshiring, keyin <b>Insert</b>. <b>Undo</b> eski qiymatlarni qaytaradi.</li>
     </ol>
+    <p class="note">Birinchi ochilganda tahlil mexanizmi bir necha soniya yuklanadi. Keyingi safar tezroq.</p>
   </div>
 
   <form id="encounter">

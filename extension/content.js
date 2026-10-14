@@ -74,6 +74,7 @@
     asrQuality: null,
     capabilities: null,
     capabilitiesLoading: true,
+    capabilitiesError: null,
     ui: null,
     panelState: loadPanelState()
   };
@@ -162,15 +163,27 @@
 
   function loadCapabilities() {
     state.capabilitiesLoading = true;
+    state.capabilitiesError = null;
     render();
     fetch(API_BASE + "/capabilities")
       .then(function (response) {
-        return response.ok ? response.json() : null;
+        if (response.ok) {
+          return response.json();
+        }
+        // The hosted engine explains why it could not start; keep that text.
+        return response.json().then(function (body) {
+          state.capabilitiesError = body && body.detail || null;
+          return null;
+        }, function () { return null; });
       })
       .then(function (data) {
         state.capabilities = data;
         state.capabilitiesLoading = false;
-        render();
+        if (!data && state.capabilitiesError) {
+          setStatus(state.capabilitiesError);
+        } else {
+          render();
+        }
       })
       .catch(function () {
         state.capabilities = null;
@@ -357,7 +370,9 @@
     state.review = null;
     state.notice = null;
     state.undo = null;
-    setStatus("Analyzing transcript...");
+    setStatus(state.capabilitiesLoading
+      ? "Starting the analysis engine. The first time takes a few seconds..."
+      : "Analyzing transcript...");
 
     requestAnalysis(transcript).then(function (analysis) {
       state.analysis = analysis;
@@ -427,6 +442,7 @@
     state.view = "review";
     state.notice = null;
     setStatus("Check the changes below. Nothing is written until you confirm.");
+    focusReview();
   }
 
   function openReasonReview() {
@@ -451,6 +467,17 @@
     state.view = "review";
     state.notice = null;
     setStatus("Check the change below. Nothing is written until you confirm.");
+    focusReview();
+  }
+
+  /** Move keyboard and screen-reader focus to the review heading, from the top of the list. */
+  function focusReview() {
+    var ui = state.ui;
+    ui.scrollEl.scrollTop = 0;
+    var heading = ui.reviewEl.querySelector(".openemr-asr-review-head");
+    if (heading) {
+      heading.focus({ preventScroll: true });
+    }
   }
 
   function closeReview() {
@@ -673,6 +700,7 @@
     ui.captureEl.hidden = inReview;
     ui.reviewEl.hidden = !inReview;
 
+    ui.recordButton.textContent = state.isRecording ? "Recording" : "Start mic";
     ui.recordButton.disabled = state.isRecording || state.isBusy;
     ui.recordButton.classList.toggle("is-live", state.isRecording);
     ui.stopButton.disabled = !state.isRecording;
@@ -717,7 +745,8 @@
       return '<span class="openemr-asr-dot loading"></span>Starting the analysis engine...';
     }
     if (state.capabilities === null) {
-      return '<span class="openemr-asr-dot offline"></span>Service offline. Demo text only';
+      return '<span class="openemr-asr-dot offline"></span>' +
+        (state.capabilitiesError ? "Engine unavailable" : "Service offline. Demo text only");
     }
     var layers = state.capabilities.layers || {};
     var degraded = Object.keys(layers).filter(function (key) {
@@ -872,17 +901,35 @@
   function renderReview() {
     var items = (state.review && state.review.items) || [];
     var html =
-      '<div class="openemr-asr-review-head">' +
+      '<div class="openemr-asr-review-head" tabindex="-1">' +
       "<b>Review before inserting</b>" +
       "<span>" + items.length + " change" + (items.length === 1 ? "" : "s") + "</span></div>";
 
     items.forEach(function (item, position) {
       var previous = String(item.previous || "").trim();
+      var locate =
+        '<button type="button" class="openemr-asr-locatebtn" data-locate-review="' + position +
+        '" aria-label="Show this field on the page" title="Show on page">' + LOCATE_ICON + "</button>";
+
+      // A single short value (a pulse, a temperature) reads better on one line
+      // than as a card of its own; ten of those otherwise fill the whole panel.
+      if (String(item.value).length <= 28 && previous.length <= 28) {
+        html +=
+          '<div class="openemr-asr-change compact" data-position="' + position + '">' +
+          "<b>" + escapeHtml(fieldTitle(item.description)) + "</b>" +
+          (previous
+            ? '<span class="openemr-asr-inline old">' + escapeHtml(previous) + "</span>" +
+              '<span class="openemr-asr-arrow" aria-hidden="true">→</span>'
+            : "") +
+          '<span class="openemr-asr-inline new">' + escapeHtml(item.value) + "</span>" +
+          locate + "</div>";
+        return;
+      }
+
       html +=
         '<div class="openemr-asr-change" data-position="' + position + '">' +
         '<div class="openemr-asr-change-head"><b>' + escapeHtml(fieldTitle(item.description)) + "</b>" +
-        '<button type="button" class="openemr-asr-locatebtn" data-locate-review="' + position +
-        '" aria-label="Show this field on the page" title="Show on page">' + LOCATE_ICON + "</button></div>" +
+        locate + "</div>" +
         (previous
           ? '<div class="openemr-asr-old"><span>Replaces</span>' + escapeHtml(previewValue(previous, 160)) + "</div>"
           : "") +
@@ -961,7 +1008,7 @@
       ROOT + " .openemr-asr-dot.online{background:#22c55e}",
       ROOT + " .openemr-asr-dot.offline{background:#ef4444}",
       ROOT + " .openemr-asr-dot.loading{background:#facc15;animation:openemr-asr-blink 1s infinite}",
-      ROOT + " .openemr-asr-fineprint{flex:1 0 100%;font-size:10.5px;line-height:1.45;color:#64748b}",
+      ROOT + " .openemr-asr-fineprint{flex:1 0 100%;font-size:10.5px;line-height:1.45;color:#8c9bb0}",
       ROOT + " .openemr-asr-status{font-size:12.5px;color:#cbd5e1;margin-bottom:10px;min-height:19px}",
 
       // Buttons
@@ -1028,7 +1075,7 @@
 
       // Sections and field cards
       ROOT + " .openemr-asr-section{display:flex;align-items:center;justify-content:space-between;" +
-        "font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;" +
+        "font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:#8c9bb0;" +
         "font-weight:700;margin:13px 0 6px}",
       ROOT + " .openemr-asr-section-actions{display:flex;gap:2px;text-transform:none;letter-spacing:0}",
       ROOT + " .openemr-asr-field{display:flex;gap:10px;align-items:flex-start;" +
@@ -1051,7 +1098,7 @@
       ROOT + " .openemr-asr-chip.warn{background:rgba(245,158,11,.16);color:#fcd34d}",
       ROOT + " .openemr-asr-chip.ok{background:rgba(34,197,94,.18);color:#86efac}",
       ROOT + " .openemr-asr-locatebtn{flex:0 0 28px;width:28px;height:28px;border-radius:8px;border:0;" +
-        "background:transparent;color:#64748b;cursor:pointer;display:flex;align-items:center;" +
+        "background:transparent;color:#8c9bb0;cursor:pointer;display:flex;align-items:center;" +
         "justify-content:center;padding:0;transition:background .15s,color .15s}",
       ROOT + " .openemr-asr-locatebtn:hover{background:rgba(56,189,248,.15);color:#7dd3fc}",
       ROOT + " .openemr-asr-badge{font-size:10.5px;font-weight:700;border-radius:999px;" +
@@ -1077,7 +1124,7 @@
       ROOT + " .openemr-asr-code b{color:#f1f5f9;font-family:ui-monospace,Menlo,monospace;flex:0 0 auto;" +
         "min-width:46px}",
       ROOT + " .openemr-asr-code-text{flex:1 1 auto;min-width:0}",
-      ROOT + " .openemr-asr-muted{font-size:10.5px;color:#64748b;margin-top:6px;line-height:1.45}",
+      ROOT + " .openemr-asr-muted{font-size:10.5px;color:#8c9bb0;margin-top:6px;line-height:1.45}",
 
       // Review step
       ROOT + " .openemr-asr-review-head{display:flex;align-items:baseline;justify-content:space-between;" +
@@ -1097,6 +1144,15 @@
       ROOT + " .openemr-asr-old span,#openemr-asr-demo-root .openemr-asr-new span{display:block;" +
         "font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;opacity:.75;" +
         "text-decoration:none}",
+
+      ROOT + " .openemr-asr-review-head:focus{outline:none}",
+      ROOT + " .openemr-asr-change.compact{display:flex;align-items:center;gap:8px;padding:7px 8px 7px 11px}",
+      ROOT + " .openemr-asr-change.compact b{flex:1 1 auto;min-width:0;font-size:12.5px;color:#f1f5f9}",
+      ROOT + " .openemr-asr-inline{font-size:12px;border-radius:6px;padding:2px 8px;white-space:nowrap}",
+      ROOT + " .openemr-asr-inline.old{background:rgba(245,158,11,.12);color:#fcd34d;text-decoration:line-through;" +
+        "text-decoration-color:rgba(252,211,77,.45)}",
+      ROOT + " .openemr-asr-inline.new{background:rgba(34,197,94,.14);color:#bbf7d0;font-weight:600}",
+      ROOT + " .openemr-asr-arrow{color:#8c9bb0;font-size:12px}",
 
       // Sticky action bar
       ROOT + " .openemr-asr-footer{flex:0 0 auto;padding:10px 13px calc(10px + env(safe-area-inset-bottom,0px));" +
@@ -1399,7 +1455,7 @@
     // A phone gets a bottom sheet: it starts folded so the form is visible, and
     // a position saved on a desktop would be meaningless there.
     if (isMobile()) {
-      if (!state.panelState.saved) {
+      if (!state.panelState.saved && window.__OPENEMR_ASR_START_OPEN !== true) {
         state.panelState.collapsed = true;
       }
       return;

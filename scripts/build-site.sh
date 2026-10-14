@@ -13,7 +13,7 @@ OUT=dist/site
 rm -rf "$OUT"; mkdir -p "$OUT/assets" "$OUT/demo" "$OUT/py"
 
 # overview
-cp site/index.html site/_headers site/robots.txt "$OUT/"
+cp site/index.html site/_headers site/robots.txt site/favicon.svg site/og.png "$OUT/"
 cp docs/diagrams/[1-6]-*.png docs/diagrams/ekran-*.png "$OUT/assets/"
 cp docs/OpenEMR-ovozli-yozuv.pptx "$OUT/MedVoice-taqdimot.pptx"
 cp docs/diagrams/arxitektura-diagrammalar.pdf "$OUT/MedVoice-diagrammalar.pdf"
@@ -26,7 +26,7 @@ python3 -I scripts/build-nlp-bundle.py "$OUT/py/nlp-bundle.json"
 
 # Only the files the hosted app needs may ship. Anything else (service code,
 # tests, env files, notes) fails the build instead of going public.
-ALLOWED='^\./(index\.html|_headers|robots\.txt|demo\.js|engine\.js|engine-worker\.js|scanner\.js|content\.js|MedVoice-taqdimot\.pptx|MedVoice-diagrammalar\.pdf|demo/index\.html|py/nlp-bundle\.json|assets/[^/]+\.png)$'
+ALLOWED='^\./(index\.html|_headers|robots\.txt|favicon\.svg|og\.png|demo\.js|engine\.js|engine-worker\.js|scanner\.js|content\.js|MedVoice-taqdimot\.pptx|MedVoice-diagrammalar\.pdf|demo/index\.html|py/nlp-bundle\.json|assets/[^/]+\.png)$'
 unexpected="$(cd "$OUT" && find . -type f | grep -Ev "$ALLOWED" || true)"
 if [[ -n "$unexpected" ]]; then
   echo "XATO: dist/site ichida kutilmagan fayllar bor:" >&2

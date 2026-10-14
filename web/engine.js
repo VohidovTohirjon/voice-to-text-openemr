@@ -11,11 +11,13 @@
   var MAX_SECONDS = 90;
   var TARGET_RATE = 16000;
   var DEPLOYMENT_NOTE =
-    "Online demo: the recording is sent to a Whisper model on Cloudflare to be " +
-    "transcribed and is not stored. Everything after that runs in this browser.";
+    "Online demo: audio goes to Cloudflare Whisper to be transcribed and is not stored. " +
+    "Analysis runs in this browser.";
 
   window.__OPENEMR_ASR_API_BASE = BASE;
   window.__OPENEMR_ASR_ANY_PAGE = true;
+  // On a phone the panel is the whole point of this page, so it starts open.
+  window.__OPENEMR_ASR_START_OPEN = true;
 
   var realFetch = window.fetch.bind(window);
 
