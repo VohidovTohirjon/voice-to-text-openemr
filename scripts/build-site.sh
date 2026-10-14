@@ -24,9 +24,28 @@ cp web/demo.js web/engine.js web/engine-worker.js "$OUT/"
 cp extension/scanner.js extension/content.js "$OUT/"
 python3 -I scripts/build-nlp-bundle.py "$OUT/py/nlp-bundle.json"
 
+# Python-in-the-browser runtime, served from this site rather than a public CDN so
+# the demo does not depend on a third party being reachable. The npm registry
+# verifies the tarball's integrity; it is fetched once into .cache (not in git).
+PYODIDE_VERSION=0.27.7
+PYODIDE_CACHE=".cache/pyodide-$PYODIDE_VERSION"
+PYODIDE_FILES="pyodide.js pyodide.asm.js pyodide.asm.wasm python_stdlib.zip pyodide-lock.json"
+if [[ ! -f "$PYODIDE_CACHE/pyodide.asm.wasm" ]]; then
+  echo "Pyodide $PYODIDE_VERSION yuklanmoqda (bir marta)..."
+  PACK="$(mktemp -d)"
+  (cd "$PACK" && npm pack "pyodide@$PYODIDE_VERSION" --silent >/dev/null)
+  mkdir -p "$PYODIDE_CACHE"
+  # shellcheck disable=SC2086
+  tar -xzf "$PACK"/pyodide-*.tgz -C "$PYODIDE_CACHE" --strip-components=1 \
+      $(for f in $PYODIDE_FILES; do printf 'package/%s ' "$f"; done)
+  rm -rf "$PACK"
+fi
+mkdir -p "$OUT/pyodide-$PYODIDE_VERSION"
+for f in $PYODIDE_FILES; do cp "$PYODIDE_CACHE/$f" "$OUT/pyodide-$PYODIDE_VERSION/$f"; done
+
 # Only the files the hosted app needs may ship. Anything else (service code,
 # tests, env files, notes) fails the build instead of going public.
-ALLOWED='^\./(index\.html|_headers|robots\.txt|favicon\.svg|og\.png|demo\.js|engine\.js|engine-worker\.js|scanner\.js|content\.js|MedVoice-taqdimot\.pptx|MedVoice-diagrammalar\.pdf|demo/index\.html|py/nlp-bundle\.json|assets/[^/]+\.png)$'
+ALLOWED='^\./(index\.html|_headers|robots\.txt|favicon\.svg|og\.png|demo\.js|engine\.js|engine-worker\.js|scanner\.js|content\.js|MedVoice-taqdimot\.pptx|MedVoice-diagrammalar\.pdf|demo/index\.html|py/nlp-bundle\.json|pyodide-0\.27\.7/(pyodide\.js|pyodide\.asm\.js|pyodide\.asm\.wasm|python_stdlib\.zip|pyodide-lock\.json)|assets/[^/]+\.png)$'
 unexpected="$(cd "$OUT" && find . -type f | grep -Ev "$ALLOWED" || true)"
 if [[ -n "$unexpected" ]]; then
   echo "XATO: dist/site ichida kutilmagan fayllar bor:" >&2
@@ -36,7 +55,7 @@ fi
 # Look for an actual credential (a key block, or a name assigned a long literal),
 # not for the bare word "password" that the form scanner uses to skip such fields.
 SECRET='BEGIN ([A-Z]+ )?PRIVATE KEY|(api[_-]?key|secret|token|passwd|password)["'"'"']?[[:space:]]*[:=][[:space:]]*["'"'"'][^"'"'"']{8,}'
-if grep -rIn -E "$SECRET" "$OUT" --include='*.js' --include='*.html' --include='*.json' >&2; then
+if grep -rIn -E "$SECRET" "$OUT" --include='*.js' --include='*.html' --include='*.json' --exclude-dir="pyodide-$PYODIDE_VERSION" >&2; then
   echo "XATO: sirga o'xshash matn topildi." >&2
   exit 1
 fi

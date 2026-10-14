@@ -75,6 +75,7 @@
     capabilities: null,
     capabilitiesLoading: true,
     capabilitiesError: null,
+    engineProgress: null,
     ui: null,
     panelState: loadPanelState()
   };
@@ -742,7 +743,16 @@
 
   function renderServiceLine() {
     if (state.capabilitiesLoading) {
-      return '<span class="openemr-asr-dot loading"></span>Starting the analysis engine...';
+      var progress = state.engineProgress;
+      var labels = {
+        download: "Downloading the analysis engine",
+        python: "Starting the engine",
+        package: "Loading the clinical package",
+        ready: "Almost ready"
+      };
+      return '<span class="openemr-asr-dot loading"></span>' +
+        (progress ? escapeHtml(labels[progress.stage] || "Starting the analysis engine") + " " + progress.percent + "%"
+                  : "Starting the analysis engine...");
     }
     if (state.capabilities === null) {
       return '<span class="openemr-asr-dot offline"></span>' +
@@ -1183,10 +1193,10 @@
 
       // Phones: a bottom sheet instead of a floating card, with touch-sized controls.
       "@media " + MOBILE_QUERY + "{" +
-        ROOT + "{left:0 !important;right:0 !important;top:auto !important;bottom:0 !important;" +
+        ROOT + "{left:0 !important;right:0 !important;top:auto !important;bottom:var(--oa-kb,0px) !important;" +
           "width:100% !important;max-width:none !important}" +
         ROOT + " .openemr-asr-card{border-radius:18px 18px 0 0;max-height:88vh;" +
-          "max-height:88dvh;box-shadow:0 -10px 40px rgba(2,6,23,.5)}" +
+          "max-height:var(--oa-vh,88dvh);box-shadow:0 -10px 40px rgba(2,6,23,.5)}" +
         ROOT + " .openemr-asr-header{cursor:pointer;touch-action:auto;padding:14px 16px}" +
         ROOT + " .openemr-asr-scroll{max-height:none}" +
         ROOT + " .openemr-asr-button{min-height:46px;font-size:14px}" +
@@ -1378,8 +1388,45 @@
       }
     });
 
+    // The hosted engine reports its start-up progress; the extension never fires this.
+    window.addEventListener("openemr-asr-engine", function (event) {
+      var detail = event.detail || {};
+      if (state.engineProgress && state.engineProgress.percent === detail.percent) {
+        return;
+      }
+      state.engineProgress = detail;
+      if (state.capabilitiesLoading) {
+        ui.serviceEl.innerHTML = renderServiceLine();
+      }
+    });
+
+    // On a phone the keyboard covers the bottom of the screen. The sheet follows the
+    // visible area instead of the layout area, so its buttons stay above the keys.
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", syncViewport);
+      window.visualViewport.addEventListener("scroll", syncViewport);
+    }
+    window.addEventListener("resize", syncViewport);
+    syncViewport();
+
     setupDragging();
     render();
+  }
+
+  function syncViewport() {
+    if (!state.ui) {
+      return;
+    }
+    var root = state.ui.root;
+    var viewport = window.visualViewport;
+    if (!isMobile() || !viewport) {
+      root.style.removeProperty("--oa-kb");
+      root.style.removeProperty("--oa-vh");
+      return;
+    }
+    var keyboard = Math.max(0, Math.round(window.innerHeight - viewport.height - viewport.offsetTop));
+    root.style.setProperty("--oa-kb", keyboard + "px");
+    root.style.setProperty("--oa-vh", Math.round(viewport.height * 0.88) + "px");
   }
 
   function toggleCollapsed() {

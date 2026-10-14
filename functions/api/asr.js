@@ -34,6 +34,44 @@ function isWav(bytes) {
   return bytes.length > 44 && tag(0) === "RIFF" && tag(8) === "WAVE";
 }
 
+// Free-tier Workers AI has a daily allowance, and this endpoint is reachable by
+// anyone with the link. Two counters keep a stray script from using it up:
+// recordings per network per hour, and recordings per data centre per day.
+// They live in the edge cache, so no key or database is needed. They are
+// approximate (not atomic, and per data centre), which is enough for a demo.
+const PER_IP_PER_HOUR = 15;
+const PER_REGION_PER_DAY = 150;
+
+async function checkLimits(request, env) {
+  const hourly = Number(env.RATE_LIMIT_PER_HOUR) || PER_IP_PER_HOUR;
+  const daily = Number(env.RATE_LIMIT_PER_DAY) || PER_REGION_PER_DAY;
+  const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+  const now = Date.now();
+  const counters = [
+    { key: `https://limits.invalid/ip/${ip}/${Math.floor(now / 3600000)}`, limit: hourly, ttl: 3600 },
+    { key: `https://limits.invalid/day/${Math.floor(now / 86400000)}`, limit: daily, ttl: 86400 }
+  ];
+  try {
+    const cache = caches.default;
+    for (const counter of counters) {
+      const hit = await cache.match(new Request(counter.key));
+      counter.count = hit ? Number(await hit.text()) || 0 : 0;
+      if (counter.count >= counter.limit) {
+        return { allowed: false, retryAfter: counter.ttl };
+      }
+    }
+    for (const counter of counters) {
+      await cache.put(new Request(counter.key), new Response(String(counter.count + 1), {
+        headers: { "Cache-Control": `max-age=${counter.ttl}` }
+      }));
+    }
+  } catch (error) {
+    // A broken cache must not take the demo down with it.
+    console.error("rate limit check failed:", error && error.message);
+  }
+  return { allowed: true };
+}
+
 export async function onRequestPost({ request, env }) {
   const origin = request.headers.get("Origin");
   if (origin && origin !== new URL(request.url).origin) {
@@ -63,6 +101,13 @@ export async function onRequestPost({ request, env }) {
   }
   if (bytes.length < 4000 || !isWav(bytes)) {
     return reply({ detail: "The recording could not be read." }, 400);
+  }
+
+  const limits = await checkLimits(request, env);
+  if (!limits.allowed) {
+    return new Response(JSON.stringify({
+      detail: "Too many recordings from your network for now. Use Demo text, or try again later."
+    }), { status: 429, headers: { ...HEADERS, "Retry-After": String(limits.retryAfter) } });
   }
 
   const prompt = String(form.get("prompt") || "").slice(0, 1500);

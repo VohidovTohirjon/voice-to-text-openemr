@@ -6,6 +6,9 @@
 #   ./run.sh stop     xizmatni to'xtatadi
 #   ./run.sh status   holatni ko'rsatadi
 #
+#   WHISPER_MODEL=small ./run.sh    kattaroq model: aniqroq, lekin sekinroq (tiny, base, small, medium)
+#                                   standart: base, taqdimotdagi 88% shu model bilan o'lchangan
+#
 set -uo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
 

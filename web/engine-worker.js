@@ -6,10 +6,42 @@
  * while the interpreter starts or an analysis runs. Text never leaves this
  * browser tab.
  */
-var PYODIDE_VERSION = "0.27.7";
-var PYODIDE_BASE = "https://cdn.jsdelivr.net/pyodide/v" + PYODIDE_VERSION + "/full/";
+// The runtime ships with this site (see scripts/build-site.sh), so the demo does
+// not depend on a public CDN being reachable.
+var PYODIDE_BASE = "/pyodide-0.27.7/";
+var WASM_BYTES = 10105545;   // size of pyodide.asm.wasm at this version
 
 importScripts(PYODIDE_BASE + "pyodide.js");
+
+function report(stage, percent) {
+  self.postMessage({ event: "progress", stage: stage, percent: percent });
+}
+
+// Pyodide cannot report its own download progress. The big file is read once
+// here with a counter; Pyodide's own request for it then comes from the HTTP cache.
+function warmDownload() {
+  report("download", 0);
+  return fetch(PYODIDE_BASE + "pyodide.asm.wasm").then(function (response) {
+    var reader = response.body.getReader();
+    var loaded = 0;
+    var last = -1;
+    function pump() {
+      return reader.read().then(function (chunk) {
+        if (chunk.done) {
+          return;
+        }
+        loaded += chunk.value.length;
+        var percent = Math.min(90, Math.round(loaded / WASM_BYTES * 90));
+        if (percent !== last) {
+          last = percent;
+          report("download", percent);
+        }
+        return pump();
+      });
+    }
+    return pump();
+  }).catch(function () { /* progress is cosmetic; loading proceeds either way */ });
+}
 
 // Thin JSON-in, JSON-out layer over the package, so nothing Python-specific
 // crosses into the page.
@@ -42,24 +74,27 @@ var GLUE = [
   "    return prompting.decode_options()['initial_prompt']"
 ].join("\n");
 
-var ready = (function () {
-  return loadPyodide({ indexURL: PYODIDE_BASE }).then(function (pyodide) {
-    return fetch("py/nlp-bundle.json").then(function (response) {
-      if (!response.ok) {
-        throw new Error("analysis package not found (" + response.status + ")");
-      }
-      return response.json();
-    }).then(function (bundle) {
-      Object.keys(bundle.files).forEach(function (path) {
-        var full = "/app/" + path;
-        pyodide.FS.mkdirTree(full.slice(0, full.lastIndexOf("/")));
-        pyodide.FS.writeFile(full, bundle.files[path], { encoding: "utf8" });
-      });
-      pyodide.runPython(GLUE);
-      return pyodide;
+var ready = warmDownload().then(function () {
+  report("python", 92);
+  return loadPyodide({ indexURL: PYODIDE_BASE });
+}).then(function (pyodide) {
+  report("package", 97);
+  return fetch("py/nlp-bundle.json").then(function (response) {
+    if (!response.ok) {
+      throw new Error("analysis package not found (" + response.status + ")");
+    }
+    return response.json();
+  }).then(function (bundle) {
+    Object.keys(bundle.files).forEach(function (path) {
+      var full = "/app/" + path;
+      pyodide.FS.mkdirTree(full.slice(0, full.lastIndexOf("/")));
+      pyodide.FS.writeFile(full, bundle.files[path], { encoding: "utf8" });
     });
+    pyodide.runPython(GLUE);
+    report("ready", 100);
+    return pyodide;
   });
-})();
+});
 
 function call(pyodide, name, argument) {
   var fn = pyodide.globals.get(name);

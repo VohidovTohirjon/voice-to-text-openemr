@@ -134,7 +134,7 @@ other computer without installing anything.
 | Part | Where it runs |
 |---|---|
 | Panel (`extension/content.js`, `scanner.js`) | the same files the extension injects, loaded as page scripts |
-| Clinical analysis | the `asr/nlp` Python package, inside the browser through Pyodide (`web/engine-worker.js`) |
+| Clinical analysis | the `asr/nlp` Python package, inside the browser through Pyodide (`web/engine-worker.js`), with the runtime served from the site itself rather than a CDN |
 | Speech to text | Whisper large-v3-turbo on Cloudflare Workers AI (`functions/api/asr.js`) |
 
 Output of the in-browser engine is identical to the local service: the same
@@ -148,6 +148,13 @@ analysis stays in the browser. The local service keeps everything on the machine
 npm run site:dev      # build, then serve at http://127.0.0.1:8799 (uses your Cloudflare login)
 npm run site:deploy   # checks, build, publish to https://medvoice.pages.dev
 ```
+
+The speech endpoint is rate limited (15 recordings per network per hour, 150 per
+data centre per day) so a stray script cannot use up the free Workers AI allowance.
+
+The local service defaults to Whisper `base`, which is what the 88% drug-name
+figure was measured with. A larger model is one setting away and is more accurate
+but slower: `WHISPER_MODEL=small ./run.sh` (also `medium`).
 
 `scripts/build-site.sh` only lets an allowlist of files into `dist/site` and
 fails the build on anything else.

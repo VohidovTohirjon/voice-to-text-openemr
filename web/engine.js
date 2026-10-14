@@ -41,6 +41,10 @@
     worker = new Worker("/engine-worker.js");
     worker.onmessage = function (event) {
       var reply = event.data;
+      if (reply.event === "progress") {
+        window.dispatchEvent(new CustomEvent("openemr-asr-engine", { detail: reply }));
+        return;
+      }
       var waiting = pending[reply.id];
       if (!waiting) {
         return;
