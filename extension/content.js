@@ -50,6 +50,14 @@
     medication: "Medications"
   };
 
+  // Start-up stages the hosted engine reports. Anything else is ignored.
+  var ENGINE_STAGE_LABELS = {
+    download: "Downloading the analysis engine",
+    python: "Starting the engine",
+    package: "Loading the clinical package",
+    ready: "Almost ready"
+  };
+
   var state = {
     transcript: "",
     analyzedTranscript: null,
@@ -744,14 +752,8 @@
   function renderServiceLine() {
     if (state.capabilitiesLoading) {
       var progress = state.engineProgress;
-      var labels = {
-        download: "Downloading the analysis engine",
-        python: "Starting the engine",
-        package: "Loading the clinical package",
-        ready: "Almost ready"
-      };
       return '<span class="openemr-asr-dot loading"></span>' +
-        (progress ? escapeHtml(labels[progress.stage] || "Starting the analysis engine") + " " + progress.percent + "%"
+        (progress ? escapeHtml(ENGINE_STAGE_LABELS[progress.stage]) + " " + progress.percent + "%"
                   : "Starting the analysis engine...");
     }
     if (state.capabilities === null) {
@@ -1388,17 +1390,28 @@
       }
     });
 
-    // The hosted engine reports its start-up progress; the extension never fires this.
-    window.addEventListener("openemr-asr-engine", function (event) {
-      var detail = event.detail || {};
-      if (state.engineProgress && state.engineProgress.percent === detail.percent) {
-        return;
-      }
-      state.engineProgress = detail;
-      if (state.capabilitiesLoading) {
-        ui.serviceEl.innerHTML = renderServiceLine();
-      }
-    });
+    // The hosted engine reports its start-up progress. This channel is an event
+    // any script on the page can fire, so it is only listened to when the hosted
+    // engine is in use (never in the extension), and the payload is reduced to a
+    // known stage name and a clamped number before it is stored or shown.
+    if (API_BASE === "/_engine") {
+      window.addEventListener("openemr-asr-engine", function (event) {
+        var detail = event.detail || {};
+        var stage = String(detail.stage);
+        var percent = Number(detail.percent);
+        if (!Object.prototype.hasOwnProperty.call(ENGINE_STAGE_LABELS, stage) || !isFinite(percent)) {
+          return;
+        }
+        percent = Math.max(0, Math.min(100, Math.round(percent)));
+        if (state.engineProgress && state.engineProgress.percent === percent) {
+          return;
+        }
+        state.engineProgress = { stage: stage, percent: percent };
+        if (state.capabilitiesLoading) {
+          ui.serviceEl.innerHTML = renderServiceLine();
+        }
+      });
+    }
 
     // On a phone the keyboard covers the bottom of the screen. The sheet follows the
     // visible area instead of the layout area, so its buttons stay above the keys.
